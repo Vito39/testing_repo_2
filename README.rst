@@ -3,11 +3,11 @@ polly-python
 ============
 
 
-.. image:: https://img.shields.io/pypi/v/polly_python.svg
-        :target: https://pypi.python.org/pypi/polly_python
+.. image:: https://img.shields.io/pypi/v/polly-python.svg
+        :target: https://pypi.python.org/pypi/polly-python
 
-.. image:: https://img.shields.io/travis/ElucidataInc/polly_python.svg
-        :target: https://travis-ci.com/ElucidataInc/polly_python
+.. image:: https://img.shields.io/travis/ElucidataInc/polly-python.svg
+        :target: https://travis-ci.com/ElucidataInc/polly-python
 
 .. image:: https://readthedocs.org/projects/polly-python/badge/?version=latest
         :target: https://polly-python.readthedocs.io/en/latest/?version=latest

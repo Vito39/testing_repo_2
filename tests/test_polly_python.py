@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-"""Tests for `polly_python` package."""
+"""Tests for `polly-python` package."""
 
 import pytest
 
 
-from polly_python import polly_python
+from polly-python import polly-python
 
 
 @pytest.fixture
