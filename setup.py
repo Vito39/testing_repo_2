@@ -2,6 +2,7 @@
 
 """The setup script."""
 
+import os
 from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
