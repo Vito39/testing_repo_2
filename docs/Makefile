@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = polly-python
+SPHINXPROJ    = polly_python
 SOURCEDIR     = .
 BUILDDIR      = _build
 

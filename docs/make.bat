@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=polly-python
+set SPHINXPROJ=polly_python
 
 if "%1" == "" goto help
 

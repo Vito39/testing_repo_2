@@ -5,8 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Sabu George <sabu.george@elucidata.io>
-* Kunal Sharma <kunal.sharma@elucidata.io>
+* ElucidataInc <kunal.sharma@elucidata.io>
 
 Contributors
 ------------

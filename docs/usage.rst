@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use polly-python in a project::
+To use polly_python in a project::
 
-    import polly-python
+    import polly_python

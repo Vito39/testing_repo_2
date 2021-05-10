@@ -1,1 +1,1 @@
-"""Unit test package for polly-python."""
+"""Unit test package for polly_python."""

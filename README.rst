@@ -1,13 +1,13 @@
 ============
-polly-python
+polly_python
 ============
 
 
-.. image:: https://img.shields.io/pypi/v/polly-python.svg
-        :target: https://pypi.python.org/pypi/polly-python
+.. image:: https://img.shields.io/pypi/v/polly_python.svg
+        :target: https://pypi.python.org/pypi/polly_python
 
-.. image:: https://img.shields.io/travis/ElucidataInc/polly-python.svg
-        :target: https://travis-ci.com/ElucidataInc/polly-python
+.. image:: https://img.shields.io/travis/kunalx90x90/polly_python.svg
+        :target: https://travis-ci.com/kunalx90x90/polly_python
 
 .. image:: https://readthedocs.org/projects/polly-python/badge/?version=latest
         :target: https://polly-python.readthedocs.io/en/latest/?version=latest
@@ -16,7 +16,7 @@ polly-python
 
 
 
-Python Boilerplate contains all the boilerplate you need to create a Python package.
+Polly Python SDK
 
 
 * Free software: MIT license

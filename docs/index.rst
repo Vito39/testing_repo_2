@@ -1,4 +1,4 @@
-Welcome to polly-python's documentation!
+Welcome to polly_python's documentation!
 ======================================
 
 .. toctree::

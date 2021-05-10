@@ -1,4 +1,4 @@
-"""Top-level package for polly-python."""
+"""Top-level package for polly_python."""
 
 __author__ = """ElucidataInc"""
 __email__ = 'kunal.sharma@elucidata.io'
