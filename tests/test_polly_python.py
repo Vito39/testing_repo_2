@@ -5,8 +5,7 @@
 import pytest
 
 
-from polly_python import polly_python
-
+import polly_python
 
 @pytest.fixture
 def response():
