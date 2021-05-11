@@ -28,16 +28,14 @@ class PollySession():
                 "No profile default present in the config")
 
         if 'refresh_token' not in config['default']:
-            raise MalFormedConfigurationException(
-                "No Refresh Token provided")
+            raise MalFormedConfigurationException("No Refresh Token provided")
 
         self.refreshToken = config['default']['refresh_token']
 
         if config.has_option('default', 'id_token'):
             self.idToken = config['default']['id_token']
 
-        user = User(self.refreshToken)
-
+        self.user = User(self.refreshToken)
 
     def get_user(self):
-        return user
+        return self.user

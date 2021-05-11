@@ -2,28 +2,23 @@ from polly_python import constants
 from polly_python.models.api_handler import ApiHandler
 
 
-class User():
+class Workspace():
 
     _id = None
     name = None
-    email = None
-    apiEndpoint = '/users/me'
+    apiEndpoint = '/workspace/'
 
-    def __init__(self, refresh_token):
+    def __init__(self, workspace_id, refresh_token):
+        self._id = workspace_id
         response = ApiHandler('GET',
-                              constants.V2_API_ENDPOINT + self.apiEndpoint,
+                              constants.V2_API_ENDPOINT + self._id,
                               cookies={
                                   'polly.refreshToken': refresh_token
                               }).query()
 
         if response.status_code == 200:
             response = response.json()['data']
-            self._id = response['id']
-            self.name = response['attributes']['first_name'] + ' ' + response['attributes']['last_name']
-            self.email = response['attributes']['email']
+            self.name = response['attributes']['name']
 
     def get_name(self):
         return self.name
-
-    def get_email(self):
-        return self.email
