@@ -3,27 +3,25 @@ import requests
 
 class ApiHandler():
 
-    method = None
-    body = None
-    params = None
-    cookies = None
-    url = None
     headers = {'Content-type': 'application/vnd.api+json'}
 
-    def __init__(self, method, url, body = None, params = None, cookies = None):
-        if method not in ['GET', 'POST', 'PUT', 'DELETE']:
-            raise Exception("Invalid Request method")
+    def __init__(self):
+        pass
 
-        self.method = method
-        self.body = body
-        self.params = params
-        self.cookies = cookies
-        self.url = url
+    def send_request(self, method, **kwargs):
+        if method == 'GET':
+            return self._get(**kwargs)
+        elif method == 'POST':
+            return self._post(**kwargs)
 
-    def query(self):
-        return requests.request(self.method,
-                                url=self.url,
-                                params=self.params,
-                                data=self.body,
-                                headers=self.headers,
-                                cookies=self.cookies)
+    def _get(self, **kwargs):
+        return requests.get()
+
+    def _post(self):
+        return requests.post()
+    
+    def _put(self):
+        return requests.put()
+
+    def _delete(self):
+        return requests.delete()

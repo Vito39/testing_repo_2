@@ -7,19 +7,22 @@ class User():
     _id = None
     name = None
     email = None
-    apiEndpoint = '/users/me'
+
+    api_endpoint = '/users/me'
+    api_handler = ApiHandler()
 
     def __init__(self, refresh_token):
-        response = ApiHandler('GET',
-                              constants.V2_API_ENDPOINT + self.apiEndpoint,
-                              cookies={
-                                  'polly.refreshToken': refresh_token
-                              }).query()
+
+        response = self.api_handler.send_request(
+            'GET',
+            url=constants.V2_API_ENDPOINT + self.api_endpoint,
+            cookies={'polly.refreshToken': refresh_token})
 
         if response.status_code == 200:
             response = response.json()['data']
             self._id = response['id']
-            self.name = response['attributes']['first_name'] + ' ' + response['attributes']['last_name']
+            self.name = response['attributes']['first_name'] + ' ' + response[
+                'attributes']['last_name']
             self.email = response['attributes']['email']
 
     def get_name(self):
