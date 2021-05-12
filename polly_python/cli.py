@@ -1,17 +1,12 @@
 """Console script for polly_python."""
-import argparse
 import sys
-
+from polly_python.authenticate import PollyLogin, PollyLogout
 
 def main():
-    """Console script for polly_python."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument('_', nargs='*')
-    args = parser.parse_args()
-
-    print("Arguments: " + str(args._))
-    print("Replace this message by putting your code into "
-          "polly_python.cli.main")
+    if len(sys.argv) == 2 and sys.argv[1]=='login':
+        PollyLogin()
+    elif len(sys.argv) == 2 and sys.argv[1]=='logout':
+        PollyLogout()
     return 0
 
 
