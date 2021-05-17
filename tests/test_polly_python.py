@@ -5,12 +5,18 @@
 import pytest
 
 
-import polly_python
+# import polly_python
 # from polly_python import polly_python
 # from polly_python.models.workspace.workspace import WorkspaceList
 # polly_python.init()
 # WorkspaceListObject = WorkspaceList()
-# print(WorkspaceListObject.get_workspaces())
+# for i in WorkspaceListObject.get_workspaces():
+#     print(i.get_name())
+# while WorkspaceListObject.next_workspaces_present():
+#     WorkspaceListObject.get_next()
+#     for i in WorkspaceListObject.get_workspaces():
+#         print(i.get_name())
+
 
 @pytest.fixture
 def response():
