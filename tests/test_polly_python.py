@@ -6,6 +6,11 @@ import pytest
 
 
 import polly_python
+# from polly_python import polly_python
+# from polly_python.models.workspace.workspace import WorkspaceList
+# polly_python.init()
+# WorkspaceListObject = WorkspaceList()
+# print(WorkspaceListObject.get_workspaces())
 
 @pytest.fixture
 def response():

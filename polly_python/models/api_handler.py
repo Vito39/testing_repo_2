@@ -14,9 +14,10 @@ class ApiHandler():
             return self._post(**kwargs)
 
     def _get(self, **kwargs):
-        return requests.get(url=kwargs['url'],
-                            cookies=kwargs['cookies'],
-                            headers=self.headers)
+        return requests.get(url=kwargs.get('url'),
+                            cookies=kwargs.get('cookies'),
+                            headers=self.headers,
+                            params=kwargs.get('params'))
 
     def _post(self):
         return requests.post()
