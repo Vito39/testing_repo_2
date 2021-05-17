@@ -1,6 +1,5 @@
 import requests
 
-
 class ApiHandler():
 
     headers = {'Content-type': 'application/vnd.api+json'}
@@ -15,11 +14,13 @@ class ApiHandler():
             return self._post(**kwargs)
 
     def _get(self, **kwargs):
-        return requests.get()
+        return requests.get(url=kwargs['url'],
+                            cookies=kwargs['cookies'],
+                            headers=self.headers)
 
     def _post(self):
         return requests.post()
-    
+
     def _put(self):
         return requests.put()
 
