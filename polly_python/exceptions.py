@@ -4,8 +4,16 @@ class MalFormedConfigurationException(Exception):
             message = "Malformed Configuration."
         Exception.__init__(self, message)
 
+
 class PollyLoginException(Exception):
     def __init__(self, message=None):
         if not message:
             message = "Polly Login Failed."
+        Exception.__init__(self, message)
+
+
+class MethodNotAllowedException(Exception):
+    def __init__(self, message=None):
+        if not message:
+            message = "Method Not Allowed."
         Exception.__init__(self, message)
