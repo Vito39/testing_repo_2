@@ -1,7 +1,7 @@
 from polly_python.apimanager.workspaceApiManager import WorkspaceAPIManager
 
 
-class WorkspaceResourceManager():
+class Workspaces():
 
     configuration = None
     workspaceAPIManager = None

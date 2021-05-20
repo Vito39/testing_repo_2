@@ -7,11 +7,11 @@ class ApiHandler():
     headers = {'Content-type': 'application/vnd.api+json'}
     session = None
 
-    def __init__(self, session = None):
+    def __init__(self, session=None):
         self.session = session
         pass
 
-    def dispatch_request(self, method, session = None, **kwargs):
+    def dispatch_request(self, method, session=None, **kwargs):
         if session is None and self.session is None:
             raise Exception('Session Not Available')
         self.session = session
@@ -20,7 +20,8 @@ class ApiHandler():
     def _dispatch_request(self, method, **kwargs):
         if method == 'GET':
             return self._get(
-                {'polly.refreshToken': self.session.get_refresh_token()}, **kwargs)
+                {'polly.refreshToken': self.session.get_refresh_token()},
+                **kwargs)
         elif method == 'POST':
             return self._post(**kwargs)
         elif method == 'PUT':

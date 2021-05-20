@@ -1,6 +1,6 @@
-from polly_python import constants
 from polly_python.exceptions import MalFormedConfigurationException
 from polly_python.resourcemanager import RESORUCE_CLASS_MAPPING
+
 
 class SessionConfiguration():
 
@@ -8,7 +8,7 @@ class SessionConfiguration():
 
     def __init__(self, refresh_token):
         self.refresh_token = refresh_token
-    
+
     def get_refresh_token(self):
         return self.refresh_token
 
@@ -26,5 +26,4 @@ class PollySession():
         self.configuration = SessionConfiguration(kwargs.pop('refresh_token'))
 
     def create_resource(self, resource_name):
-        return RESORUCE_CLASS_MAPPING[resource_name](
-            self.configuration)
+        return RESORUCE_CLASS_MAPPING[resource_name](self.configuration)
