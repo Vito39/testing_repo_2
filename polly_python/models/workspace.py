@@ -1,4 +1,6 @@
 class Workspace():
+    """Data model class for workspace object
+    """
 
     name = None
     workspace_id = None
@@ -10,8 +12,8 @@ class Workspace():
     organisation = None
 
     def __init__(self,
-                 workspace_id: int,
                  name: str,
+                 workspace_id: str = None,
                  active: bool = False,
                  creator: int = None,
                  created_time: str = None,
@@ -35,6 +37,15 @@ class Workspace():
 
     @classmethod
     def from_api_response(cls, response):
+        """Loads and Returns workpace object from the
+        api response
+
+        Args:
+            response (Response): Response object from request library
+
+        Returns:
+            Workspace: Class object loaded with data from api response
+        """
         workspace_data = response.json()['data']['attributes']
         workspace_id = workspace_data.pop('id')
         workspace_data.pop('project_property')
