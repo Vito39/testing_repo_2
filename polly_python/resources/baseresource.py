@@ -9,8 +9,8 @@ class BaseResource():
 
     def __init__(self):
         if self.session is None:
-            self._load()
+            self._load_session()
 
-    def _load(self):
+    def _load_session(self):
         with open(SESSION_OBJECT_PATH, 'rb') as session_file:
             self.session = pickle.load(session_file)
