@@ -1,6 +1,8 @@
-class Workspace():
-    """Data model class for workspace object
-    """
+from polly_python.models.base_class import BaseClass
+
+
+class Workspace(BaseClass):
+    """Data model class for workspace object"""
 
     name = None
     workspace_id = None
@@ -11,15 +13,18 @@ class Workspace():
     last_modified = None
     organisation = None
 
-    def __init__(self,
-                 name: str,
-                 workspace_id: str = None,
-                 active: bool = False,
-                 creator: int = None,
-                 created_time: str = None,
-                 description: str = None,
-                 last_modified: str = None,
-                 organisation: int = None):
+    def __init__(
+        self,
+        name: str,
+        workspace_id: str = None,
+        active: bool = False,
+        creator: int = None,
+        created_time: str = None,
+        description: str = None,
+        last_modified: str = None,
+        organisation: int = None,
+    ):
+        super().__init__()
         self.workspace_id = workspace_id
         self.name = name
         self.active = active
@@ -46,8 +51,8 @@ class Workspace():
         Returns:
             Workspace: Class object loaded with data from api response
         """
-        workspace_data = response.json()['data']['attributes']
-        workspace_id = workspace_data.pop('id')
-        workspace_data.pop('project_property')
-        workspace_data['workspace_id'] = workspace_id
+        workspace_data = response.json()["data"]["attributes"]
+        workspace_id = workspace_data.pop("id")
+        workspace_data.pop("project_property")
+        workspace_data["workspace_id"] = workspace_id
         return cls(**workspace_data)
