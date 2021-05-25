@@ -1,7 +1,7 @@
-from polly_python.models.base_class import BaseClass
+from polly_python.models.base_model import BaseModel
 
 
-class Workspace(BaseClass):
+class Workspace(BaseModel):
     """Data model class for workspace object"""
 
     name = None

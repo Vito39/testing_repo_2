@@ -3,7 +3,7 @@ from json import dumps
 from pandas import DataFrame
 
 
-class BaseClass:
+class BaseModel:
     def to_json(self) -> str:
         return dumps(vars(self))
 
