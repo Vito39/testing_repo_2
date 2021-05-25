@@ -1,4 +1,7 @@
-class User():
+from polly_python.models.base_model import BaseModel
+
+
+class User(BaseModel):
 
     id = None
     email = None
@@ -8,14 +11,16 @@ class User():
     confirmed_at = None
     organization = None
 
-    def __init__(self,
-                 active=False,
-                 confirmed_at=None,
-                 email=None,
-                 first_name=None,
-                 last_name=None,
-                 organization=None,
-                 id=None):
+    def __init__(
+        self,
+        active=False,
+        confirmed_at=None,
+        email=None,
+        first_name=None,
+        last_name=None,
+        organization=None,
+        id=None,
+    ):
         self.active = active
         self.confirmed_at = confirmed_at
         self.email = email
@@ -26,5 +31,5 @@ class User():
 
     @classmethod
     def from_api_response(cls, response):
-        user_data = response.json()['data']['attributes']
+        user_data = response.json()["data"]["attributes"]
         return cls(**user_data)
