@@ -53,14 +53,6 @@ polly\_python.polly\_python module
     :undoc-members:
     :show-inheritance:
 
-polly\_python.resourcemanager module
-------------------------------------
-
-.. automodule:: polly_python.resourcemanager
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 polly\_python.session module
 ----------------------------
 
