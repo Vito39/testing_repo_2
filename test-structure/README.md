@@ -14,6 +14,4 @@
 1. `python -m venv venv` 
 2. `source venv/bin/activate` 
 3. `pip install <path-to-wheel>`
-4. 
-    - ` PYTHONPATH="." python examples/<EXAMPLE-FILE>.py ` OR 
-    - ` export PYTHONPATH="."; python examples/<EXAMPLE-FILE>.py `
+4. `python examples/<EXAMPLE-FILE>.py` 
