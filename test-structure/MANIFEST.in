@@ -1,3 +1,0 @@
-include polly/collections/jobs/*.json
-include polly/collections/omixatlas/*.json
-include polly/collections/workspaces/*.json
