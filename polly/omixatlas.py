@@ -1,5 +1,7 @@
 import requests
 
+from polly.errors import error_handler
+
 
 class OmixAtlas:
     def __init__(self, refresh_token: str) -> None:
@@ -25,15 +27,15 @@ class OmixAtlas:
         url = f"{self.base_url}/_query"
         payload = {"query": query}
         response = requests.get(url, headers=self.headers, json=payload)
-        response.raise_for_status()
+        error_handler(response)
         return response.json()
 
     # ? DEPRECATED
     def search_metadata(self, query: dict):
         url = f"{self.base_url}/_search"
-        payload = {"query": query}
+        payload = query
         response = requests.get(url, headers=self.headers, json=payload)
-        response.raise_for_status()
+        error_handler(response)
         return response.json()
 
     def download_data(self, repo_name, _id: str):

@@ -9,35 +9,35 @@ repo_client = OmixAtlas(REFRESH_TOKEN)
 
 ### Get All Omixatlases
 
-all_omixatlases = repo_client.get_all_omixatlas()
+# all_omixatlases = repo_client.get_all_omixatlas()
 
-with open(LOG_FILE, "a") as logfile:
-    logfile.write("\n\nAll Omixatlases")
-    logfile.write(dumps(all_omixatlases, indent=4))
+# with open(LOG_FILE, "a") as logfile:
+#     logfile.write("\n\nAll Omixatlases")
+#     logfile.write(dumps(all_omixatlases, indent=4))
 
 ### Get Omixatlas by Name
 
 repo_name = "elucidata.test_omixwiki"
 
-repo_details = repo_client.get_omixatlas_details(repo_name)
+# repo_details = repo_client.get_omixatlas_details(repo_name)
 
-with open(LOG_FILE, "a") as logfile:
-    logfile.write("\n\n Omixatlas Details with Name\n")
-    logfile.write(dumps(repo_details, indent=4))
+# with open(LOG_FILE, "a") as logfile:
+#     logfile.write("\n\n Omixatlas Details with Name\n")
+#     logfile.write(dumps(repo_details, indent=4))
 
 ### Get Omixatlas by Name
 
 repo_id = "1624966495340"
 
-repo_details = repo_client.get_omixatlas_details(repo_name)
+# repo_details = repo_client.get_omixatlas_details(repo_name)
 
-with open(LOG_FILE, "a") as logfile:
-    logfile.write("\n\n Omixatlas Details with ID\n")
-    logfile.write(dumps(repo_details, indent=4))
+# with open(LOG_FILE, "a") as logfile:
+#     logfile.write("\n\n Omixatlas Details with ID\n")
+#     logfile.write(dumps(repo_details, indent=4))
 
 ### SQL Queries
 
-query = "SELECT * FROM test_files"
+query = "SELECT * FROM liver_atlas_files WHERE disease.keyword = 'Obesity'"
 
 query_response = repo_client.query_metadata(query)
 
@@ -47,25 +47,27 @@ with open(LOG_FILE, "a") as logfile:
 
 ### Elastic Search Queries
 
-query = {
-    "bool": {
-        "must": [
-            {"term": {"_index": "test_files"}},
-            {"term": {"kw_filetype.keyword": "png"}},
-        ]
-    }
-}
+# query = {
+#     "query": {
+#         "bool": {
+#             "must": [
+#                 {"term": {"_index": "test_files"}},
+#                 {"term": {"kw_filetype.keyword": "png"}},
+#             ]
+#         }
+#     }
+# }
 
-search_response = repo_client.search_metadata(query)
+# search_response = repo_client.search_metadata(query)
 
-with open(LOG_FILE, "a") as logfile:
-    logfile.write("\n\n Metadata Query\n")
-    logfile.write(dumps(search_response, indent=4))
+# with open(LOG_FILE, "a") as logfile:
+#     logfile.write("\n\n Metadata Query\n")
+#     logfile.write(dumps(search_response, indent=4))
 
 ### Download Data
 
-data_id = search_response["hits"]["hits"][0]["_id"]
+# data_id = search_response["hits"]["hits"][0]["_id"]
 
-response = repo_client.download_data(repo_name, data_id)
-signed_url = response.get("data")
-print(signed_url)
+# response = repo_client.download_data(repo_name, data_id)
+# signed_url = response.get("data")
+# print(signed_url)
