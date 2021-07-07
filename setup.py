@@ -9,8 +9,8 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="polly-omixatlas",
-    version="0.0.3",
+    name="polly-python",
+    version="0.0.1",
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -20,6 +20,7 @@ setup(
         "certifi",
         "chardet",
         "idna",
+        "pandas",
         "postpy2",
         "python-magic",
         "requests",

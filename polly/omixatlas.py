@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 from polly.errors import error_handler
 
@@ -13,13 +14,15 @@ class OmixAtlas:
 
     def get_all_omixatlas(self):
         url = self.base_url
-        response = requests.get(url, headers=self.headers)
+        params = {"summarize": "true"}
+        response = requests.get(url, headers=self.headers, params=params)
         response.raise_for_status()
         return response.json()
 
-    def get_omixatlas_details(self, key: str):
+    def omixatlas_summary(self, key: str):
         url = f"{self.base_url}/{key}"
-        response = requests.get(url, headers=self.headers)
+        params = {"summarize": "true"}
+        response = requests.get(url, headers=self.headers, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -28,7 +31,12 @@ class OmixAtlas:
         payload = {"query": query}
         response = requests.get(url, headers=self.headers, json=payload)
         error_handler(response)
-        return response.json()
+        try:
+            hits = response.json().get("hits").get("hits")
+            hits_dataframe = pd.DataFrame(hits)
+            return hits_dataframe
+        except AttributeError:
+            return response.json()
 
     # ? DEPRECATED
     def search_metadata(self, query: dict):
