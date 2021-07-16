@@ -26,4 +26,6 @@ setup(
         "requests",
         "urllib3",
     ],
+    url="https://github.com/ElucidataInc/polly-python",
+    download_url="https://github.com/ElucidataInc/PublicAssets/raw/master/builds/polly_python-0.0.3-py3-none-any.whl",
 )
