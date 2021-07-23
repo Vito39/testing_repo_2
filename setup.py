@@ -1,52 +1,31 @@
-#!/usr/bin/env python
-
-"""The setup script."""
-
+import pathlib
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
+# The directory containing this file
+HERE = pathlib.Path(__file__).parent
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
+# The text of the README file
+README = (HERE / "README.md").read_text()
 
-requirements = [ ]
-
-setup_requirements = ['pytest-runner', ]
-
-test_requirements = ['pytest>=3', ]
-
+# This call to setup() does all the work
 setup(
-    author="ElucidataInc",
-    author_email='kunal.sharma@elucidata.io',
-    python_requires='>=3.6',
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-    ],
-    description="Polly Python SDK",
-    entry_points={
-        'console_scripts': [
-            'polly_python=polly_python.cli:main',
-        ],
-    },
-    install_requires=requirements,
-    license="MIT license",
-    long_description=readme + '\n\n' + history,
+    name="polly-python",
+    version="0.0.4",
+    description="Polly SDK",
+    long_description=README,
+    long_description_content_type="text/markdown",
+    packages=find_packages(),
     include_package_data=True,
-    keywords='polly_python',
-    name='polly_python',
-    packages=find_packages(include=['polly_python', 'polly_python.*']),
-    setup_requires=setup_requirements,
-    test_suite='tests',
-    tests_require=test_requirements,
-    url='https://github.com/kunalx90x90/polly_python',
-    version='0.0.1',
-    zip_safe=False,
+    install_requires=[
+        "certifi",
+        "chardet",
+        "idna",
+        "pandas",
+        "postpy2",
+        "python-magic",
+        "requests",
+        "urllib3",
+    ],
+    url="https://github.com/ElucidataInc/polly-python",
+    download_url="https://github.com/ElucidataInc/PublicAssets/raw/master/builds/polly_python-0.0.3-py3-none-any.whl",
 )

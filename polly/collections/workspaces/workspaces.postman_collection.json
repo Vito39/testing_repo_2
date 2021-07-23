@@ -1,0 +1,666 @@
+{
+	"info": {
+		"_postman_id": "85c24607-7fca-4b41-b573-1cceb32b5a6b",
+		"name": "workspaces",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "workspaces",
+			"item": [
+				{
+					"name": "List all workspaces",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check the type of response\", function() {",
+									"    for(let i = 0; i < jsonData.data.length; i++){",
+									"        pm.expect(jsonData.data[i].type).to.eql(\"workspaces\");    ",
+									"    }",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {\"type\": \"number\"},",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"active\": {\"type\": \"boolean\"},",
+									"                \"created_time\": {\"type\": \"string\"},",
+									"                \"last_modified\": {\"type\": \"string\"},",
+									"                \"creator\": {\"type\": \"number\"},",
+									"                \"project_property\": {\"type\": \"object\"},",
+									"                \"organisation\": {\"type\": \"number\"},",
+									"            },",
+									"            \"required\" : [\"organisation\"]",
+									"        },",
+									"        \"links\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"self\" : { \"type\": \"string\"} ",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\", \"links\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    for(let i = 0; i < jsonData.data.length; i++){",
+									"        console.log(i);",
+									"        pm.expect(tv4.validate(jsonData.data[i], respSuccessSchema)).to.be.true;",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "polly.refreshToken={{refresh_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}"
+							]
+						},
+						"description": "This will list all the workspaces of the user."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a workspace",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									" ",
+									"pm.test(\"Check the type of response\", function() {",
+									"    pm.expect(jsonData.data.type).to.eql(\"workspaces\");    ",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {\"type\": \"number\"},",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"active\": {\"type\": \"boolean\"},",
+									"                \"description\": {\"type\": \"string\"},",
+									"                \"created_time\": {\"type\": \"string\"},",
+									"                \"last_modified\": {\"type\": \"string\"},",
+									"                \"creator\": {\"type\": \"number\"},",
+									"                \"project_property\": {\"type\": \"object\"},",
+									"                \"organisation\": {\"type\": \"number\"},",
+									"            }",
+									"        },",
+									"        \"links\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"self\" : { \"type\": \"string\"} ",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\", \"links\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    pm.expect(tv4.validate(jsonData.data, respSuccessSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"workspace_id\", jsonData.data.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"test_workspace_name\", \"TestWorkspace\");",
+									"pm.collectionVariables.set(\"new_test_workspace_description\", \"TestWorkspaceDescription XYZ\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Cookie",
+								"value": "polly.idToken={{id_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n\t\t\"type\": \"workspaces\",\n\t    \"attributes\": {\n\t\t    \"name\": \"{{test_workspace_name}}\",\n\t\t    \"description\": \"{{new_test_workspace_description}}\",\n\t\t    \"project_property\": {\n\t\t      \"type\": \"user-project\",\n\t\t      \"labels\": []\n\t\t    }\n\t\t}\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}"
+							]
+						},
+						"description": "This will create a new workspace."
+					},
+					"response": []
+				},
+				{
+					"name": "View recently created workspace",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check the type of response\", function() {",
+									"    pm.expect(jsonData.data.type).to.eql(\"workspaces\");    ",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {\"type\": \"number\"},",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"active\": {\"type\": \"boolean\"},",
+									"                \"description\": {\"type\": \"string\"},",
+									"                \"created_time\": {\"type\": \"string\"},",
+									"                \"last_modified\": {\"type\": \"string\"},",
+									"                \"creator\": {\"type\": \"number\"},",
+									"                \"project_property\": {\"type\": \"object\"},",
+									"                \"organisation\": {\"type\": \"number\"},",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    pm.expect(tv4.validate(jsonData.data, respSuccessSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if the workspace is created\", function(){",
+									"    pm.expect(jsonData.data.attributes.id).to.eql(parseInt(pm.collectionVariables.get(\"workspace_id\")));",
+									"    pm.expect(jsonData.data.attributes.active).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Cookie",
+								"value": "polly.idToken={{id_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}/{{workspace_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}",
+								"{{workspace_id}}"
+							]
+						},
+						"description": "This will get a specific workspace among all the workspaces."
+					},
+					"response": []
+				},
+				{
+					"name": "Update a workspace with name and description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check the type of response\", function() {",
+									"    pm.expect(jsonData.data.type).to.eql(\"workspaces\");    ",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"description\": {\"type\": \"string\"},",
+									"            },",
+									"            \"required\": [\"name\", \"description\"]",
+									"        },",
+									"        \"links\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"self\" : { \"type\": \"string\"} ",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\", \"links\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    pm.expect(tv4.validate(jsonData.data, respSuccessSchema)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"update_test_workspace_name\", \"TestWorkspace2\");",
+									"pm.collectionVariables.set(\"update_test_workspace_description\", \"TestWorkspace2Description ABC\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Cookie",
+								"value": "polly.idToken={{id_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n\t\t\"type\": \"workspaces\",\n\t\t\"id\": \"{{workspace_id}}\",\n\t    \"attributes\": {\n\t\t    \"name\": \"{{update_test_workspace_name}}\",\n\t\t    \"description\": \"{{update_test_workspace_description}}\",\n\t\t    \"created_time\": \"2020-04-07 09:23:18.381417\",\n            \"last_modified\": \"2020-04-07 09:23:18.381417\",\n            \"creator\": 387,\n            \"project_property\": {\n                \"type\": \"user-project\",\n                \"labels\": []\n            }\n\t\t}\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}/{{workspace_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}",
+								"{{workspace_id}}"
+							]
+						},
+						"description": "This will update the workspace by changing its name and description."
+					},
+					"response": []
+				},
+				{
+					"name": "View recently updated workspace",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check the type of response\", function() {",
+									"    pm.expect(jsonData.data.type).to.eql(\"workspaces\");    ",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {\"type\": \"number\"},",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"active\": {\"type\": \"boolean\"},",
+									"                \"description\": {\"type\": \"string\"},",
+									"                \"created_time\": {\"type\": \"string\"},",
+									"                \"last_modified\": {\"type\": \"string\"},",
+									"                \"creator\": {\"type\": \"number\"},",
+									"                \"project_property\": {\"type\": \"object\"},",
+									"                \"organisation\": {\"type\": \"number\"},",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    pm.expect(tv4.validate(jsonData.data, respSuccessSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if the workspace is updated\", function(){",
+									"    pm.expect(jsonData.data.attributes.id).to.eql(parseInt(pm.collectionVariables.get(\"workspace_id\")));",
+									"    pm.expect(jsonData.data.attributes.active).to.eql(true);",
+									"    pm.expect(jsonData.data.attributes.name).to.eql(pm.collectionVariables.get(\"update_test_workspace_name\"));",
+									"    pm.expect(jsonData.data.attributes[\"description\"]).to.eql(pm.collectionVariables.get(\"update_test_workspace_description\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}/{{workspace_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}",
+								"{{workspace_id}}"
+							]
+						},
+						"description": "This will get a specific workspace among all the workspaces."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a workspace",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Cookie",
+								"value": "polly.idToken={{id_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}/{{workspace_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}",
+								"{{workspace_id}}"
+							]
+						},
+						"description": "This will delete a specific workspace corresponding to the workspace id."
+					},
+					"response": []
+				},
+				{
+					"name": "View recently deleted workspace to verify if that workspace is deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check the type of response\", function() {",
+									"    pm.expect(jsonData.data.type).to.eql(\"workspaces\");    ",
+									"});",
+									"",
+									"var respSuccessSchema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"id\": {\"type\": \"string\"},",
+									"        \"attributes\": {",
+									"            \"type\": \"object\",",
+									"            \"properties\": {",
+									"                \"id\": {\"type\": \"number\"},",
+									"                \"name\": {\"type\": \"string\"},",
+									"                \"active\": {\"type\": \"boolean\"},",
+									"                \"description\": {\"type\": \"string\"},",
+									"                \"created_time\": {\"type\": \"string\"},",
+									"                \"last_modified\": {\"type\": \"string\"},",
+									"                \"creator\": {\"type\": \"number\"},",
+									"                \"project_property\": {\"type\": \"object\"},",
+									"                \"organisation\": {\"type\": \"number\"},",
+									"            }",
+									"        }",
+									"    },",
+									"    \"required\": [\"attributes\"]",
+									"};",
+									"pm.test(\"Check if the response is in correct format\", function() {",
+									"    pm.expect(tv4.validate(jsonData.data, respSuccessSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if the workspace is deactivated\", function(){",
+									"    pm.expect(jsonData.data.attributes.active).to.eql(false);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.api+json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{workspaces_url}}/{{workspace_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{workspaces_url}}",
+								"{{workspace_id}}"
+							]
+						},
+						"description": "This will get a specific workspace among all the workspaces and help to check whether the workspace is deleted or not."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.collectionVariables.set(\"workspaces_url\", \"workspaces\");",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.request.method != \"DELETE\"){",
+					"    let jsonBody = pm.response.json();",
+					"    pm.test(\"check if error is present\", function () { ",
+					"        pm.response.to.not.have.jsonBody(\"errors\"); ",
+					"    });",
+					"   ",
+					"}",
+					"",
+					"pm.test(\"Content-Type is present\", function () {",
+					"        pm.response.to.have.header(\"Content-Type\");",
+					"        pm.response.to.be.header(\"Content-Type\", \"application/vnd.api+json\");",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "workspace_id",
+			"value": ""
+		},
+		{
+			"key": "workspaces_url",
+			"value": ""
+		},
+		{
+			"key": "test_workspace_name",
+			"value": ""
+		},
+		{
+			"key": "new_test_workspace_description",
+			"value": ""
+		},
+		{
+			"key": "update_test_workspace_description",
+			"value": ""
+		},
+		{
+			"key": "update_test_workspace_name",
+			"value": ""
+		}
+	]
+}
