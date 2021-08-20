@@ -4,8 +4,8 @@ from polly.errors import error_handler
 
 
 class OmixAtlas:
-    def __init__(self, refresh_token: str) -> None:
-        self.session = PollySession(refresh_token)
+    def __init__(self, token: str) -> None:
+        self.session = PollySession(token)
         self.base_url = "https://v2.api.polly.elucidata.io/v1/omixatlases"
 
     def get_all_omixatlas(self):
