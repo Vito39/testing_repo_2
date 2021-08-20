@@ -2,27 +2,27 @@ from polly import omixatlas
 import pytest
 import os
 key = "REFRESH_TOKEN"
-refresh_token = os.getenv(key)
+token = os.getenv(key)
 
 
 
 def test_obj_initialised():
-    assert omixatlas.OmixAtlas(refresh_token) != None
+    assert omixatlas.OmixAtlas(token) != None
 
 
 def test_get_all_omixatlas():
-    obj = omixatlas.OmixAtlas(refresh_token)
+    obj = omixatlas.OmixAtlas(token)
     assert obj.get_all_omixatlas()['data'] != None
 
 
 def test_omixatlas_summary():
-    obj1 = omixatlas.OmixAtlas(refresh_token)
+    obj1 = omixatlas.OmixAtlas(token)
     key = 'elucidata.liveromix_atlas'
     assert obj1.omixatlas_summary(key)['data'] != None
 
 
 def test_download_data():
-    obj2 = omixatlas.OmixAtlas(refresh_token)
+    obj2 = omixatlas.OmixAtlas(token)
     repo_name = 'elucidata.liveromix_atlas'
     d_id = 'CCLE_metabolomics_LIVER'
     assert obj2.download_data('elucidata.liveromix_atlas','CCLE_metabolomics_LIVER')['data'] != None
@@ -34,7 +34,7 @@ def test_query_metadata():
     query_feature_level = "select kw_doc_id, disease FROM liveromix_atlas_gct_data WHERE kw_doc_id = 'discover-test-datalake-v1@@@liver_atlas_test@@data@@Methylation@@LIHC_Methylation_TCGA.gct'"
     query_singlecell_sample = "select  sample, platform, title, organism_ch1, source_name_ch1, batch, umi_counts, umi_counts_log, gene_counts, gene_counts_log, percent_mito, clusters, kw_column, kw_timestamp,  kw_doc_id FROM liveromix_atlas_h5ad_metadata WHERE sample = Match_Query('GSM2877959')"
     query_singlecell_feature = "select  * FROM liveromix_atlas_h5ad_data"
-    obj3 = omixatlas.OmixAtlas(refresh_token)
+    obj3 = omixatlas.OmixAtlas(token)
     assert obj3.query_metadata(query_feature_level) != None
     assert dict(obj3.query_metadata(query_sample_level)) != None
     assert dict(obj3.query_metadata(query_dataset_level)) != None
