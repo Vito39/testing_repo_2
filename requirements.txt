@@ -3,7 +3,6 @@ chardet==4.0.0
 idna==2.10
 numpy==1.21.0
 pandas==1.3.0
-polly-python==0.0.1
 postpy2==0.0.6
 python-dateutil==2.8.1
 python-magic==0.4.24
