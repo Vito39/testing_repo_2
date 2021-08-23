@@ -1,5 +1,5 @@
 import pandas as pd
-from polly.session import PollySession
+from session import PollySession
 from polly.errors import error_handler
 
 
