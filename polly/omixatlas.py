@@ -22,9 +22,11 @@ class OmixAtlas:
         error_handler(response)
         return response.json()
 
-    def query_metadata(self, query: str):
+    def query_metadata(self, query: str, experimental_features=None):
         url = f"{self.base_url}/_query"
         payload = {"query": query}
+        if experimental_features is not None:
+            payload.update({"experimental_features": experimental_features})
         response = self.session.get(url,json=payload)
         error_handler(response)
         message = response.json().get('message', None)

@@ -85,3 +85,16 @@ data_id = query_response.iloc[0]
 response = repo_client.download_data(repo_name, data_id)
 signed_url = response.get("data")
 print(signed_url)
+
+
+# expansion use cases-
+from polly.omixatlas import OmixAtlas
+library_client = OmixAtlas(REFRESH_TOKEN)
+
+user_query = "SELECT * from liveromix_atlas.datasets WHERE disease='nash' LIMIT 100"
+result_wo_expansion = library_client.query_metadata(query=user_query)
+result_with_expansion = library_client.query_metadata(query=user_query, experimental_features = {"expand":True, "related_terms":False})
+result_with_max_expansion = library_client.query_metadata(query=user_query, experimental_features = {"expand":True, "related_terms":True})
+
+# expanded_query = "SELECT * from liveromix_atlas_files WHERE disease in ('nash - nonalcoholic steatohepatitis', 'non-alcoholic fatty liver disease', 'non alcoholic steatohepatitis', 'nash', 'non-alcoholic steatohepatitis', 'nonalcoholic steatohepatitis', 'inflammatory disease') AND organism = 'Homo sapiens' LIMIT 100"
+
