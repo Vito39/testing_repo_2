@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
 
+
 def get_requirements(raw=False):
     """Build the requirements list for this project"""
     requirements_list = []
@@ -24,6 +25,7 @@ def get_packages_requirements(raw=False):
     exclude = ['tests*']
     packs = find_packages(exclude=exclude)
     return packs, reqs
+
 
 packages, requirements = get_packages_requirements()
 # The directory containing this file

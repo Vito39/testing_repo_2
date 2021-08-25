@@ -11,14 +11,14 @@ class OmixAtlas:
     def get_all_omixatlas(self):
         url = self.base_url
         params = {"summarize": "true"}
-        response = self.session.get(url,params=params)
+        response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 
     def omixatlas_summary(self, key: str):
         url = f"{self.base_url}/{key}"
         params = {"summarize": "true"}
-        response = self.session.get(url,params=params)
+        response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 
@@ -27,7 +27,7 @@ class OmixAtlas:
         payload = {"query": query}
         if experimental_features is not None:
             payload.update({"experimental_features": experimental_features})
-        response = self.session.get(url,json=payload)
+        response = self.session.get(url, json=payload)
         error_handler(response)
         message = response.json().get('message', None)
         if message is not None:
@@ -55,14 +55,14 @@ class OmixAtlas:
     def search_metadata(self, query: dict):
         url = f"{self.base_url}/_search"
         payload = query
-        response = self.session.get(url,json=payload)
+        response = self.session.get(url, json=payload)
         error_handler(response)
         return response.json()
 
     def download_data(self, repo_name, _id: str):
         url = f"{self.base_url}/{repo_name}/download"
         params = {"_id": _id}
-        response = self.session.get(url,params=params)
+        response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 

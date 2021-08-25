@@ -5,7 +5,8 @@ from copy import copy
 
 import requests
 
-from postpy2.extractors import extract_dict_from_raw_headers, extract_dict_from_headers, extract_dict_from_raw_mode_data, format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files
+from postpy2.extractors import extract_dict_from_headers, extract_dict_from_raw_mode_data
+from postpy2.extractors import format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files
 
 
 class CaseSensitiveDict(dict):
@@ -129,7 +130,7 @@ class PostRequest:
     def set_files(self, data):
         files = self.request_kwargs['files']
         for row in data:
-            self.request_kwargs['files'][row['key']] = exctact_dict_from_files(
+            files[row['key']] = exctact_dict_from_files(
                 row)
 
     def set_data(self, data):
