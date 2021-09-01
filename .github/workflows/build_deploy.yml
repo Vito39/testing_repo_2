@@ -24,32 +24,40 @@ jobs:
       - name: Build package
         run: |
           python -m build --sdist --wheel --outdir polly-python-code/dist/
-      - name: Get the Version
-        id: get_version
+      - name: Set output
+        id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-      - name: Gets latest created release info
-        id: latest_release_info
-        uses: jossef/action-latest-release-info@v1.1.0
-      - name: Upload tar
-        id: upload-release-tar
-        uses: actions/upload-release-asset@v1
+      - name: Check output
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload tar.gz
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ steps.latest_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./polly-python-code/dist/polly-python-${{ steps.vars.outputs.tag }}.tar.gz
           asset_name: polly-python-${{ steps.vars.outputs.tag }}.tar.gz
+          asset_content_type: application/octet-stream
       - name: Upload whl
-        id: upload-release-whl
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ steps.latest_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./polly-python-code/dist/polly_python-${{ steps.vars.outputs.tag }}-py3-none-any.whl
           asset_name: polly_python-${{ steps.vars.outputs.tag }}-py3-none-any.whl
+          asset_content_type: application/octet-stream
+          
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
