@@ -33,7 +33,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./polly-python-code/dist/polly-python-${{ steps.create_release.outputs.name}}.tar.gz
           asset_name: polly-python-${{ steps.create_release.outputs.name}}.tar.gz
           asset_content_type: application/
@@ -43,7 +42,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./polly-python-code/dist/polly_python-${{ steps.create_release.outputs.name}}-py3-none-any.whl
           asset_name: polly_python-${{ steps.create_release.outputs.name}}-py3-none-any.whl
           asset_content_type: application/
