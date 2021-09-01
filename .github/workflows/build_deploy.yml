@@ -4,12 +4,13 @@ on:
   push:
     tags:
       - '*'
-
 jobs:
-  deploy:
+  build:
+    name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -23,16 +24,40 @@ jobs:
       - name: Build package
         run: |
           python -m build --sdist --wheel --outdir polly-python-code/dist/
-      - name: list of dir
-        run: ls -R
-      - uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: ./polly-python-code/dist
-          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload whl
+        id: upload-release-tar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./polly-python-code/dist/polly-python-0.0.5.tar.gz
+          asset_name: my-artifact-tar
+          asset_content_type: application/gzip
+      - name: Upload tar
+        id: upload-release-whl
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./polly-python-code/dist/polly_python-0.0.5-py3-none-any.whl
+          asset_name: my-artifact-whl
+          asset_content_type: application/zip
+
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PIPY_TOKEN }}
           packages_dir: ./polly-python-code/dist
-          
