@@ -33,8 +33,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_path: ./polly-python-code/dist/polly-python-${{ steps.create_release.outputs.name}}.tar.gz
-          asset_name: polly-python-${{ steps.create_release.outputs.name}}.tar.gz
+          asset_path: ./polly-python-code/dist/polly-python-${{env.name}}.tar.gz
+          asset_name: polly-python-${{ env.name}}.tar.gz
           asset_content_type: application/
       - name: Upload tar
         id: upload-release-whl
@@ -42,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_path: ./polly-python-code/dist/polly_python-${{ steps.create_release.outputs.name}}-py3-none-any.whl
-          asset_name: polly_python-${{ steps.create_release.outputs.name}}-py3-none-any.whl
+          asset_path: ./polly-python-code/dist/polly_python-${{env.name}}-py3-none-any.whl
+          asset_name: polly_python-${{env.name}}-py3-none-any.whl
           asset_content_type: application/
 
       - name: Publish package to PyPI
