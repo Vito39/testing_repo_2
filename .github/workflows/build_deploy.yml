@@ -26,15 +26,16 @@ jobs:
           python -m build --sdist --wheel --outdir polly-python-code/dist/
       - name: Get the Version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - name: Upload tar
         id: upload-release-tar
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_path: ./polly-python-code/dist/polly-python-${{env.name}}.tar.gz
-          asset_name: polly-python-${{ env.name}}.tar.gz
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./polly-python-code/dist/polly-python-${{ steps.vars.outputs.tag }}.tar.gz
+          asset_name: polly-python-${{ steps.vars.outputs.tag }}.tar.gz
           asset_content_type: application/
       - name: Upload tar
         id: upload-release-whl
@@ -42,8 +43,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_path: ./polly-python-code/dist/polly_python-${{env.name}}-py3-none-any.whl
-          asset_name: polly_python-${{env.name}}-py3-none-any.whl
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./polly-python-code/dist/polly_python-${{ steps.vars.outputs.tag }}-py3-none-any.whl
+          asset_name: polly_python-${{ steps.vars.outputs.tag }}-py3-none-any.whl
           asset_content_type: application/
 
       - name: Publish package to PyPI
