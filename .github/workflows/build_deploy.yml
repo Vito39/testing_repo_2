@@ -37,7 +37,7 @@ jobs:
           asset_path: ./polly-python-code/dist/polly-python-${{ steps.vars.outputs.tag }}.tar.gz
           asset_name: polly-python-${{ steps.vars.outputs.tag }}.tar.gz
           asset_content_type: application/
-      - name: Upload tar
+      - name: Upload whl
         id: upload-release-whl
         uses: actions/upload-release-asset@v1
         env:
