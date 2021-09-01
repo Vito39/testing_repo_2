@@ -27,15 +27,15 @@ jobs:
       - name: Get the Version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Upload whl
+      - name: Upload tar
         id: upload-release-tar
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./polly-python-code/dist/polly-python-name.tar.gz
-          asset_name: my-artifact-tar
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./polly-python-code/dist/polly-python-${{name}}.tar.gz
+          asset_name: polly-python-${{name}}.tar.gz
           asset_content_type: application/
       - name: Upload tar
         id: upload-release-whl
@@ -44,8 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./polly-python-code/dist/polly_python-name-py3-none-any.whl
-          asset_name: my-artifact-whl
+          asset_path: ./polly-python-code/dist/polly_python-${{name}}-py3-none-any.whl
+          asset_name: polly_python-${{name}}-py3-none-any.whl
           asset_content_type: application/
 
       - name: Publish package to PyPI
