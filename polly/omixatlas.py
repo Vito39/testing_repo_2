@@ -1,11 +1,11 @@
 import pandas as pd
-from polly.session import PollySession
+from polly.polly import Polly
 from polly.errors import error_handler
 
 
 class OmixAtlas:
-    def __init__(self, token: str) -> None:
-        self.session = PollySession(token)
+    def __init__(self, token=None) -> None:
+        self.session = Polly.get_session(token)
         self.base_url = "https://v2.api.polly.elucidata.io/v1/omixatlases"
 
     def get_all_omixatlas(self):
