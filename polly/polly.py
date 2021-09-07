@@ -1,6 +1,7 @@
 from polly.session import PollySession
 link_doc = 'link to documentation'
 
+
 class UnauthorizedException(Exception):
     def __str__(self):
         return f"Authorization failed as credentials not found. Please use Polly.auth(token) as shown here  ---- {link_doc}"
