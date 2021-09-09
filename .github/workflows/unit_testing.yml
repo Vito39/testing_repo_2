@@ -54,3 +54,4 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests/test_omixatlas.py
+        pytest tests/test_new_workspaces.py
