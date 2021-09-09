@@ -19,6 +19,7 @@ class Workspaces():
         error_handler(response)
         attributes = response.json()['data']['attributes']
         print(f'Workspace Created ! \n Workspace Name = {attributes["name"]} and Workspace ID = {attributes["id"]}')
+        return True
 
     def fetch_my_workspaces(self):
         url = self.base_url
@@ -27,3 +28,4 @@ class Workspaces():
         for workspace in response.json()['data']:
             details = workspace['attributes']
             print(f'Workspace-Name = {details["name"]} and Workspace ID = {details["id"]}')
+        return True
