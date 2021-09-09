@@ -12,8 +12,8 @@ class Workspaces():
         url = self.base_url
         payload = {
             "data": {"type": "workspaces",
-                "attributes": {"name": name, "description": description,
-                    "project_property": {"type": "workspaces", "labels": ""}}}
+                        "attributes": {"name": name, "description": description,
+                            "project_property": {"type": "workspaces", "labels": ""}}}
             }
         response = self.session.post(url, data=json.dumps(payload))
         error_handler(response)
