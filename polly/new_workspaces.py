@@ -10,10 +10,11 @@ class Workspaces():
 
     def create_workspace(self, name: str, description=None):
         url = self.base_url
-        payload = {"data": {"type": "workspaces", 
-                    "attributes": {"name": name, "description": description, 
-                    "project_property": {"type": "workspaces", "labels": ""}}}
-        }
+        payload = {
+            "data": {"type": "workspaces",
+            "attributes": {"name": name, "description": description,
+            "project_property": {"type": "workspaces", "labels": ""}}}
+            }
         response = self.session.post(url, data=json.dumps(payload))
         error_handler(response)
         attributes = response.json()['data']['attributes']
