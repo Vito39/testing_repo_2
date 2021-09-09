@@ -7,7 +7,7 @@ class PollySession(Session):
         try:
             # for python version >= python3.8
             from importlib.metadata import version
-            version = "polly-python/"+version('polly-python')
+            version = version('polly-python')
         except ImportError:
             # for python version < python3.8
             import pkg_resources
