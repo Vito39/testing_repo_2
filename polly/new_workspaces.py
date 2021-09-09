@@ -14,6 +14,7 @@ class Workspaces():
             "data": {"type": "workspaces",
                      "attributes": {"name": name, "description": description,
                                     "project_property": {"type": "workspaces", "labels": ""}}}
+            }
         response = self.session.post(url, data=json.dumps(payload))
         error_handler(response)
         attributes = response.json()['data']['attributes']
