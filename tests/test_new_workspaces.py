@@ -10,4 +10,4 @@ def test_obj_initialised():
 
 def test_fetch_my_workspaces():
     obj = new_workspaces.Workspaces(token)
-    assert obj.fetch_my_workspaces() is True
+    assert dict(obj.fetch_my_workspaces()) is not None
