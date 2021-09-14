@@ -1,12 +1,13 @@
 import pandas as pd
 from polly.session import PollySession
 from polly.errors import error_handler
+from polly.constants import V2_API_ENDPOINT
 
 
 class OmixAtlas:
     def __init__(self, token: str) -> None:
         self.session = PollySession(token)
-        self.base_url = "https://v2.api.polly.elucidata.io/v1/omixatlases"
+        self.base_url = f'{V2_API_ENDPOINT}/v1/omixatlases'
 
     def get_all_omixatlas(self):
         url = self.base_url
