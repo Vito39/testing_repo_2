@@ -7,9 +7,9 @@ import json
 
 
 class Workspaces():
-    def __init__(self, refresh_token=None) -> None:
+    def __init__(self, token=None) -> None:
         self.base_url = f'{V2_API_ENDPOINT}/workspaces'
-        self.session = Polly.get_session(refresh_token)
+        self.session = Polly.get_session(token)
 
     def create_workspace(self, name: str, description=None):
         url = self.base_url

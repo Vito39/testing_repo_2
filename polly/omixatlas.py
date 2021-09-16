@@ -5,7 +5,7 @@ from polly.constants import V2_API_ENDPOINT
 
 
 class OmixAtlas:
-    def __init__(self, token: str) -> None:
+    def __init__(self, token=None) -> None:
         self.session = Polly.get_session(token)
         self.base_url = f'{V2_API_ENDPOINT}/v1/omixatlases'
 
