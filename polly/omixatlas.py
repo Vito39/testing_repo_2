@@ -1,5 +1,5 @@
 import pandas as pd
-from polly.session import PollySession
+from polly.polly import Polly
 from polly.errors import error_handler
 from polly.constants import V2_API_ENDPOINT
 
