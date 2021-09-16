@@ -1,4 +1,4 @@
-from polly.session import PollySession
+from polly.polly import Polly
 from polly.errors import error_handler
 from polly.constants import V2_API_ENDPOINT
 import logging
@@ -9,7 +9,7 @@ import json
 class Workspaces():
     def __init__(self, refresh_token=None) -> None:
         self.base_url = f'{V2_API_ENDPOINT}/workspaces'
-        self.session = PollySession(refresh_token)
+        self.session = Polly.get_session(refresh_token)
 
     def create_workspace(self, name: str, description=None):
         url = self.base_url
