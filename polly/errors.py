@@ -3,9 +3,15 @@ import sys
 sys.tracebacklimit = 0
 
 
-class ElasticException(Exception):
+class RequestException(Exception):
+    def __init__(self, title, detail=None):
+        self.title = title
+        self.detail = detail
+
     def __str__(self):
-        return f"{self.reason}: {self.details}"
+        if self.detail:
+            return f"{self.title}: {self.detail}"
+        return self.title
 
 
 class UnauthorizedException(Exception):
@@ -13,16 +19,26 @@ class UnauthorizedException(Exception):
         return "Expired or Invalid Token"
 
 
+class UnfinishedQueryException(Exception):
+    def __init__(self, query_id):
+        self.query_id = query_id
+
+    def __str__(self):
+        return f"Query \"{self.query_id}\" has not finished executing"
+
+
+class QueryFailedException(Exception):
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return f"Query failed to execute\n\treason: {self.reason}"
+
+
 def error_handler(response):
     if has_error_message(response):
-        type_, reason, details = extract_error_message_details(response)
-        custom_error = type(
-            type_,  # Name of the Class
-            (ElasticException,),  # Inherit the __str__ from this class
-            # Pass the error as attribute
-            {"reason": reason, "details": details},
-        )
-        raise custom_error
+        title, detail = extract_json_api_error(response)
+        raise RequestException(title, detail)
     elif response.status_code == 401:
         raise UnauthorizedException
 
@@ -39,6 +55,16 @@ def has_error_message(response):
         return False
 
 
+def extract_json_api_error(response):
+    error = response.json().get('error')
+    if error is None:
+        error = response.json().get('errors')[0]
+
+    title = error.get("title")
+    detail = error.get("detail")
+    return title, detail
+
+
 def extract_error_message_details(error_response):
     error = error_response.json().get('error')
     if error is None:
@@ -49,3 +75,7 @@ def extract_error_message_details(error_response):
     details = error.get("details", None) or error.get("detail", None)
 
     return type_, reason, details
+
+
+def is_unfinished_query_error(exception):
+    return isinstance(exception, UnfinishedQueryException)
