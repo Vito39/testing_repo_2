@@ -34,8 +34,15 @@ class OmixAtlas:
         self,
         query: str,
         experimental_features=None,
-        query_api_version="v2"
+        query_api_version="v2",
+        page_size=500  # Note: do not increase page size more than 999
     ):
+        max_page_size = 999
+        if page_size > max_page_size:
+            raise ValueError(
+                f"The maximum permitted value for page_size is {max_page_size}"
+            )
+
         queries_url = f"{self.resource_url}/queries"
         queries_payload = {
             "data": {
@@ -56,7 +63,7 @@ class OmixAtlas:
 
         query_data = response.json().get("data")
         query_id = query_data.get("id")
-        return self._process_query_to_completion(query_id)
+        return self._process_query_to_completion(query_id, page_size)
 
     @retry(
         retry_on_exception=is_unfinished_query_error,
@@ -64,7 +71,7 @@ class OmixAtlas:
         wait_exponential_max=10000,        # After 10s, retry every 10s
         stop_max_delay=300000              # Stop retrying after 300s (5m)
     )
-    def _process_query_to_completion(self, query_id: str):
+    def _process_query_to_completion(self, query_id: str, page_size: int):
         queries_url = f"{self.resource_url}/queries/{query_id}"
         response = self.session.get(queries_url)
         error_handler(response)
@@ -72,7 +79,7 @@ class OmixAtlas:
         query_data = response.json().get("data")
         query_status = query_data.get("attributes", {}).get("status")
         if query_status == "succeeded":
-            return self._handle_query_success(query_data)
+            return self._handle_query_success(query_data, page_size)
         elif query_status == "failed":
             self._handle_query_failure(query_data)
         else:
@@ -82,11 +89,13 @@ class OmixAtlas:
         fail_msg = query_data.get("attributes").get("failure_reason")
         raise QueryFailedException(fail_msg)
 
-    def _handle_query_success(self, query_data: dict) -> pd.DataFrame:
+    def _handle_query_success(
+        self,
+        query_data: dict,
+        page_size: int
+    ) -> pd.DataFrame:
         query_id = query_data.get("id")
 
-        # Note: do not increase page size more than 999
-        page_size = 500
         first_page_url = (
             f"{self.resource_url}/queries/{query_id}"
             f"/results?page[size]={page_size}"
