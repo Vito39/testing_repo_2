@@ -1,5 +1,5 @@
 from polly.session import PollySession
-link_doc = 'link to documentation'
+link_doc = 'https://docs.elucidata.io/OmixAtlas/Polly%20Python.html'
 
 
 class UnauthorizedException(Exception):
