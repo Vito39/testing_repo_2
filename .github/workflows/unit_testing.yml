@@ -11,14 +11,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
+    - name: Set up Python and nodejs
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
     - name: Install refreseh_token from polly CLI as Environment Variable
       run: |
+        npm --version 
+        node --version
         sudo apt-get install -y jq
-        sudo npm install -g @elucidatainc/pollycli
+        npm install -g @elucidatainc/pollycli
         sudo apt-get install expect
         export POLLY_USER_NAME=${{ secrets.POLLY_USER_NAME }}
         export POLLY_USER_PASSWORD=${{ secrets.POLLY_USER_PASSWORD }}
@@ -53,4 +58,4 @@ jobs:
         flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest tests/
+        pytest tests/test_omixatlas.py
