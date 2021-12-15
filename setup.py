@@ -46,5 +46,6 @@ setup(
     setup_requires=['wheel'],
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
-    download_url="https://github.com/ElucidataInc/PublicAssets/raw/master/builds/polly_python-0.0.5-py3-none-any.whl",
+    download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
+                  "polly-python/tests/polly/polly_python-0.0.6-py3-none-any.whl"),
 )
