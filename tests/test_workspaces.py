@@ -1,13 +1,13 @@
-from polly import new_workspaces
+from polly import workspaces
 import os
 key = "REFRESH_TOKEN"
 token = os.getenv(key)
 
 
 def test_obj_initialised():
-    assert new_workspaces.Workspaces(token) is not None
+    assert workspaces.Workspaces(token) is not None
 
 
 def test_fetch_my_workspaces():
-    obj = new_workspaces.Workspaces(token)
+    obj = workspaces.Workspaces(token)
     assert dict(obj.fetch_my_workspaces()) is not None
