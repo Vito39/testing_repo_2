@@ -9,6 +9,7 @@ import json
 class Workspaces():
     def __init__(self, token=None) -> None:
         self.base_url = f'{V2_API_ENDPOINT}/workspaces'
+        self.url = f'{V2_API_ENDPOINT}/v1/omixatlases'
         self.session = Polly.get_session(token)
 
     def create_workspace(self, name: str, description=None):
@@ -32,3 +33,21 @@ class Workspaces():
         pd.set_option("display.max_columns", 20)
         dataframe = pd.DataFrame.from_dict(pd.json_normalize(response.json()['data']), orient='columns')
         return dataframe
+
+    def save_data_to_workspaces(self, repo_id, dataset_id,workspace_id, workspace_path):
+        url = f"{self.url}/workspace_jobs"
+        params = {"action" : "copy"}
+        payload = {
+            "data": {
+                "type": "workspaces",
+                "attributes": {
+                    "dataset_id": dataset_id,
+                    "repo_id": repo_id,
+                    "workspace_id": workspace_id,
+                    "workspace_path": workspace_path
+                }
+            }
+        }
+        response = self.session.post(url, data = json.dumps(payload), params=params)
+        error_handler(response)
+        return response.json()
