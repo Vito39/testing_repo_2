@@ -1,5 +1,5 @@
 from requests import Session
-
+import os
 
 class PollySession(Session):
     def __init__(self, REFRESH_TOKEN):
@@ -12,6 +12,11 @@ class PollySession(Session):
             # for python version < python3.8
             import pkg_resources
             version = pkg_resources.get_distribution('polly-python').version
+        client = os.getenv("POLLY_SERVICE")
+        if client is not None:
+            version = version + "/" + client
+        else:
+            version = version + "/local"
         self.headers = {
             "Content-Type": "application/vnd.api+json",
             "Cookie": f"refreshToken={REFRESH_TOKEN}",
