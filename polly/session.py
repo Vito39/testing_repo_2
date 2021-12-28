@@ -1,6 +1,7 @@
 from requests import Session
 import os
 
+
 class PollySession(Session):
     def __init__(self, REFRESH_TOKEN):
         Session.__init__(self)
