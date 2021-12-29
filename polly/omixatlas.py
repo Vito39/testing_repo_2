@@ -1,7 +1,7 @@
 import pandas as pd
 from retrying import retry
 
-from polly.polly import Polly
+from polly.auth import Polly
 from polly.errors import (
     QueryFailedException,
     UnfinishedQueryException,
