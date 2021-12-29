@@ -34,9 +34,9 @@ class Workspaces():
         dataframe = pd.DataFrame.from_dict(pd.json_normalize(response.json()['data']), orient='columns')
         return dataframe
 
-    def save_data_to_workspaces(self, repo_id, dataset_id,workspace_id, workspace_path):
+    def save_data_to_workspaces(self, repo_id, dataset_id, workspace_id, workspace_path):
         url = f"{self.url}/workspace_jobs"
-        params = {"action" : "copy"}
+        params = {"action": "copy"}
         payload = {
             "data": {
                 "type": "workspaces",
@@ -48,6 +48,6 @@ class Workspaces():
                 }
             }
         }
-        response = self.session.post(url, data = json.dumps(payload), params=params)
+        response = self.session.post(url, data=json.dumps(payload), params=params)
         error_handler(response)
         return response.json()
