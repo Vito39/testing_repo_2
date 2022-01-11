@@ -103,4 +103,11 @@ ENV/
 
 # IDE settings
 .vscode/
+<<<<<<< HEAD
 .idea
+=======
+
+
+# temp file in polly folder
+polly/temp.py
+>>>>>>> [WIP]:Methods of printing schema in a tabular format
