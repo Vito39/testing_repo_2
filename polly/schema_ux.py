@@ -2,6 +2,7 @@ import json
 from polly.auth import Polly
 from polly.errors import error_handler
 from polly.constants import API_ENDPOINT
+from typing import Dict
 
 
 class SchemaVisualization(object):
@@ -10,8 +11,8 @@ class SchemaVisualization(object):
         # self.base_url = f'{V2_API_ENDPOINT}/v1/omixatlases'
         self.base_url = f'{API_ENDPOINT}/repositories'
     
-    
-    def get_schema(self, repo_id:str, schema_type:str) ->dict:
+
+    def get_schema(self, repo_id:str, schema_type:str)-> dict:
         """
             Gets the schema of a repo id for the given repo_id and 
             schema_type
@@ -21,15 +22,16 @@ class SchemaVisualization(object):
                         "id": "<REPO_ID>",
                         "type": "schema",
                         "attributes": {
-                        "schema_type": "files | gct_metadata | h5ad_metadata",
-                        "schema": {
-                            ... field definitions
-                        }
+                            "schema_type": "files | gct_metadata | h5ad_metadata",
+                            "schema": {
+                                ... field definitions
+                            }
                         }
                     }
                 }
         """
-        url = f"{self.base_url}/{repo_id}/schemas/{schema_type}"
+        if repo_id and schema_type:
+            url = f"{self.base_url}/{repo_id}/schemas/{schema_type}"
         print(url)
         # params = {"schema_type": schema_type}
         response = self.session.get(url)
@@ -38,46 +40,70 @@ class SchemaVisualization(object):
         return response
 
 
-    def visualize(self, schema: dict):
+    
+    def visualize(self, schema: dict) -> None:
         """
-            Visualize the schema in a tabular format
-            Depending on the schema type
+            Visualizing the schema of the repository depending on schema_type
+            schema:
+                {
+                    "data": {
+                        "id": "<REPO_ID>",
+                        "type": "schema",
+                        "attributes": {
+                            "schema_type": "files | gct_metadata | h5ad_metadata",
+                            "schema": {
+                                ... field definitions
+                            }
+                        }
+                    }
+                }
+                
             schema_type : files i.e Global Fields (dataset)
             schema_type : gct_metadata i.e Column Fields (Sample)
             schema_type : gct_metadata i.e Row Fields (Feature)
         """
-        schema_type = schema['data']['attributes']['schema_type']
-        schema_data = schema['data']['attributes']['schema']
+        if schema and isinstance(schema, Dict):
+            if schema['data']['attributes']['schema_type']:
+                schema_type = schema['data']['attributes']['schema_type']
+            if schema['data']['attributes']['schema']:
+                schema_data = schema['data']['attributes']['schema']
         print(schema_type)
-        col_list = ['Global Fields (dataset)', 'Column Fields (Sample)', 'Row Fields (Feature)']
         self.print_table(schema_type, schema_data)
 
 
     
+    def format_type(self, data: dict)-> dict:
+        """
+            Format the dict data
+        """
+        if data and isinstance(data, Dict):
+            return json.dumps(data, indent=4)
     
-    def print_table(self, schema_type: str, schema_data: dict):
+    
+    
+    def print_table(self, schema_type: str, schema_data: dict) ->None:
         """
             Print the Schema in a tabular format
         """
-        def format_type(typ):
-            return json.dumps(typ, indent=4)
-            # return typ.pretty(indent=4).lstrip()
         
-        if schema_type == 'files':
-            global_fields = ''.join("\n    '{name}': {type}".format(
-                name=key, type=format_type(val)) for key, val in schema_data.items())
+        if schema_type and schema_type == 'files':
+            if schema_data and isinstance(schema_data, Dict):
+                global_fields = ''.join("\n    '{name}': {type}".format(
+                name=key, type = self.format_type(val)) for key, val in schema_data.items())
             row_fields = '\n    None'
             col_fields = '\n    None'
 
-        elif schema_type == 'gct_metadata':
-            col_fields = ''.join("\n    '{name}': {type}".format(
-                name=key, type=format_type(val)) for key, val in schema_data.items())
+        elif schema_type and schema_type == 'gct_metadata' or 'h5ad_metadata':
+            if schema_data and isinstance(schema_data, Dict):
+                col_fields = ''.join("\n    '{name}': {type}".format(
+                name=key, type = self.format_type(val)) for key, val in schema_data.items())
             global_fields = '\n    None'
             row_fields = '\n    None'
         
-        elif schema_type == 'gct_metadata_row':
-            row_fields = ''.join("\n    '{name}': {type}".format(
-                name=key, type=format_type(val)) for key, val in schema_data.items())
+        elif schema_type and schema_type == 'gct_row_metadata':
+            if schema_data and isinstance(schema_data, Dict):
+                row_fields = ''.join("\n    '{name}': {type}".format(
+                name=key, type = self.format_type(val)) for key, val in schema_data.items())
             global_fields = '\n    None'
             col_fields = '\n    None'
         
