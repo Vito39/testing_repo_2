@@ -101,6 +101,7 @@ class SchemaVisualization(object):
             
             schema_type : gct_metadata i.e Row Fields (Feature)
             Not there right now
+            
         """
 
         # get schema_type_dict
