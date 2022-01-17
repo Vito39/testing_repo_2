@@ -42,9 +42,6 @@ class BaseExceptionError(Exception):
         return f"{self.__class__.__name__} ({self.title}): {self.detail}"
 
 
-
-
-
 class ElasticException(Exception):
     def __str__(self):
         if self.detail:
@@ -107,18 +104,20 @@ class InvalidFormatException(Exception):
         return "File format not supported."
 class paramException(BaseExceptionError):
     detail = app_err_info.PARAM_EXCEPTION
+
     def __init__(self, operation_name=None, table_name=None, detail=None):
         self.title = app_err_info.PARAM_EXCEPTION_TITLE
         if detail:
             self.detail = detail
 
+
 class wrongParamException(BaseExceptionError):
     detail = app_err_info.WRONG_PARAMS_EXCEPTION
+
     def __init__(self, operation_name=None, table_name=None, detail=None):
         self.title = app_err_info.WRONG_PARAMS_EXCEPTION_TITLE
         if detail:
             self.detail = detail
-
 
 
 def error_handler(response):

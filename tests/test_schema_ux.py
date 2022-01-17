@@ -1,7 +1,6 @@
 from typing import Dict
 from polly.auth import Polly
 from polly.schema_ux import SchemaVisualization
-from typing import Dict
 import os
 key = "REFRESH_TOKEN"
 token = os.getenv(key)
@@ -44,6 +43,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
     assert isinstance(schema, Dict)
     assert schema['dataset'] is not None
 
+
 def test_get_schema_with_empty_repo_id_and_dataset_schema_param():
     Polly.auth(token)
     repo_id = ''
@@ -70,8 +70,6 @@ def test_get_schema_with_repo_id_and_dataset_schema_as_list_param():
     error = schema_obj.get_schema(repo_id, schema_type_dict)
 
     assert expected_error_dict == error
-
-
 
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params():
@@ -116,7 +114,7 @@ def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None
-    assert schema_type['sample'] == 'h5ad_metadata'  
+    assert schema_type['sample'] == 'h5ad_metadata'
 
 
 def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
@@ -127,11 +125,12 @@ def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None
-    assert schema_type['sample'] == 'gct_metadata'  
+    assert schema_type['sample'] == 'gct_metadata'
+
 
 def test_get_schema_type_schema_level_empty():
     Polly.auth(token)
-    schema_level = [] #empty
+    schema_level = []  # empty
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
@@ -141,12 +140,11 @@ def test_get_schema_type_schema_level_empty():
     }
 
     assert expected_error_dict == error
-
 
 
 def test_get_schema_type_schema_level_of_string_datatype():
     Polly.auth(token)
-    schema_level = 'dataset' #string
+    schema_level = 'dataset'  # string
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
@@ -158,10 +156,9 @@ def test_get_schema_type_schema_level_of_string_datatype():
     assert expected_error_dict == error
 
 
-
 def test_get_schema_type_wrong_value_of_schema_level_param():
     Polly.auth(token)
-    schema_level = ['data'] #string
+    schema_level = ['data']  # string
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
@@ -171,5 +168,3 @@ def test_get_schema_type_wrong_value_of_schema_level_param():
     }
 
     assert expected_error_dict == error
-
-
