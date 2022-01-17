@@ -46,7 +46,7 @@ class SchemaVisualization(object):
         else:
             raise paramException(
                 title="Param Error",
-                detail=f"{repo_id} and {schema_type_dict} are either empty or its datatype is not correct"
+                detail="repo_id and schema_type_dict are either empty or its datatype is not correct"
             )
         return resp_dict
 
@@ -152,12 +152,12 @@ class SchemaVisualization(object):
             else:
                 raise wrongParamException(
                     title="Incorrect Param Error",
-                    detail=f"Incorrect value of param passed {schema_level} "
+                    detail="Incorrect value of param passed schema_level "
                 )      
         else:
             raise paramException(
                 title="Param Error",
-                detail=f"{schema_level} is either empty or its datatype is not correct"
+                detail="schema_level is either empty or its datatype is not correct"
             )
         return schema_type_dict
 
