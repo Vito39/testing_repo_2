@@ -134,6 +134,7 @@ def test_get_schema_type_schema_level_empty():
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
+    print(error)
     expected_error_dict = {
         "title": "Param Error",
         "detail": "schema_level is either empty or its datatype is not correct"
@@ -148,6 +149,7 @@ def test_get_schema_type_schema_level_of_string_datatype():
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
+    print(error)
     expected_error_dict = {
         "title": "Param Error",
         "detail": "schema_level is either empty or its datatype is not correct"
@@ -162,6 +164,7 @@ def test_get_schema_type_wrong_value_of_schema_level_param():
     single_cell = False
     schema_obj = SchemaVisualization(token)
     error = schema_obj.get_schema_type(schema_level, single_cell)
+    print(error)
     expected_error_dict = {
         "title": "Incorrect Param Error",
         "detail": "Incorrect value of param passed schema_level"
