@@ -25,24 +25,24 @@ jobs:
         sudo apt-get install -y jq
         npm install -g @elucidatainc/pollycli
         sudo apt-get install expect
-        export POLLY_USER_NAME=${{ secrets.POLLY_USER_NAME }}
-        export POLLY_USER_PASSWORD=${{ secrets.POLLY_USER_PASSWORD }}
+        export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
+        export TEST_POLLY_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
         echo '#!/usr/bin/expect -f' > login.sh
         echo 'set timeout -1' >> login.sh
         echo 'spawn polly login' >> login.sh
         echo 'expect "Enter user name:"' >> login.sh
-        echo 'send -- "$env(POLLY_USER_NAME)\r"' >> login.sh
+        echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> login.sh
         echo 'expect "Enter password:"' >> login.sh
-        echo 'send -- "$env(POLLY_USER_PASSWORD)\n"' >> login.sh
+        echo 'send -- "$env(TEST_POLLY_PASSWORD)\n"' >> login.sh
         echo 'expect eof' >> login.sh
         chmod +x ./login.sh
         ./login.sh
         temp=$(cat ~/.config/pollycli/credentials.json | jq .$(cat ~/.config/pollycli/credentials.json | jq .pollyUser.pollyemail).pollyrefreshToken)
         temp="${temp%\"}"
-        export POLLY_REFRESH_TOKEN="${temp#\"}"
-        echo "$POLLY_REFRESH_TOKEN"
-        echo -n "$POLLY_REFRESH_TOKEN" | wc -c
-        echo "::set-env name=REFRESH_TOKEN::${POLLY_REFRESH_TOKEN}"
+        export TEST_POLLY_REFRESH_TOKEN="${temp#\"}"
+        echo "$TEST_POLLY_REFRESH_TOKEN"
+        echo -n "$TEST_POLLY_REFRESH_TOKEN" | wc -c
+        echo "::set-env name=REFRESH_TOKEN::${TEST_POLLY_REFRESH_TOKEN}"
         echo 'done'
     - name: Install dependencies
       run: |
