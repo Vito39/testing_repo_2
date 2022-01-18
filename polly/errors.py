@@ -105,7 +105,7 @@ class InvalidFormatException(Exception):
 class paramException(BaseExceptionError):
     detail = app_err_info.PARAM_EXCEPTION
 
-    def __init__(self, operation_name=None, table_name=None, detail=None):
+    def __init__(self, title=None, detail=None):
         self.title = app_err_info.PARAM_EXCEPTION_TITLE
         if detail:
             self.detail = detail
@@ -114,7 +114,7 @@ class paramException(BaseExceptionError):
 class wrongParamException(BaseExceptionError):
     detail = app_err_info.WRONG_PARAMS_EXCEPTION
 
-    def __init__(self, operation_name=None, table_name=None, detail=None):
+    def __init__(self, title=None, detail=None):
         self.title = app_err_info.WRONG_PARAMS_EXCEPTION_TITLE
         if detail:
             self.detail = detail
