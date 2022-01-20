@@ -58,6 +58,7 @@ jobs:
         --arg dockerDomain "$test_dockerDomain" \
         '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
         .dockerDomain |= $dockerDomain'
+        cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
         export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
         export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
         echo '#!/usr/bin/expect -f' > testlogin.sh
