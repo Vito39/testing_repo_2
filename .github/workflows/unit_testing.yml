@@ -59,16 +59,16 @@ jobs:
         .dockerDomain |= $dockerDomain'
         export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
         export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
-        echo '#!/usr/bin/expect -f' > login.sh
-        echo 'set timeout -1' >> login.sh
-        echo 'spawn polly login' >> login.sh
-        echo 'expect "Enter user name:"' >> login.sh
-        echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> login.sh
+        echo '#!/usr/bin/expect -f' > testlogin.sh
+        echo 'set timeout -1' >> testlogin.sh
+        echo 'spawn testpolly login' >> testlogin.sh
+        echo 'expect "Enter user name:"' >> testlogin.sh
+        echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> testlogin.sh
         echo 'expect "Enter password:"' >> login.sh
-        echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> login.sh
-        echo 'expect eof' >> login.sh
-        chmod +x ./login.sh
-        ./login.sh
+        echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> testlogin.sh
+        echo 'expect eof' >> testlogin.sh
+        chmod +x ./testlogin.sh
+        ./testlogin.sh
         temp=$(cat ~/.config/pollycli/credentials.json | jq .$(cat ~/.config/pollycli/credentials.json | jq .pollyUser.pollyemail).pollyrefreshToken)
         temp="${temp%\"}"
         export TEST_POLLY_REFRESH_TOKEN="${temp#\"}"
