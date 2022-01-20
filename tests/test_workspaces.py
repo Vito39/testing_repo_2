@@ -5,8 +5,6 @@ token = os.getenv(key)
 
 
 def test_obj_initialised():
-    print('------token----', key)
-    print(token)
     assert workspaces.Workspaces(token) is not None
 
 
