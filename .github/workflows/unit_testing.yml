@@ -27,6 +27,7 @@ jobs:
         npm --version 
         node --version
         sudo apt-get install -y jq
+        sudo apt install moreutils
         npm install -g @elucidatainc/pollycli
         sudo apt-get install expect
         export POLLY_USER_NAME=${{ secrets.POLLY_USER_NAME }}
@@ -51,13 +52,15 @@ jobs:
         echo 'done'
         export global_npm_path=`npm list -g | head -1`
         echo "$global_npm_path"
-        sudo jq \
+        sudo cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | sudo jq \
         --arg env "$test_environment" \
         --arg base_api "$test_baseApi" \
         --arg base_V2api "$test_baseV2Api" \
         --arg dockerDomain "$test_dockerDomain" \
         '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
-        .dockerDomain |= $dockerDomain'$global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json  
+        .dockerDomain |= $dockerDomain' |
+        sudo sponge $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+
         cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
         export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
         export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
