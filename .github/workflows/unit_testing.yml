@@ -71,7 +71,7 @@ jobs:
         echo 'spawn polly login' >> testlogin.sh
         echo 'expect "Enter user name:"' >> testlogin.sh
         echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> testlogin.sh
-        echo 'expect "Enter password:"' >> login.sh
+        echo 'expect "Enter password:"' >> testlogin.sh
         echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> testlogin.sh
         echo 'expect eof' >> testlogin.sh
         chmod +x ./testlogin.sh
