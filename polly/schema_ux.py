@@ -1,14 +1,14 @@
 import json
 from polly.auth import Polly
 from polly.errors import paramException, wrongParamException
-from polly.constants import API_ENDPOINT
+from polly.constants import TEST_API_ENDPOINT
 from typing import Dict
 
 
 class SchemaVisualization(object):
     def __init__(self, token=None) -> None:
         self.session = Polly.get_session(token)
-        self.base_url = f'{API_ENDPOINT}/repositories'
+        self.base_url = f'{TEST_API_ENDPOINT}/repositories'
 
     def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
 
