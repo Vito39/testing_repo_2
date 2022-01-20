@@ -55,40 +55,40 @@ jobs:
         echo 'expect eof' >> logout.sh
         chmod +x ./logout.sh
         ./logout.sh
-        echo 'Login to testpolly now'
-        export global_npm_path=`npm list -g | head -1`
-        echo "$global_npm_path"
-        sudo cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | sudo jq \
-        --arg env "$test_environment" \
-        --arg base_api "$test_baseApi" \
-        --arg base_V2api "$test_baseV2Api" \
-        --arg dockerDomain "$test_dockerDomain" \
-        '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
-        .dockerDomain |= $dockerDomain' | sudo sponge \
-        $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
-        echo 'updation of json file done with test polly variables'
-        cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
-        export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
-        export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
-        echo "$TEST_POLLY_USER_NAME"
-        echo "$TEST_POLLY_USER_PASSWORD"
-        echo '#!/usr/bin/expect -f' > testlogin.sh
-        echo 'set timeout -1' >> testlogin.sh
-        echo 'spawn polly login' >> testlogin.sh
-        echo 'expect "Enter user name:"' >> testlogin.sh
-        echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> testlogin.sh
-        echo 'expect "Enter password:"' >> testlogin.sh
-        echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> testlogin.sh
-        echo 'expect eof' >> testlogin.sh
-        chmod +x ./testlogin.sh
-        ./testlogin.sh
-        temp=$(cat ~/.config/pollycli/credentials.json | jq .$(cat ~/.config/pollycli/credentials.json | jq .pollyUser.pollyemail).pollyrefreshToken)
-        temp="${temp%\"}"
-        export TEST_POLLY_REFRESH_TOKEN="${temp#\"}"
-        echo "$TEST_POLLY_REFRESH_TOKEN"
-        echo -n "$TEST_POLLY_REFRESH_TOKEN" | wc -c
-        echo "::set-env name=TEST_POLLY_REFRESH_TOKEN::${TEST_POLLY_REFRESH_TOKEN}"
-        echo 'done'
+        # echo 'Login to testpolly now'
+        # export global_npm_path=`npm list -g | head -1`
+        # echo "$global_npm_path"
+        # sudo cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | sudo jq \
+        # --arg env "$test_environment" \
+        # --arg base_api "$test_baseApi" \
+        # --arg base_V2api "$test_baseV2Api" \
+        # --arg dockerDomain "$test_dockerDomain" \
+        # '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
+        # .dockerDomain |= $dockerDomain' | sudo sponge \
+        # $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+        # echo 'updation of json file done with test polly variables'
+        # cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+        # export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
+        # export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
+        # echo "$TEST_POLLY_USER_NAME"
+        # echo "$TEST_POLLY_USER_PASSWORD"
+        # echo '#!/usr/bin/expect -f' > testlogin.sh
+        # echo 'set timeout -1' >> testlogin.sh
+        # echo 'spawn polly login' >> testlogin.sh
+        # echo 'expect "Enter user name:"' >> testlogin.sh
+        # echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> testlogin.sh
+        # echo 'expect "Enter password:"' >> testlogin.sh
+        # echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> testlogin.sh
+        # echo 'expect eof' >> testlogin.sh
+        # chmod +x ./testlogin.sh
+        # ./testlogin.sh
+        # temp=$(cat ~/.config/pollycli/credentials.json | jq .$(cat ~/.config/pollycli/credentials.json | jq .pollyUser.pollyemail).pollyrefreshToken)
+        # temp="${temp%\"}"
+        # export TEST_POLLY_REFRESH_TOKEN="${temp#\"}"
+        # echo "$TEST_POLLY_REFRESH_TOKEN"
+        # echo -n "$TEST_POLLY_REFRESH_TOKEN" | wc -c
+        # echo "::set-env name=TEST_POLLY_REFRESH_TOKEN::${TEST_POLLY_REFRESH_TOKEN}"
+        # echo 'done'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
