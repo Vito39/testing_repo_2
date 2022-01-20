@@ -2,7 +2,8 @@ from typing import Dict
 from polly.auth import Polly
 from polly.schema_ux import SchemaVisualization
 import os
-key = "REFRESH_TOKEN"
+# key = "REFRESH_TOKEN"
+key = "TEST_POLLY_REFRESH_TOKEN"
 token = os.getenv(key)
 
 
