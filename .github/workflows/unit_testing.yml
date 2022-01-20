@@ -49,12 +49,12 @@ jobs:
         echo -n "$POLLY_REFRESH_TOKEN" | wc -c
         echo "::set-env name=POLLY_REFRESH_TOKEN::${POLLY_REFRESH_TOKEN}"
         echo 'done'
-        echo 'logout from polly now'
-        echo '#!/usr/bin/expect -f' > logout.sh
-        echo 'spawn polly logout' >> logout.sh
-        echo 'expect eof' >> logout.sh
-        chmod +x ./logout.sh
-        ./logout.sh
+        # echo 'logout from polly now'
+        # echo '#!/usr/bin/expect -f' > logout.sh
+        # echo 'spawn polly logout' >> logout.sh
+        # echo 'expect eof' >> logout.sh
+        # chmod +x ./logout.sh
+        # ./logout.sh
         # echo 'Login to testpolly now'
         # export global_npm_path=`npm list -g | head -1`
         # echo "$global_npm_path"
