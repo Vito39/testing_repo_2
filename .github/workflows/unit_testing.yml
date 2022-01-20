@@ -39,7 +39,6 @@ jobs:
         echo 'send -- "$env(POLLY_USER_NAME)\r"' >> login.sh
         echo 'expect "Enter password:"' >> login.sh
         echo 'send -- "$env(POLLY_USER_PASSWORD)\n"' >> login.sh
-        echo 'spawn polly logout' >> login.sh
         echo 'expect eof' >> login.sh
         chmod +x ./login.sh
         ./login.sh
@@ -50,6 +49,13 @@ jobs:
         echo -n "$POLLY_REFRESH_TOKEN" | wc -c
         echo "::set-env name=POLLY_REFRESH_TOKEN::${POLLY_REFRESH_TOKEN}"
         echo 'done'
+        echo 'logout from polly now'
+        echo '#!/usr/bin/expect -f' > logout.sh
+        echo 'spawn polly logout' >> logout.sh
+        echo 'expect eof' >> logout.sh
+        chmod +x ./logout.sh
+        ./logout.sh
+        echo 'Login to testpolly now'
         export global_npm_path=`npm list -g | head -1`
         echo "$global_npm_path"
         sudo cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | sudo jq \
