@@ -58,8 +58,8 @@ jobs:
         --arg base_V2api "$test_baseV2Api" \
         --arg dockerDomain "$test_dockerDomain" \
         '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
-        .dockerDomain |= $dockerDomain' |
-        sudo sponge $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+        .dockerDomain |= $dockerDomain' | sudo sponge \
+        $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
 
         cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
         export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
