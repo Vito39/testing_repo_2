@@ -2,12 +2,15 @@ from polly import omixatlas
 from polly.auth import Polly
 import os
 import csv
-key = "REFRESH_TOKEN"
-# key = "POLLY_REFRESH_TOKEN"
+# key = "REFRESH_TOKEN"
+key = "POLLY_REFRESH_TOKEN"
 token = os.getenv(key)
 
 
+
 def test_obj_initialised():
+    print('-----token--------------------------', key)
+    print(token)
     Polly.auth(token)
     assert omixatlas.OmixAtlas() is not None
     assert omixatlas.OmixAtlas(token) is not None
@@ -15,6 +18,8 @@ def test_obj_initialised():
 
 
 def test_get_all_omixatlas():
+    print('-----token--------------------------', key)
+    print(token)
     Polly.auth(token)
     nobj = omixatlas.OmixAtlas()
     obj = omixatlas.OmixAtlas(token)
