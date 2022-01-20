@@ -17,8 +17,6 @@ def test_obj_initialised():
 
 
 def test_get_all_omixatlas():
-    print('-----token--------------------------', key)
-    print(token)
     Polly.auth(token)
     nobj = omixatlas.OmixAtlas()
     obj = omixatlas.OmixAtlas(token)

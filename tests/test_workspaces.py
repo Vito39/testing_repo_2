@@ -1,10 +1,12 @@
 from polly import workspaces
 import os
-key = "REFRESH_TOKEN"
+key = "POLLY_REFRESH_TOKEN"
 token = os.getenv(key)
 
 
 def test_obj_initialised():
+    print('------token----', key)
+    print(token)
     assert workspaces.Workspaces(token) is not None
 
 
