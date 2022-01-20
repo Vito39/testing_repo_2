@@ -9,14 +9,14 @@ token = os.getenv(key)
 
 
 def test_obj_initialization():
-    #Polly.auth(token)
+    # Polly.auth(token)
     assert Polly.get_session(token) is not None
     assert SchemaVisualization() is not None
     assert SchemaVisualization(token) is not None
 
 
 def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
-    #Polly.auth(token)
+    # Polly.auth(token)
     repo_id = '1622526550765'
     schema_type_dict = {'dataset': 'files', 'sample': 'gct_metadata'}
     schema_obj = SchemaVisualization(token)
@@ -27,7 +27,7 @@ def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
 
 
 def test_get_schema_with_repo_id_and_sample_schema_param():
-    #Polly.auth(token)
+    # Polly.auth(token)
     repo_id = '1622526550765'
     schema_type_dict = {'sample': 'gct_metadata'}
     schema_obj = SchemaVisualization(token)
@@ -37,7 +37,7 @@ def test_get_schema_with_repo_id_and_sample_schema_param():
 
 
 def test_get_schema_with_repo_id_and_dataset_schema_param():
-    #Polly.auth(token)
+    # Polly.auth(token)
     repo_id = '1622526550765'
     schema_type_dict = {'dataset': 'files'}
     schema_obj = SchemaVisualization(token)
@@ -47,7 +47,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
 
 
 # def test_get_schema_with_empty_repo_id_and_dataset_schema_param():
-#     #Polly.auth(token)
+#     # Polly.auth(token)
 #     repo_id = ''
 #     schema_type_dict = {'dataset': 'files'}
 #     schema_obj = SchemaVisualization(token)
@@ -61,7 +61,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
 
 
 # def test_get_schema_with_repo_id_and_dataset_schema_as_list_param():
-#     #Polly.auth(token)
+#     # Polly.auth(token)
 #     repo_id = ''
 #     schema_type_dict = ['dataset']
 #     schema_obj = SchemaVisualization(token)
@@ -75,7 +75,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
 
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params():
-    #Polly.auth(token)
+    # Polly.auth(token)
     schema_level = ['dataset', 'sample']
     single_cell = False
     schema_obj = SchemaVisualization(token)
@@ -87,7 +87,7 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params()
 
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
-    #Polly.auth(token)
+    # Polly.auth(token)
     schema_level = ['dataset', 'sample']
     single_cell = True
     schema_obj = SchemaVisualization(token)
@@ -99,7 +99,7 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
 
 
 def test_get_schema_type_dataset_as_params():
-    #Polly.auth(token)
+    # Polly.auth(token)
     schema_level = ['dataset']
     single_cell = True
     schema_obj = SchemaVisualization(token)
@@ -109,7 +109,7 @@ def test_get_schema_type_dataset_as_params():
 
 
 def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
-    #Polly.auth(token)
+    # Polly.auth(token)
     schema_level = ['sample']
     single_cell = True
     schema_obj = SchemaVisualization(token)
@@ -120,7 +120,7 @@ def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
 
 
 def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
-    #Polly.auth(token)
+    # Polly.auth(token)
     schema_level = ['sample']
     single_cell = False
     schema_obj = SchemaVisualization(token)
@@ -131,7 +131,7 @@ def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
 
 
 # def test_get_schema_type_schema_level_empty():
-#     #Polly.auth(token)
+#     # Polly.auth(token)
 #     schema_level = []  # empty
 #     single_cell = False
 #     schema_obj = SchemaVisualization(token)
@@ -145,7 +145,7 @@ def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
 #     assert expected_error_dict == error
 
 # def test_get_schema_type_schema_level_of_string_datatype():
-#     #Polly.auth(token)
+#     # Polly.auth(token)
 #     schema_level = 'dataset'  # string
 #     single_cell = False
 #     schema_obj = SchemaVisualization(token)
@@ -160,7 +160,7 @@ def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
 
 
 # def test_get_schema_type_wrong_value_of_schema_level_param():
-#     #Polly.auth(token)
+#     # Polly.auth(token)
 #     schema_level = ['data']  # string
 #     single_cell = False
 #     schema_obj = SchemaVisualization(token)
