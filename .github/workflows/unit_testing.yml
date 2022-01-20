@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      test_environment: "test",
-      test_baseApi: "https://api.testpolly.elucidata.io",
-      test_baseV2Api: "https://v2.api.testpolly.elucidata.io",
+      test_environment: "test"
+      test_baseApi: "https://api.testpolly.elucidata.io"
+      test_baseV2Api: "https://v2.api.testpolly.elucidata.io"
       test_dockerDomain: "docker.testpolly.elucidata.io"
 
     steps:
