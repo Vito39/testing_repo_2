@@ -50,7 +50,7 @@ jobs:
         echo 'done'
         export global_npm_path=`npm list -g | head -1`
         echo "$global_npm_path"
-        cat global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | jq \
+        cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | jq \
         --arg env "$test_environment" \
         --arg base_api "$test_baseApi" \
         --arg base_V2api "$test_baseV2Api" \
