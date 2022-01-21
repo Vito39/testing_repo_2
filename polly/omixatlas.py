@@ -1,6 +1,8 @@
 import json
 import logging
 import pandas as pd
+from retrying import retry
+
 from polly.auth import Polly
 from polly.errors import (
     QueryFailedException,
@@ -71,7 +73,7 @@ class OmixAtlas:
 
     @retry(
         retry_on_exception=is_unfinished_query_error,
-        wait_exponential_multiplier=1000,  # Exponential back-off
+        wait_exponential_multiplier=500,   # Exponential back-off starting 500ms
         wait_exponential_max=10000,        # After 10s, retry every 10s
         stop_max_delay=300000              # Stop retrying after 300s (5m)
     )
@@ -99,6 +101,15 @@ class OmixAtlas:
         page_size: int
     ) -> pd.DataFrame:
         query_id = query_data.get("id")
+
+        time_taken_in_ms = query_data.get("attributes").get("exec_time_ms")
+        if isinstance(time_taken_in_ms, int):
+            print(
+                "Query execution succeeded "
+                "(time taken: {:.2f} seconds)".format(time_taken_in_ms / 1000)
+            )
+        else:
+            print("Query execution succeeded")
 
         first_page_url = (
             f"{self.resource_url}/queries/{query_id}"
