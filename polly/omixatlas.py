@@ -1,3 +1,5 @@
+import json
+import logging
 import pandas as pd
 from polly.auth import Polly
 from polly.errors import error_handler
@@ -5,8 +7,10 @@ from polly.constants import V2_API_ENDPOINT
 
 
 class OmixAtlas:
+
     def __init__(self, token=None) -> None:
         self.session = Polly.get_session(token)
+        self.url = f'{V2_API_ENDPOINT}/v1/omixatlases'
         self.base_url = f'{V2_API_ENDPOINT}/v1/omixatlases'
 
     def get_all_omixatlas(self):
@@ -65,6 +69,35 @@ class OmixAtlas:
         params = {"_id": _id}
         response = self.session.get(url, params=params)
         error_handler(response)
+        return response.json()
+
+    def save_to_workspace(self, repo_id: str, dataset_id: str,
+                           workspace_id: int,
+                           workspace_path: str) -> json:
+        '''
+            Function for saving data from omixatlas to workspaces.
+            Makes a call to v1/omixatlas/workspace_jobs
+        '''
+        url = f"{self.url}/workspace_jobs"
+        params = {"action": "copy"}
+        payload = {
+            "data": {
+                "type": "workspaces",
+                "attributes": {
+                    "dataset_id": dataset_id,
+                    "repo_id": repo_id,
+                    "workspace_id": workspace_id,
+                    "workspace_path": workspace_path
+                }
+            }
+        }
+        response = self.session.post(url,
+                                     data=json.dumps(payload),
+                                     params=params)
+        error_handler(response)
+        if response.status_code == 200:
+            logging.basicConfig(level=logging.INFO)
+            logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
 
 
