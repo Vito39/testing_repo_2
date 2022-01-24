@@ -72,8 +72,8 @@ class OmixAtlas:
         return response.json()
 
     def save_to_workspace(self, repo_id: str, dataset_id: str,
-                           workspace_id: int,
-                           workspace_path: str) -> json:
+                          workspace_id: int,
+                          workspace_path: str) -> json:
         '''
             Function for saving data from omixatlas to workspaces.
             Makes a call to v1/omixatlas/workspace_jobs
