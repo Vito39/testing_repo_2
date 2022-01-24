@@ -19,7 +19,6 @@ class OmixAtlas:
         self.base_url = f"https://v2.api.{env}.elucidata.io"
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
-
     def get_all_omixatlas(self):
         url = self.resource_url
         params = {"summarize": "true"}
