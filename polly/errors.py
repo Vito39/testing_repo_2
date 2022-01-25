@@ -120,6 +120,15 @@ class wrongParamException(BaseExceptionError):
             self.detail = detail
 
 
+class apiErrorException(BaseExceptionError):
+    detail = app_err_info.API_ERROR_EXCEPTION
+
+    def __init__(self, title=None, detail=None):
+        self.title = app_err_info.API_ERROR_EXCEPTION_TITLE
+        if detail:
+            self.detail = detail
+
+
 def error_handler(response):
     if has_error_message(response):
         title, detail = extract_json_api_error(response)

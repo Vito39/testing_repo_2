@@ -1,25 +1,16 @@
 import json
-<<<<<<< HEAD
 import logging
-=======
->>>>>>> [WIP]:moving visualize feature to omixatlas class
 import pandas as pd
 from retrying import retry
 
 from polly.auth import Polly
-<<<<<<< HEAD
 from polly.errors import (
     QueryFailedException,
     UnfinishedQueryException,
     error_handler,
-    is_unfinished_query_error
+    is_unfinished_query_error,
+    paramException, wrongParamException, apiErrorException
 )
-=======
-from polly.errors import error_handler
-from polly.errors import paramException, wrongParamException
-from polly.constants import V2_API_ENDPOINT, API_ENDPOINT
-from typing import Dict
->>>>>>> [WIP]:moving visualize feature to omixatlas class
 
 
 class OmixAtlas:
@@ -102,63 +93,9 @@ class OmixAtlas:
         fail_msg = query_data.get("attributes").get("failure_reason")
         raise QueryFailedException(fail_msg)
 
-    def _handle_query_success(
-        self,
-        query_data: dict,
-        page_size: int
-    ) -> pd.DataFrame:
-        query_id = query_data.get("id")
-
-        first_page_url = (
-            f"{self.resource_url}/queries/{query_id}"
-            f"/results?page[size]={page_size}"
-        )
-        response = self.session.get(first_page_url)
-        error_handler(response)
-        result_data = response.json()
-        rows = [
-            row_data.get("attributes") for row_data in result_data.get("data")
-        ]
-
-        all_rows = rows
-
-        message = "Fetched {} rows"
-        print(message.format(len(all_rows)), end="\r")
-
-        while (
-            result_data.get("links") is not None
-            and result_data.get("links").get("next") is not None
-            and result_data.get("links").get("next") != "null"
-        ):
-            next_page_url = self.base_url + result_data.get("links").get("next")
-            response = self.session.get(next_page_url)
-            error_handler(response)
-            result_data = response.json()
-            if result_data.get("data"):
-                rows = [
-                    row_data.get("attributes")
-                    for row_data in result_data.get("data")
-                ]
-            else:
-<<<<<<< HEAD
-                rows = []
-            all_rows.extend(rows)
-            print(message.format(len(all_rows)), end="\r")
-
-        # Blank line resets console line start position
-        print()
-
-        return pd.DataFrame(all_rows)
-=======
-                response.pop('hits', None)
-                processed_response = response
-        except AttributeError:
-            processed_response = response
-        return processed_response
     
 
     def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
-    
         """
             Gets the schema of a repo id for the given repo_id and
             schema_type definition at the top level
@@ -199,11 +136,9 @@ class OmixAtlas:
             )
         return resp_dict
 
-
-    def visualize(self, repo_id: str, schema_level=['dataset', 'sample'], single_cell=False) -> None:
+    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], single_cell=False) -> None:
         """
             Visualizing the schema of the repository depending on schema_type
-
             schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
             metdata schema definition for sample:
                 schema:{
@@ -347,9 +282,92 @@ class OmixAtlas:
                 '----------------------------------------\n'.format(c=col_fields)
         print(s)
 
+    def insert_schema(self, repo_id: str, body: dict) -> dict:
+        """
+            Params:
+                repo_id => str => ex:- "345652035432"
+                body => dict
+                {
+                    "data": {
+                        "id": "<REPO_ID>",
+                        "type": "schema",
+                        "attributes": {
+                        "schema_type": "files | gct_metadata | h5ad_metadata",
+                        "schema": {
+                            ... field definitions
+                        }
+                        }
+                    }
+                }
+        """
+        if repo_id and body and isinstance(body, dict):
+            body = json.dumps(body)
+            try:
+                schema_base_url = f'{API_ENDPOINT}/repositories'
+                url = f"{schema_base_url}/{repo_id}/schemas"
+                resp = self.session.post(url, data=body)
+                error_handler(resp)
+                return resp.text
+            except Exception as err:
+                raise apiErrorException(
+                    title="API exception err",
+                    detail=err
+                )
+        else:
+            raise apiErrorException(
+                title="Param Error",
+                detail="Params are either empty or its datatype is not correct"
+            )
 
+<<<<<<< HEAD
 
 >>>>>>> [WIP]:moving visualize feature to omixatlas class
+=======
+    def update_schema(self, repo_id: str, body: dict) -> dict:
+        """
+        Params:
+                repo_id => str => ex:- "345652035432"
+                body => dict
+                {
+                    "data": {
+                        "id": "<REPO_ID>",
+                        "type": "schema",
+                        "attributes": {
+                        "schema_type": "files | gct_metadata | h5ad_metadata",
+                        "schema": {
+                            ... field definitions
+                        }
+                        }
+                    }
+                }
+        """
+        schema_type = body['data']['attributes']['schema_type']
+        print("------schema type-------")
+        print(schema_type)
+        schema_base_url = f'{API_ENDPOINT}/repositories'
+        url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}"
+        print('----------url---------------')
+        print(url)
+        print('----type of payload----')
+        print(type(body))
+        if repo_id and body and isinstance(body, dict):
+            body = json.dumps(body)
+            try:
+                resp = self.session.patch(url, data=body)
+                print(resp)
+                print(resp.content)
+                return resp.text
+            except Exception as err:
+                raise apiErrorException(
+                    title="API exception err",
+                    detail=err
+                )
+        else:
+            raise paramException(
+                title="Param Error",
+                detail="Params are either empty or its datatype is not correct"
+            )
+
 
     # ? DEPRECATED
     def search_metadata(self, query: dict):
