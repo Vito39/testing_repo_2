@@ -342,20 +342,13 @@ class OmixAtlas:
                 }
         """
         schema_type = body['data']['attributes']['schema_type']
-        print("------schema type-------")
-        print(schema_type)
         schema_base_url = f'{API_ENDPOINT}/repositories'
         url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}"
-        print('----------url---------------')
-        print(url)
-        print('----type of payload----')
-        print(type(body))
         if repo_id and body and isinstance(body, dict):
             body = json.dumps(body)
             try:
                 resp = self.session.patch(url, data=body)
-                print(resp)
-                print(resp.content)
+                error_handler(resp)
                 return resp.text
             except Exception as err:
                 raise apiErrorException(
