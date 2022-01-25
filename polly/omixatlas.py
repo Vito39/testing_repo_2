@@ -1,3 +1,5 @@
+import json
+import logging
 import pandas as pd
 from retrying import retry
 
@@ -11,6 +13,7 @@ from polly.errors import (
 
 
 class OmixAtlas:
+
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token)
         self.base_url = f"https://v2.api.{env}.elucidata.io"
@@ -149,6 +152,35 @@ class OmixAtlas:
         params = {"_id": _id}
         response = self.session.get(url, params=params)
         error_handler(response)
+        return response.json()
+
+    def save_to_workspace(self, repo_id: str, dataset_id: str,
+                          workspace_id: int,
+                          workspace_path: str) -> json:
+        '''
+            Function for saving data from omixatlas to workspaces.
+            Makes a call to v1/omixatlas/workspace_jobs
+        '''
+        url = f"{self.resource_url}/workspace_jobs"
+        params = {"action": "copy"}
+        payload = {
+            "data": {
+                "type": "workspaces",
+                "attributes": {
+                    "dataset_id": dataset_id,
+                    "repo_id": repo_id,
+                    "workspace_id": workspace_id,
+                    "workspace_path": workspace_path
+                }
+            }
+        }
+        response = self.session.post(url,
+                                     data=json.dumps(payload),
+                                     params=params)
+        error_handler(response)
+        if response.status_code == 200:
+            logging.basicConfig(level=logging.INFO)
+            logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
 
 

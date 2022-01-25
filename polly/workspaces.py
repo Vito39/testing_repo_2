@@ -9,6 +9,7 @@ import json
 class Workspaces():
     def __init__(self, token=None) -> None:
         self.base_url = f'{V2_API_ENDPOINT}/workspaces'
+        self.url = f'{V2_API_ENDPOINT}/v1/omixatlases'
         self.session = Polly.get_session(token)
 
     def create_workspace(self, name: str, description=None):
