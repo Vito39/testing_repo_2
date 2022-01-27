@@ -1,10 +1,17 @@
+import boto3
 import os
 import requests
+import logging
 import pathlib
-from polly.constants import DATA_FORMATS
+from botocore.exceptions import ClientError
+from polly.constants import DATA_FORMATS, WORKSPACE_BUCKET
+from polly.errors import (InvalidParameterException, InvalidPathException,
+                          MissingKeyException, OperationFailedException, InvalidFormatException)
 
 
-def check_extension(file_path):
+def check_extension(file_path: str) -> bool:
+    if(not (file_path and isinstance(file_path, str))):
+        raise InvalidPathException
     file_ext = pathlib.Path(file_path).suffix
     if len(file_ext) < 2:
         return False
@@ -18,5 +25,105 @@ def check_extension(file_path):
         return False
 
 
-def make_path(prefix, postfix):
+def make_path(prefix: any, postfix: any) -> str:
+    if(not prefix):
+        raise InvalidParameterException
+    if(not postfix):
+        raise InvalidParameterException
     return os.path.normpath(f"{prefix}/{postfix}")
+
+
+def get_sts_creds(sts_dict: dict):
+    if sts_dict and isinstance(sts_dict, dict):
+        if 'data' in sts_dict:
+            data = sts_dict.get('data')
+            if('attributes' in data[0]):
+                attributes = data[0].get('attributes')
+                if('credentials' in attributes):
+                    return attributes.get('credentials')
+                else:
+                    raise MissingKeyException('credentials')
+            else:
+                raise MissingKeyException('attributes')
+        else:
+            raise MissingKeyException('data')
+    else:
+        raise InvalidParameterException
+
+
+def upload_file_to_S3(local_path: str, final_path: str, credentials: dict) -> str:
+    if(not(credentials and isinstance(credentials, dict))):
+        raise InvalidParameterException
+    if(not(final_path and isinstance(final_path, str))):
+        raise InvalidParameterException
+    if(not(local_path and isinstance(local_path, str))):
+        raise InvalidParameterException
+    session = boto3.Session(
+            aws_access_key_id=credentials['AccessKeyId'],
+            aws_secret_access_key=credentials['SecretAccessKey'],
+            aws_session_token=credentials['SessionToken']
+        )
+    s3 = session.client('s3')
+    try:
+        # check for file extension
+        result = check_extension(local_path)
+        if(result):
+            final_path = make_path(final_path, local_path)
+            s3.upload_file(local_path, WORKSPACE_BUCKET, final_path)
+            return final_path
+        else:
+            raise InvalidFormatException
+    except ClientError as e:
+        logging.error(e)
+        raise OperationFailedException(e)
+
+
+def upload_folder_to_S3(local_path: str, final_path: str, credentials: dict) -> None:
+    if(not(credentials and isinstance(credentials, dict))):
+        raise InvalidParameterException
+    if(not(final_path and isinstance(final_path, str))):
+        raise InvalidParameterException
+    if(not(local_path and isinstance(local_path, str))):
+        raise InvalidParameterException
+    session = boto3.Session(
+            aws_access_key_id=credentials['AccessKeyId'],
+            aws_secret_access_key=credentials['SecretAccessKey'],
+            aws_session_token=credentials['SessionToken']
+        )
+    s3 = session.client('s3')
+    for roots, dirs, files in os.walk(local_path):
+        for filename in files:
+            result = check_extension(filename)
+            if(result):
+                local_p = os.path.join(roots, filename)
+                s3_path = make_path(final_path, local_p)
+                try:
+                    s3.upload_file(local_p, WORKSPACE_BUCKET, s3_path)
+                    logging.basicConfig(level=logging.INFO)
+                    logging.info(f'Upload successful on Path={s3_path}')
+                except ClientError as e:
+                    logging.error(e)
+                    raise OperationFailedException(e)
+            else:
+                logging.error(f"File format{filename} not supported")
+
+
+def download_from_S3(credentials: dict, boto3_path: str) -> None:
+    if(not(credentials and isinstance(credentials, dict))):
+        raise InvalidParameterException
+    if(not(boto3_path and isinstance(boto3_path, str))):
+        raise InvalidParameterException
+    session = boto3.Session(
+            aws_access_key_id=credentials['AccessKeyId'],
+            aws_secret_access_key=credentials['SecretAccessKey'],
+            aws_session_token=credentials['SessionToken']
+        )
+    s3_res = session.resource('s3')
+    bucket = s3_res.Bucket(WORKSPACE_BUCKET)
+    for obj in bucket.objects.filter(Prefix=boto3_path):
+        if not os.path.exists(os.path.dirname(obj.key)):
+            os.makedirs(os.path.dirname(obj.key))
+        try:
+            bucket.download_file(obj.key, obj.key)
+        except ClientError as e:
+            raise OperationFailedException(e)

@@ -35,7 +35,7 @@ class QueryFailedException(Exception):
         return f"Query failed to execute\n\treason: {self.reason}"
 
 
-class OperationFailedError(Exception):
+class OperationFailedException(Exception):
     def __init__(self, reason):
         self.reason = reason
 
@@ -43,9 +43,27 @@ class OperationFailedError(Exception):
         return f"{self.reason}"
 
 
-class InvalidPathError(Exception):
+class InvalidPathException(Exception):
     def __str__(self):
         return "This path does not represent a file or a directory. Please try again."
+
+
+class MissingKeyException(Exception):
+    def __init__(self, key):
+        self.reason = key
+
+    def __str__(self):
+        return f"Missing keys {self.key}"
+
+
+class InvalidParameterException(Exception):
+    def __str__(self):
+        return "Empty or Invalid Parameters."
+
+
+class InvalidFormatException(Exception):
+    def __str__(self):
+        return "File format not supported."
 
 
 def error_handler(response):
