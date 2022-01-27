@@ -1,6 +1,13 @@
 import json
 import logging
+import os
+import platform
+import tempfile
+from pathlib import Path
+from typing import Union
+
 import pandas as pd
+import requests
 from retrying import retry
 
 from polly.auth import Polly
@@ -13,6 +20,8 @@ from polly.errors import (
 )
 from retrying import retry
 from typing import Dict
+
+QUERY_API_V2 = "v2"
 
 
 class OmixAtlas:
@@ -40,14 +49,16 @@ class OmixAtlas:
         self,
         query: str,
         experimental_features=None,
-        query_api_version="v2",
-        page_size=500  # Note: do not increase page size more than 999
+        query_api_version=QUERY_API_V2,
+        page_size=None,  # Note: do not increase page size more than 999
     ):
         max_page_size = 999
-        if page_size > max_page_size:
+        if page_size is not None and page_size > max_page_size:
             raise ValueError(
                 f"The maximum permitted value for page_size is {max_page_size}"
             )
+        elif page_size is None and query_api_version != QUERY_API_V2:
+            page_size = 500
 
         queries_url = f"{self.resource_url}/queries"
         queries_payload = {
@@ -69,7 +80,11 @@ class OmixAtlas:
 
         query_data = response.json().get("data")
         query_id = query_data.get("id")
-        return self._process_query_to_completion(query_id, page_size)
+        return self._process_query_to_completion(
+            query_id,
+            query_api_version,
+            page_size
+        )
 
     @retry(
         retry_on_exception=is_unfinished_query_error,
@@ -77,7 +92,12 @@ class OmixAtlas:
         wait_exponential_max=10000,        # After 10s, retry every 10s
         stop_max_delay=300000              # Stop retrying after 300s (5m)
     )
-    def _process_query_to_completion(self, query_id: str, page_size: int):
+    def _process_query_to_completion(
+        self,
+        query_id: str,
+        query_api_version: str,
+        page_size: Union[int, None]
+    ):
         queries_url = f"{self.resource_url}/queries/{query_id}"
         response = self.session.get(queries_url)
         error_handler(response)
@@ -85,7 +105,11 @@ class OmixAtlas:
         query_data = response.json().get("data")
         query_status = query_data.get("attributes", {}).get("status")
         if query_status == "succeeded":
-            return self._handle_query_success(query_data, page_size)
+            return self._handle_query_success(
+                query_data,
+                query_api_version,
+                page_size
+            )
         elif query_status == "failed":
             self._handle_query_failure(query_data)
         else:
@@ -98,7 +122,8 @@ class OmixAtlas:
     def _handle_query_success(
         self,
         query_data: dict,
-        page_size: int
+        query_api_version: str,
+        page_size: Union[int, None]
     ) -> pd.DataFrame:
         query_id = query_data.get("id")
 
@@ -111,6 +136,12 @@ class OmixAtlas:
         else:
             print("Query execution succeeded")
 
+        if query_api_version != QUERY_API_V2 or page_size is not None:
+            return self._fetch_results_as_pages(query_id, page_size)
+        else:
+            return self._fetch_results_as_file(query_id)
+
+    def _fetch_results_as_pages(self, query_id, page_size):
         first_page_url = (
             f"{self.resource_url}/queries/{query_id}"
             f"/results?page[size]={page_size}"
@@ -150,6 +181,51 @@ class OmixAtlas:
         print()
 
         return pd.DataFrame(all_rows)
+
+    def _fetch_results_as_file(self, query_id):
+        results_file_req_url = (
+            f"{self.resource_url}/queries/{query_id}/results?action=download"
+        )
+        response = self.session.get(results_file_req_url)
+        error_handler(response)
+        result_data = response.json()
+
+        results_file_download_url = result_data.get("data", {}).get(
+            "download_url"
+        )
+        if (
+            results_file_download_url is None
+            or results_file_download_url == "Not available"
+        ):
+            # The user is probably executing SHOW TABLES or DESCRIBE query
+            return self._fetch_results_as_pages(query_id, 100)
+
+        def _local_temp_file_path(filename):
+            temp_dir = Path(
+                "/tmp" if platform.system() == "Darwin"
+                else tempfile.gettempdir()
+            ).absolute()
+
+            temp_file_path = os.path.join(temp_dir, filename)
+            if Path(temp_file_path).exists():
+                os.remove(temp_file_path)
+
+            return temp_file_path
+
+        def _download_file_stream(download_url, _local_file_path):
+            with requests.get(download_url, stream=True, headers={}) as r:
+                r.raise_for_status()
+                with open(_local_file_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+
+        local_file_path = _local_temp_file_path(f"{query_id}.csv")
+        _download_file_stream(results_file_download_url, local_file_path)
+
+        data_df = pd.read_csv(local_file_path)
+        print(f"Fetched {len(data_df.index)} rows")
+
+        return data_df
 
     def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
         """
