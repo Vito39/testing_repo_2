@@ -35,6 +35,19 @@ class QueryFailedException(Exception):
         return f"Query failed to execute\n\treason: {self.reason}"
 
 
+class OperationFailedError(Exception):
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return f"{self.reason}"
+
+
+class InvalidPathError(Exception):
+    def __str__(self):
+        return "This path does not represent a file or a directory. Please try again."
+
+
 def error_handler(response):
     if has_error_message(response):
         title, detail = extract_json_api_error(response)
