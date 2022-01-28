@@ -11,11 +11,19 @@ class Polly:
     default_session = None
 
     @classmethod
+<<<<<<< HEAD
     def auth(cls, token, env='polly'):
         cls.default_session = PollySession(token, env=env)
 
     @classmethod
     def get_session(cls, token=None, env='polly'):
+=======
+    def auth(cls, token, env="polly"):
+        cls.default_session = PollySession(token, env=env)
+
+    @classmethod
+    def get_session(cls, token=None, env="polly"):
+>>>>>>> [WIP]:code for initializing the runtime env
         if not token:
             if not cls.default_session:
                 raise UnauthorizedException

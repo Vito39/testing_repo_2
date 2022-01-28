@@ -8,14 +8,14 @@ token = os.getenv(key)
 
 
 def test_obj_initialization():
-    assert Polly.get_session(token) is not None
-    assert omixatlas.OmixAtlas(token) is not None
+    assert Polly.get_session(token, env="testpolly") is not None
+    assert omixatlas.OmixAtlas(token, env="testpolly") is not None
 
 
 def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
     repo_id = '1622526550765'
     schema_type_dict = {'dataset': 'files', 'sample': 'gct_metadata'}
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema = schema_obj.get_schema(repo_id, schema_type_dict)
     assert isinstance(schema, Dict)
     assert schema['dataset'] is not None
@@ -25,7 +25,7 @@ def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
 def test_get_schema_with_repo_id_and_sample_schema_param():
     repo_id = '1622526550765'
     schema_type_dict = {'sample': 'gct_metadata'}
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema = schema_obj.get_schema(repo_id, schema_type_dict)
     assert isinstance(schema, Dict)
     assert schema['sample'] is not None
@@ -34,7 +34,7 @@ def test_get_schema_with_repo_id_and_sample_schema_param():
 def test_get_schema_with_repo_id_and_dataset_schema_param():
     repo_id = '1622526550765'
     schema_type_dict = {'dataset': 'files'}
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema = schema_obj.get_schema(repo_id, schema_type_dict)
     assert isinstance(schema, Dict)
     assert schema['dataset'] is not None
@@ -43,7 +43,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
 def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params():
     schema_level = ['dataset', 'sample']
     single_cell = False
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
@@ -54,7 +54,7 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params()
 def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
     schema_level = ['dataset', 'sample']
     single_cell = True
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
@@ -65,7 +65,7 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
 def test_get_schema_type_dataset_as_params():
     schema_level = ['dataset']
     single_cell = True
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
@@ -74,7 +74,7 @@ def test_get_schema_type_dataset_as_params():
 def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
     schema_level = ['sample']
     single_cell = True
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None
@@ -84,7 +84,7 @@ def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
 def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
     schema_level = ['sample']
     single_cell = False
-    schema_obj = omixatlas.OmixAtlas(token)
+    schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     schema_type = schema_obj.get_schema_type(schema_level, single_cell)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None

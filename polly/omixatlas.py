@@ -121,7 +121,7 @@ class OmixAtlas:
                 }
         """
         resp_dict = {}
-        schema_base_url = f'{API_ENDPOINT}/repositories'
+        schema_base_url = f'{self.discover_url}/repositories'
         if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
             for key, val in schema_type_dict.items():
                 schema_type = val
@@ -303,7 +303,7 @@ class OmixAtlas:
         if repo_id and body and isinstance(body, dict):
             body = json.dumps(body)
             try:
-                schema_base_url = f'{API_ENDPOINT}/repositories'
+                schema_base_url = f'{self.discover_url}/repositories'
                 url = f"{schema_base_url}/{repo_id}/schemas"
                 resp = self.session.post(url, data=body)
                 error_handler(resp)
@@ -342,7 +342,7 @@ class OmixAtlas:
                 }
         """
         schema_type = body['data']['attributes']['schema_type']
-        schema_base_url = f'{API_ENDPOINT}/repositories'
+        schema_base_url = f'{self.discover_url}/repositories'
         url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}"
         if repo_id and body and isinstance(body, dict):
             body = json.dumps(body)
