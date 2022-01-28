@@ -10,6 +10,7 @@ import os
 
 
 class Workspaces():
+
     def __init__(self, token=None, env='polly') -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
