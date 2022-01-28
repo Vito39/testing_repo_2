@@ -11,12 +11,13 @@ import os
 
 
 class Workspaces():
-    def __init__(self, token=None) -> None:
-        self.base_url = f'{V2_API_ENDPOINT}/workspaces'
-        self.session = Polly.get_session(token)
+    def __init__(self, token=None, env='polly') -> None:
+        self.session = Polly.get_session(token, env=env)
+        self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
+        self.resource_url = f"{self.base_url}/workspaces"
 
     def create_workspace(self, name: str, description=None):
-        url = self.base_url
+        url = self.resource_url
         payload = {
             "data": {"type": "workspaces",
                      "attributes": {"name": name, "description": description,
@@ -30,7 +31,7 @@ class Workspaces():
         return attributes
 
     def fetch_my_workspaces(self):
-        url = self.base_url
+        url = self.resource_url
         response = self.session.get(url)
         error_handler(response)
         pd.set_option("display.max_columns", 20)

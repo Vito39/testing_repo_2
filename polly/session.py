@@ -3,7 +3,7 @@ import os
 
 
 class PollySession(Session):
-    def __init__(self, REFRESH_TOKEN):
+    def __init__(self, REFRESH_TOKEN, env='polly'):
         Session.__init__(self)
         try:
             # for python version >= python3.8
@@ -23,3 +23,4 @@ class PollySession(Session):
             "Cookie": f"refreshToken={REFRESH_TOKEN}",
             "User-Agent": "polly-python/"+version,
         }
+        self.env = env
