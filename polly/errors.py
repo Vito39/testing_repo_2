@@ -57,8 +57,11 @@ class MissingKeyException(Exception):
 
 
 class InvalidParameterException(Exception):
+    def __init__(self, parameter):
+        self.parameter = parameter
+
     def __str__(self):
-        return "Empty or Invalid Parameters."
+        return f"Empty or Invalid Parameters = {self.parameter}."
 
 
 class InvalidFormatException(Exception):
