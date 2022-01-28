@@ -57,7 +57,6 @@ class Workspaces():
         sts_url = f'{V2_API_ENDPOINT}/projects/{workspace_id}/credentials/files'
         creds = self.session.get(sts_url)
         error_handler(creds)
-        print("error_handled")
         credentials = helpers.get_sts_creds(creds.json())
         final_path = f"{helpers.make_path(workspace_id, workspace_path)}"
         if(isFile):
