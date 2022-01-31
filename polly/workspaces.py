@@ -2,7 +2,6 @@ from polly.auth import Polly
 from polly.errors import (InvalidParameterException, error_handler,
                           InvalidPathException)
 from polly import helpers
-from cloudpathlib import S3Client
 import logging
 import pandas as pd
 import json
@@ -16,11 +15,11 @@ class Workspaces():
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.resource_url = f"{self.base_url}/workspaces"
         if(self.session.env == 'polly'):
-            self.bucket = 'mithoo-prod-project-data-v1'
+            self.env_string = 'prod'
         elif(self.session.env == 'testpolly'):
-            self.bucket = 'mithoo-test-project-data-v1'
+            self.env_string = 'test'
         else:
-            self.bucket = 'mithoo-devenv-project-data-v1'
+            self.env_string = 'devenv'
 
     def create_workspace(self, name: str, description=None):
         url = self.resource_url
@@ -44,12 +43,9 @@ class Workspaces():
         dataframe = pd.DataFrame.from_dict(pd.json_normalize(response.json()['data']), orient='columns')
         return dataframe
 
-    def upload_to_workspaces(self, workspace_id: int, local_path: str, workspace_path: str) -> None:
+    def upload_to_workspaces(self, workspace_id: int, workspace_path: str, local_path: str) -> None:
         """
-        Function to upload file/folder to workspaces.
-        Input: workspace_id: int,
-        workspace_path:str(Non-default argument), local_path: str
-        Output: Confirmation status for upload
+        Function to upload files/folders to workspaces
         """
         if(not (workspace_id and isinstance(workspace_id, int))):
             raise InvalidParameterException('workspace_id')
@@ -60,52 +56,30 @@ class Workspaces():
         isExists = os.path.exists(local_path)
         if(not isExists):
             raise InvalidPathException
-        isFile = os.path.isfile(local_path)
         sts_url = f'{self.base_url}/projects/{workspace_id}/credentials/files'
         creds = self.session.get(sts_url)
         error_handler(creds)
         credentials = helpers.get_sts_creds(creds.json())
-        final_path = f"{helpers.make_path(workspace_id, workspace_path)}"
-        if(isFile):
-            uploaded_path = helpers.upload_file_to_S3(local_path, final_path, credentials, self.bucket)
-            logging.basicConfig(level=logging.INFO)
-            logging.info(f'Upload successful on workspace-id={workspace_id}. Path={uploaded_path}')
-        else:
-            helpers.upload_folder_to_S3(local_path, final_path, credentials, self.bucket)
+        bucket = f"mithoo-{self.env_string}-project-data-v1"
+        s3_path = f"{bucket}/{workspace_id}/"
+        s3_path = f"s3://{helpers.make_path(s3_path, workspace_path)}"
+        helpers.upload_to_S3(s3_path, local_path, credentials)
+        logging.basicConfig(level=logging.INFO)
+        logging.info(f'Upload successful on workspace-id={workspace_id}.')
 
     def download_from_workspaces(self, workspace_id: int, workspace_path: str) -> None:
-        '''
-        Function to download file/folder from workspaces.
-        Input: workspace_id: int, workspace_path: str
-        Output: Confirmation status for download.
-        '''
-        if(not (workspace_path and isinstance(workspace_path, str))):
-            raise InvalidParameterException('workspace_path')
+        """
+        Function to download files/folders from workspaces
+        """
         if(not (workspace_id and isinstance(workspace_id, int))):
             raise InvalidParameterException('workspace_id')
+        if(not (workspace_path and isinstance(workspace_path, str))):
+            raise InvalidParameterException('workspace_path')
         sts_url = f'{self.base_url}/projects/{workspace_id}/credentials/files'
         creds = self.session.get(sts_url)
         error_handler(creds)
         credentials = helpers.get_sts_creds(creds.json())
-        access_key_id = credentials['AccessKeyId']
-        secret_access_key = credentials['SecretAccessKey']
-        session_token = credentials['SessionToken']
-        client = S3Client(aws_access_key_id=access_key_id,
-                          aws_secret_access_key=secret_access_key, aws_session_token=session_token)
-        boto3_path = f"{helpers.make_path(workspace_id, workspace_path)}"
-        s3_path = f"s3://{self.bucket}/{boto3_path}"
-        source_path = client.CloudPath(s3_path)
-        isfile = source_path.is_file()
-        isdir = source_path.is_dir()
-        if(isdir):
-            # For appending the path with / if its a folder
-            if(not boto3_path.endswith('/')):
-                boto3_path += '/'
-                s3_path += '/'
-                isdir = client.CloudPath(s3_path).is_dir()
-        if(isfile or isdir):
-            helpers.download_from_S3(credentials, boto3_path, self.bucket)
-            logging.basicConfig(level=logging.INFO)
-            logging.info(f'Download successful from workspace-id={workspace_id}.')
-        else:
-            raise InvalidPathException
+        bucket = f"mithoo-{self.env_string}-project-data-v1"
+        s3_path = f"{bucket}/{workspace_id}/"
+        s3_path = f"s3://{helpers.make_path(s3_path, workspace_path)}"
+        helpers.download_from_S3(s3_path, workspace_path, credentials)
