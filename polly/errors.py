@@ -35,6 +35,40 @@ class QueryFailedException(Exception):
         return f"Query failed to execute\n\treason: {self.reason}"
 
 
+class OperationFailedException(Exception):
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return f"{self.reason}"
+
+
+class InvalidPathException(Exception):
+    def __str__(self):
+        return "This path does not represent a file or a directory. Please try again."
+
+
+class MissingKeyException(Exception):
+    def __init__(self, key):
+        self.reason = key
+
+    def __str__(self):
+        return f"Missing keys {self.key}"
+
+
+class InvalidParameterException(Exception):
+    def __init__(self, parameter):
+        self.parameter = parameter
+
+    def __str__(self):
+        return f"Empty or Invalid Parameters = {self.parameter}."
+
+
+class InvalidFormatException(Exception):
+    def __str__(self):
+        return "File format not supported."
+
+
 def error_handler(response):
     if has_error_message(response):
         title, detail = extract_json_api_error(response)

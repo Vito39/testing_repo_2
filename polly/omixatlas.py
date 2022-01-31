@@ -15,8 +15,8 @@ from polly.errors import (
 class OmixAtlas:
 
     def __init__(self, token=None, env="polly") -> None:
-        self.session = Polly.get_session(token)
-        self.base_url = f"https://v2.api.{env}.elucidata.io"
+        self.session = Polly.get_session(token, env=env)
+        self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
     def get_all_omixatlas(self):

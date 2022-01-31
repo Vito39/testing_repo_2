@@ -1,1 +1,1 @@
-V2_API_ENDPOINT = 'https://v2.api.polly.elucidata.io'
+DATA_FORMATS = "https://elucidatainc.github.io/PublicAssets/internal_constants/data_formats.txt"
