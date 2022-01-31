@@ -42,9 +42,9 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params():
     schema_level = ['dataset', 'sample']
-    single_cell = False
+    data_type = "others"
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema_type = schema_obj.get_schema_type(schema_level, single_cell)
+    schema_type = schema_obj.get_schema_type(schema_level, data_type)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
     assert schema_type['sample'] is not None
@@ -53,9 +53,9 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params()
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
     schema_level = ['dataset', 'sample']
-    single_cell = True
+    data_type = "single_cell"
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema_type = schema_obj.get_schema_type(schema_level, single_cell)
+    schema_type = schema_obj.get_schema_type(schema_level, data_type)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
     assert schema_type['sample'] is not None
@@ -64,18 +64,18 @@ def test_get_schema_type_dataset_schema_level_single_cell_bool_true_as_params():
 
 def test_get_schema_type_dataset_as_params():
     schema_level = ['dataset']
-    single_cell = True
+    data_type = "single_cell"
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema_type = schema_obj.get_schema_type(schema_level, single_cell)
+    schema_type = schema_obj.get_schema_type(schema_level, data_type)
     assert isinstance(schema_type, Dict)
     assert schema_type['dataset'] is not None
 
 
 def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
     schema_level = ['sample']
-    single_cell = True
+    data_type = "single_cell"
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema_type = schema_obj.get_schema_type(schema_level, single_cell)
+    schema_type = schema_obj.get_schema_type(schema_level, data_type)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None
     assert schema_type['sample'] == 'h5ad_metadata'
@@ -83,9 +83,9 @@ def test_get_schema_type_schema_level_single_cell_bool_true_as_params():
 
 def test_get_schema_type_schema_level_single_cell_bool_false_as_params():
     schema_level = ['sample']
-    single_cell = False
+    data_type = "others"
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema_type = schema_obj.get_schema_type(schema_level, single_cell)
+    schema_type = schema_obj.get_schema_type(schema_level, data_type)
     assert isinstance(schema_type, Dict)
     assert schema_type['sample'] is not None
     assert schema_type['sample'] == 'gct_metadata'

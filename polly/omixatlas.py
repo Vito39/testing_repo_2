@@ -136,7 +136,7 @@ class OmixAtlas:
             )
         return resp_dict
 
-    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], single_cell=False) -> None:
+    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> None:
         """
             Visualizing the schema of the repository depending on schema_type
             schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
@@ -189,7 +189,7 @@ class OmixAtlas:
         """
 
         # get schema_type_dict
-        schema_type_dict = self.get_schema_type(schema_level, single_cell)
+        schema_type_dict = self.get_schema_type(schema_level, data_type)
 
         # schema from API calls
         if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
@@ -204,7 +204,7 @@ class OmixAtlas:
 
         self.print_table(schema)
 
-    def get_schema_type(self, schema_level: list, single_cell: bool) -> dict:
+    def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
             Compute schema_type based on repo_id and schema_level
 
@@ -219,18 +219,28 @@ class OmixAtlas:
         """
         if schema_level and isinstance(schema_level, list):
             if 'dataset' in schema_level and 'sample' in schema_level:
-                if not single_cell:
+                if data_type == "others":
                     schema_type_dict = {'dataset': 'files', 'sample': 'gct_metadata'}
-                elif single_cell:
+                elif data_type == "single_cell":
                     schema_type_dict = {'dataset': 'files', 'sample': 'h5ad_metadata'}
+                else:
+                    raise wrongParamException(
+                        title="Incorrect Param Error",
+                        detail="Incorrect value of param passed data_type "
+                    )
             elif 'dataset' in schema_level or 'sample' in schema_level:
                 if 'dataset' in schema_level:
                     schema_type_dict = {'dataset': 'files'}
                 elif 'sample' in schema_level:
-                    if not single_cell:
+                    if data_type == "others":
                         schema_type_dict = {'sample': 'gct_metadata'}
-                    elif single_cell:
+                    elif data_type == "single_cell":
                         schema_type_dict = {'sample': 'h5ad_metadata'}
+                    else:
+                        raise wrongParamException(
+                            title="Incorrect Param Error",
+                            detail="Incorrect value of param passed data_type "
+                        )
             else:
                 raise wrongParamException(
                     title="Incorrect Param Error",
