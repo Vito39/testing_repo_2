@@ -1,99 +1,59 @@
 import json
-import logging
 import pandas as pd
-from retrying import retry
-
 from polly.auth import Polly
-from polly.errors import (
-    QueryFailedException,
-    UnfinishedQueryException,
-    error_handler,
-    is_unfinished_query_error,
-    paramException, wrongParamException, apiErrorException
-)
+from polly.errors import error_handler
+from polly.errors import paramException, wrongParamException, apiErrorException
+from typing import Dict
 
 
 class OmixAtlas:
-
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io/v1/omixatlases"
         self.discover_url = f"https://api.discover.{self.session.env}.elucidata.io"
 
     def get_all_omixatlas(self):
-        url = self.resource_url
+        url = self.base_url
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 
     def omixatlas_summary(self, key: str):
-        url = f"{self.resource_url}/{key}"
+        url = f"{self.base_url}/{key}"
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 
-    def query_metadata(
-        self,
-        query: str,
-        experimental_features=None,
-        query_api_version="v2",
-        page_size=500  # Note: do not increase page size more than 999
-    ):
-        max_page_size = 999
-        if page_size > max_page_size:
-            raise ValueError(
-                f"The maximum permitted value for page_size is {max_page_size}"
-            )
-
-        queries_url = f"{self.resource_url}/queries"
-        queries_payload = {
-            "data": {
-                "type": "queries",
-                "attributes": {
-                    "query": query,
-                    "query_api_version": query_api_version
-                }
-            }
-        }
+    def query_metadata(self, query: str, experimental_features=None):
+        url = f"{self.base_url}/_query"
+        payload = {"query": query}
         if experimental_features is not None:
-            queries_payload.update({
-                "experimental_features": experimental_features
-            })
-
-        response = self.session.post(queries_url, json=queries_payload)
+            payload.update({"experimental_features": experimental_features})
+        response = self.session.get(url, json=payload)
         error_handler(response)
+        message = response.json().get('message', None)
+        if message is not None:
+            print(message)
+        return self.__process_query_response(response.json())
 
-        query_data = response.json().get("data")
-        query_id = query_data.get("id")
-        return self._process_query_to_completion(query_id, page_size)
-
-    @retry(
-        retry_on_exception=is_unfinished_query_error,
-        wait_exponential_multiplier=1000,  # Exponential back-off
-        wait_exponential_max=10000,        # After 10s, retry every 10s
-        stop_max_delay=300000              # Stop retrying after 300s (5m)
-    )
-    def _process_query_to_completion(self, query_id: str, page_size: int):
-        queries_url = f"{self.resource_url}/queries/{query_id}"
-        response = self.session.get(queries_url)
-        error_handler(response)
-
-        query_data = response.json().get("data")
-        query_status = query_data.get("attributes", {}).get("status")
-        if query_status == "succeeded":
-            return self._handle_query_success(query_data, page_size)
-        elif query_status == "failed":
-            self._handle_query_failure(query_data)
-        else:
-            raise UnfinishedQueryException(query_id)
-
-    def _handle_query_failure(self, query_data: dict):
-        fail_msg = query_data.get("attributes").get("failure_reason")
-        raise QueryFailedException(fail_msg)
-
-    
+    def __process_query_response(self, response: dict):
+        # print(response)
+        response.pop("took", None)
+        response.pop("timed_out", None)
+        response.pop("_shards", None)
+        processed_response = None
+        try:
+            hits = response.get('hits').get('hits')
+            if hits:
+                processed_response = pd.DataFrame(hits)
+            else:
+                response.pop('hits', None)
+                processed_response = response
+        except AttributeError:
+            processed_response = response
+        return processed_response
 
     def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
         """
@@ -102,10 +62,7 @@ class OmixAtlas:
             params:
             repo_id => str
             schema_type_dict => dictionary {schema_level:schema_type}
-
             example {'dataset': 'files', 'sample': 'gct_metadata'}
-
-
             Ouput:
                 {
                     "data": {
@@ -161,7 +118,6 @@ class OmixAtlas:
                     }
                     ... other Sources
                 }
-
             schema_type : files i.e Global Fields (dataset)
             metadata schema definition for a dataset:
                 schema:{
@@ -183,7 +139,6 @@ class OmixAtlas:
                         }
             As Data Source and Data types segregation is not applicable
             at Dataset Level Information (applicable for sample metadata only)
-
             schema_type : gct_metadata i.e Row Fields (Feature)
             Not there right now
         """
@@ -207,7 +162,6 @@ class OmixAtlas:
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
             Compute schema_type based on repo_id and schema_level
-
             schema_level         schema_type
             ------------------------------------
             dataset         ==   file
@@ -329,10 +283,6 @@ class OmixAtlas:
                 detail="Params are either empty or its datatype is not correct"
             )
 
-<<<<<<< HEAD
-
->>>>>>> [WIP]:moving visualize feature to omixatlas class
-=======
     def update_schema(self, repo_id: str, body: dict) -> dict:
         """
         Params:
@@ -371,49 +321,19 @@ class OmixAtlas:
                 detail="Params are either empty or its datatype is not correct"
             )
 
-
     # ? DEPRECATED
     def search_metadata(self, query: dict):
-        url = f"{self.resource_url}/_search"
+        url = f"{self.base_url}/_search"
         payload = query
         response = self.session.get(url, json=payload)
         error_handler(response)
         return response.json()
 
     def download_data(self, repo_name, _id: str):
-        url = f"{self.resource_url}/{repo_name}/download"
+        url = f"{self.base_url}/{repo_name}/download"
         params = {"_id": _id}
         response = self.session.get(url, params=params)
         error_handler(response)
-        return response.json()
-
-    def save_to_workspace(self, repo_id: str, dataset_id: str,
-                          workspace_id: int,
-                          workspace_path: str) -> json:
-        '''
-            Function for saving data from omixatlas to workspaces.
-            Makes a call to v1/omixatlas/workspace_jobs
-        '''
-        url = f"{self.resource_url}/workspace_jobs"
-        params = {"action": "copy"}
-        payload = {
-            "data": {
-                "type": "workspaces",
-                "attributes": {
-                    "dataset_id": dataset_id,
-                    "repo_id": repo_id,
-                    "workspace_id": workspace_id,
-                    "workspace_path": workspace_path
-                }
-            }
-        }
-        response = self.session.post(url,
-                                     data=json.dumps(payload),
-                                     params=params)
-        error_handler(response)
-        if response.status_code == 200:
-            logging.basicConfig(level=logging.INFO)
-            logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
 
 
