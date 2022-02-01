@@ -15,19 +15,19 @@ from typing import Dict
 class OmixAtlas:
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
-        self.base_url = f"https://v2.api.{self.session.env}.elucidata.io/v1/omixatlases"
+        self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.discover_url = f"https://api.discover.{self.session.env}.elucidata.io"
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
     def get_all_omixatlas(self):
-        url = self.base_url
+        url = self.resource_url
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
         error_handler(response)
         return response.json()
 
     def omixatlas_summary(self, key: str):
-        url = f"{self.base_url}/{key}"
+        url = f"{self.resource_url}/{key}"
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
         error_handler(response)
@@ -407,14 +407,14 @@ class OmixAtlas:
 
     # ? DEPRECATED
     def search_metadata(self, query: dict):
-        url = f"{self.base_url}/_search"
+        url = f"{self.resource_url}/_search"
         payload = query
         response = self.session.get(url, json=payload)
         error_handler(response)
         return response.json()
 
     def download_data(self, repo_name, _id: str):
-        url = f"{self.base_url}/{repo_name}/download"
+        url = f"{self.resource_url}/{repo_name}/download"
         params = {"_id": _id}
         response = self.session.get(url, params=params)
         error_handler(response)
