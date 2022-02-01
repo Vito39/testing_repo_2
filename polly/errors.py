@@ -9,6 +9,7 @@ class RequestException(Exception):
         self.title = title
         self.detail = detail
 
+
 class BaseExceptionError(Exception):
     """
     Base Exception class for v2 APIs.
@@ -102,6 +103,8 @@ class InvalidParameterException(Exception):
 class InvalidFormatException(Exception):
     def __str__(self):
         return "File format not supported."
+
+
 class paramException(BaseExceptionError):
     detail = app_err_info.PARAM_EXCEPTION
 
