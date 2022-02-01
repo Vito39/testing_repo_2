@@ -2,7 +2,8 @@ from polly import omixatlas
 from polly.auth import Polly
 import os
 import csv
-key = "REFRESH_TOKEN"
+
+key = "POLLY_REFRESH_TOKEN"
 token = os.getenv(key)
 
 
