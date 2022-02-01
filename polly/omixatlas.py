@@ -21,6 +21,7 @@ from polly.errors import (
 from retrying import retry
 from typing import Dict
 
+QUERY_API_V1 = "v1"
 QUERY_API_V2 = "v2"
 
 
@@ -49,7 +50,7 @@ class OmixAtlas:
         self,
         query: str,
         experimental_features=None,
-        query_api_version=QUERY_API_V2,
+        query_api_version=QUERY_API_V1,
         page_size=None,  # Note: do not increase page size more than 999
     ):
         max_page_size = 999
