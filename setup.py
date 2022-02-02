@@ -1,4 +1,9 @@
 import pathlib
+import pkg_resources
+try:
+    pkg_resources.require(['pip >= 18.1'])
+except Exception:
+    raise RuntimeError("Error: Need pip > 18.1 upgrade pip to the latest version with 'pip install --upgrade pip'") from None
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
@@ -37,7 +42,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="polly-python",
-    version="0.0.6",
+    version="0.0.7",
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
