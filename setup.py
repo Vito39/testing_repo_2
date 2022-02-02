@@ -3,7 +3,7 @@ import pkg_resources
 try:
     pkg_resources.require(['pip >= 18.1'])
 except Exception:
-    raise RuntimeError("Error: Upgrade pip to the latest version with 'pip install --upgrade pip'") from None
+    raise RuntimeError("Error: Need pip > 18.1 upgrade pip to the latest version with 'pip install --upgrade pip'") from None
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
