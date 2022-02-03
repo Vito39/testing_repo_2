@@ -346,7 +346,8 @@ class OmixAtlas:
                     schema[key] = schema[key]['data']['attributes']['schema']
                 elif 'sample' in key and schema[key]['data']['attributes']['schema']:
                     schema[key] = schema[key]['data']['attributes']['schema']
-
+        
+        self.flatten_nested_schema_dict(schema['sample'])
         self.print_table(schema)
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
@@ -396,6 +397,59 @@ class OmixAtlas:
                 detail="schema_level is either empty or its datatype is not correct"
             )
         return schema_type_dict
+    
+    def flatten_nested_schema_dict(self, nested_schema_dict: dict) -> dict:
+        """
+         Flatten the nested dict
+          Input:
+          schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
+                            "<FIELD_NAME>": {
+                            "original_name": "string" // this should match with source file/metadata
+                            "type": "text | integer | object",
+                            "is_keyword": boolean,
+                            "is_array": boolean,
+                            "is_filter": boolean,
+                            "is_column": boolean,
+                            "filter_size": integer, (Min=1, Max=3000, Default=500)
+                            "display_name": "string", (Min=1, Max=30)
+                            "description": "string", (Min=1, Max=100)
+                            },
+                            ... other fields
+                        }
+                        ... other Data types
+                    }
+                    ... other Sources
+                }
+            
+          Output:
+          schema:{
+                    "(<SOURCE>, <DATATYPE>, <FIELD_NAME>) ": {
+                        
+                            "original_name": "string" // this should match with source file/metadata
+                            "type": "text | integer | object",
+                            "is_keyword": boolean,
+                            "is_array": boolean,
+                            "is_filter": boolean,
+                            "is_column": boolean,
+                            "filter_size": integer, (Min=1, Max=3000, Default=500)
+                            "display_name": "string", (Min=1, Max=30)
+                            "description": "string", (Min=1, Max=100)
+                    }
+                    ... other Fields
+                }
+
+        """
+        reformed_dict = {}
+        for outer_key, inner_dict_datatype in nested_schema_dict.items():
+            for middle_key, inner_dict_fields in inner_dict_datatype.items():
+                for inner_key, values in inner_dict_fields.items():
+                    reformed_dict[(outer_key, middle_key, inner_key)] = values
+
+        print('-------reformed dict-------')
+        print(reformed_dict)
+
 
     def format_type(self, data: dict) -> dict:
         """
