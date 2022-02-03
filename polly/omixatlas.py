@@ -164,10 +164,11 @@ class OmixAtlas:
         """
         resp_dict = {}
         schema_base_url = f'{self.discover_url}/repositories'
+        summary_query_param = '?response_format=summary'
         if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
             for key, val in schema_type_dict.items():
                 schema_type = val
-                dataset_url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}"
+                dataset_url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}{summary_query_param}"
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
                 resp_dict[key] = resp.json()
@@ -204,6 +205,8 @@ class OmixAtlas:
                     ... other Sources
                 }
             schema_type : files i.e Global Fields (dataset)
+            PS :- ALL, ALL keys is not rigid for dataset level schema also
+            There it can be Source and dataset key also
             metadata schema definition for a dataset:
                 schema:{
                         "ALL": {
@@ -238,7 +241,7 @@ class OmixAtlas:
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
                 if 'dataset' in key and schema[key]['data']['attributes']['schema']:
-                    schema[key] = schema[key]['data']['attributes']['schema']['all']['all']
+                    schema[key] = schema[key]['data']['attributes']['schema']
                 elif 'sample' in key and schema[key]['data']['attributes']['schema']:
                     schema[key] = schema[key]['data']['attributes']['schema']
 
