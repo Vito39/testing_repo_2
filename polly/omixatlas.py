@@ -128,11 +128,27 @@ class OmixAtlas:
     ) -> pd.DataFrame:
         query_id = query_data.get("id")
 
+        details = []
         time_taken_in_ms = query_data.get("attributes").get("exec_time_ms")
         if isinstance(time_taken_in_ms, int):
+            details.append(
+                "time taken: {:.2f} seconds".format(time_taken_in_ms / 1000)
+            )
+        data_scanned_in_bytes = query_data.get("attributes").get(
+            "data_scanned_bytes"
+        )
+        if isinstance(data_scanned_in_bytes, int):
+            details.append(
+                "data scanned: {:.3f} MB".format(
+                    data_scanned_in_bytes / (1024 ** 2)
+                )
+            )
+
+        if details:
+            detail_str = ", ".join(details)
             print(
                 "Query execution succeeded "
-                "(time taken: {:.2f} seconds)".format(time_taken_in_ms / 1000)
+                f"({detail_str})"
             )
         else:
             print("Query execution succeeded")
