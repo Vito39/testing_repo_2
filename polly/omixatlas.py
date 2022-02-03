@@ -4,7 +4,7 @@ import os
 import platform
 import tempfile
 from pathlib import Path
-from typing import Union
+from typing import Union, Dict
 
 import pandas as pd
 import requests
@@ -18,8 +18,6 @@ from polly.errors import (
     is_unfinished_query_error,
     paramException, wrongParamException, apiErrorException
 )
-from retrying import retry
-from typing import Dict
 
 QUERY_API_V1 = "v1"
 QUERY_API_V2 = "v2"
