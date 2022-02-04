@@ -1,5 +1,4 @@
 import pathlib
-import pkg_resources
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
