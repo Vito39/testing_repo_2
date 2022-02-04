@@ -1,9 +1,4 @@
 import pathlib
-import pkg_resources
-try:
-    pkg_resources.require(['pip >= 18.1'])
-except Exception:
-    raise RuntimeError("Error: Need pip > 18.1 upgrade pip to the latest version with 'pip install --upgrade pip'") from None
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
@@ -52,5 +47,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
-                  "polly-python/tests/polly/polly_python-0.0.6-py3-none-any.whl"),
+                  "polly-python/tests/polly/polly_python-0.0.7-py3-none-any.whl"),
 )
