@@ -2,7 +2,8 @@ from polly import omixatlas
 from polly.auth import Polly
 import os
 import csv
-key = "REFRESH_TOKEN"
+
+key = "POLLY_REFRESH_TOKEN"
 token = os.getenv(key)
 
 
@@ -58,13 +59,33 @@ def test_query_metadata():
     query_feature_level = query_dict['query_feature_level']
     query_singlecell_sample = query_dict['query_singlecell_sample']
     query_singlecell_feature = query_dict['query_singlecell_feature']
-    assert dict(obj3.query_metadata(query_feature_level)) is not None
-    assert dict(obj3.query_metadata(query_sample_level)) is not None
-    assert dict(obj3.query_metadata(query_dataset_level)) is not None
-    assert dict(obj3.query_metadata(query_singlecell_sample)) is not None
-    assert dict(obj3.query_metadata(query_singlecell_feature)) is not None
-    assert dict(nobj3.query_metadata(query_feature_level)) is not None
-    assert dict(nobj3.query_metadata(query_sample_level)) is not None
-    assert dict(nobj3.query_metadata(query_dataset_level)) is not None
-    assert dict(nobj3.query_metadata(query_singlecell_sample)) is not None
-    assert dict(nobj3.query_metadata(query_singlecell_feature)) is not None
+    assert dict(
+        obj3.query_metadata(query_feature_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        obj3.query_metadata(query_sample_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        obj3.query_metadata(query_dataset_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        obj3.query_metadata(query_singlecell_sample, query_api_version="v1")
+    ) is not None
+    assert dict(
+        obj3.query_metadata(query_singlecell_feature, query_api_version="v1")
+    ) is not None
+    assert dict(
+        nobj3.query_metadata(query_feature_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        nobj3.query_metadata(query_sample_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        nobj3.query_metadata(query_dataset_level, query_api_version="v1")
+    ) is not None
+    assert dict(
+        nobj3.query_metadata(query_singlecell_sample, query_api_version="v1")
+    ) is not None
+    assert dict(
+        nobj3.query_metadata(query_singlecell_feature, query_api_version="v1")
+    ) is not None

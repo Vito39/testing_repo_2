@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      test_environment: "test"
+      test_baseApi: "https://api.testpolly.elucidata.io"
+      test_baseV2Api: "https://v2.api.testpolly.elucidata.io"
+      test_dockerDomain: "docker.testpolly.elucidata.io"
 
     steps:
     - uses: actions/checkout@v2
@@ -23,6 +27,7 @@ jobs:
         npm --version 
         node --version
         sudo apt-get install -y jq
+        sudo apt install moreutils
         npm install -g @elucidatainc/pollycli
         sudo apt-get install expect
         export POLLY_USER_NAME=${{ secrets.POLLY_USER_NAME }}
@@ -42,7 +47,47 @@ jobs:
         export POLLY_REFRESH_TOKEN="${temp#\"}"
         echo "$POLLY_REFRESH_TOKEN"
         echo -n "$POLLY_REFRESH_TOKEN" | wc -c
-        echo "::set-env name=REFRESH_TOKEN::${POLLY_REFRESH_TOKEN}"
+        echo "::set-env name=POLLY_REFRESH_TOKEN::${POLLY_REFRESH_TOKEN}"
+        echo 'done'
+        echo 'logout from polly now'
+        echo '#!/usr/bin/expect -f' > logout.sh
+        echo 'spawn polly logout' >> logout.sh
+        echo 'expect eof' >> logout.sh
+        chmod +x ./logout.sh
+        ./logout.sh
+        echo 'Login to testpolly now'
+        export global_npm_path=`npm list -g | head -1`
+        echo "$global_npm_path"
+        sudo cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json | sudo jq \
+        --arg env "$test_environment" \
+        --arg base_api "$test_baseApi" \
+        --arg base_V2api "$test_baseV2Api" \
+        --arg dockerDomain "$test_dockerDomain" \
+        '.environment|= $env | .baseApi |= $base_api | .baseV2Api |= $base_V2api | 
+        .dockerDomain |= $dockerDomain' | sudo sponge \
+        $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+        echo 'updation of json file done with test polly variables'
+        cat $global_npm_path/node_modules/@elucidatainc/pollycli/src/env.json
+        export TEST_POLLY_USER_NAME=${{ secrets.TEST_POLLY_USER_NAME }}
+        export TEST_POLLY_USER_PASSWORD=${{ secrets.TEST_POLLY_PASSWORD }}
+        echo "$TEST_POLLY_USER_NAME"
+        echo "$TEST_POLLY_USER_PASSWORD"
+        echo '#!/usr/bin/expect -f' > testlogin.sh
+        echo 'set timeout -1' >> testlogin.sh
+        echo 'spawn polly login' >> testlogin.sh
+        echo 'expect "Enter user name:"' >> testlogin.sh
+        echo 'send -- "$env(TEST_POLLY_USER_NAME)\r"' >> testlogin.sh
+        echo 'expect "Enter password:"' >> testlogin.sh
+        echo 'send -- "$env(TEST_POLLY_USER_PASSWORD)\n"' >> testlogin.sh
+        echo 'expect eof' >> testlogin.sh
+        chmod +x ./testlogin.sh
+        ./testlogin.sh
+        temp=$(cat ~/.config/pollycli/credentials.json | jq .$(cat ~/.config/pollycli/credentials.json | jq .pollyUser.pollyemail).pollyrefreshToken)
+        temp="${temp%\"}"
+        export TEST_POLLY_REFRESH_TOKEN="${temp#\"}"
+        echo "$TEST_POLLY_REFRESH_TOKEN"
+        echo -n "$TEST_POLLY_REFRESH_TOKEN" | wc -c
+        echo "::set-env name=TEST_POLLY_REFRESH_TOKEN::${TEST_POLLY_REFRESH_TOKEN}"
         echo 'done'
     - name: Install dependencies
       run: |

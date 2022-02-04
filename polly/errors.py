@@ -1,11 +1,53 @@
 import sys
+from polly import application_error_info as app_err_info
 
 sys.tracebacklimit = 0
 
 
+class RequestException(Exception):
+    def __init__(self, title, detail=None):
+        self.title = title
+        self.detail = detail
+
+
+class BaseExceptionError(Exception):
+    """
+    Base Exception class for v2 APIs.
+    All custom exceptions are created by extending this class.
+    Exception has 4 attributes corresponding to details sent in 'error' object
+    in response JSON -
+        status - http status code
+        code - application specific error code
+        title - title of error
+        detail - details of error
+    """
+
+    def __init__(self, status, code, title, detail):
+        Exception.__init__(self)
+        self.title = title
+        self.detail = detail
+
+    def as_dict(self):
+        return {
+            "title": self.title,
+            "detail": self.detail
+        }
+
+    def as_str(self):
+        exception_str = "Exception Type : " + self.__class__.__name__
+        exception_str += "\nTitle - " + self.title if self.title else ""
+        exception_str += "\nDetails - " + self.detail if self.detail else ""
+        return exception_str
+
+    def __str__(self):
+        return f"{self.__class__.__name__} ({self.title}): {self.detail}"
+
+
 class ElasticException(Exception):
     def __str__(self):
-        return f"{self.reason}: {self.details}"
+        if self.detail:
+            return f"{self.title}: {self.detail}"
+        return self.title
 
 
 class UnauthorizedException(Exception):
@@ -13,16 +55,87 @@ class UnauthorizedException(Exception):
         return "Expired or Invalid Token"
 
 
+class UnfinishedQueryException(Exception):
+    def __init__(self, query_id):
+        self.query_id = query_id
+
+    def __str__(self):
+        return f"Query \"{self.query_id}\" has not finished executing"
+
+
+class QueryFailedException(Exception):
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return f"Query failed to execute\n\treason: {self.reason}"
+
+
+class OperationFailedException(Exception):
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return f"{self.reason}"
+
+
+class InvalidPathException(Exception):
+    def __str__(self):
+        return "This path does not represent a file or a directory. Please try again."
+
+
+class MissingKeyException(Exception):
+    def __init__(self, key):
+        self.reason = key
+
+    def __str__(self):
+        return f"Missing keys {self.key}"
+
+
+class InvalidParameterException(Exception):
+    def __init__(self, parameter):
+        self.parameter = parameter
+
+    def __str__(self):
+        return f"Empty or Invalid Parameters = {self.parameter}."
+
+
+class InvalidFormatException(Exception):
+    def __str__(self):
+        return "File format not supported."
+
+
+class paramException(BaseExceptionError):
+    detail = app_err_info.PARAM_EXCEPTION
+
+    def __init__(self, title=None, detail=None):
+        self.title = app_err_info.PARAM_EXCEPTION_TITLE
+        if detail:
+            self.detail = detail
+
+
+class wrongParamException(BaseExceptionError):
+    detail = app_err_info.WRONG_PARAMS_EXCEPTION
+
+    def __init__(self, title=None, detail=None):
+        self.title = app_err_info.WRONG_PARAMS_EXCEPTION_TITLE
+        if detail:
+            self.detail = detail
+
+
+class apiErrorException(BaseExceptionError):
+    detail = app_err_info.API_ERROR_EXCEPTION
+
+    def __init__(self, title=None, detail=None):
+        self.title = app_err_info.API_ERROR_EXCEPTION_TITLE
+        if detail:
+            self.detail = detail
+
+
 def error_handler(response):
     if has_error_message(response):
-        type_, reason, details = extract_error_message_details(response)
-        custom_error = type(
-            type_,  # Name of the Class
-            (ElasticException,),  # Inherit the __str__ from this class
-            # Pass the error as attribute
-            {"reason": reason, "details": details},
-        )
-        raise custom_error
+        title, detail = extract_json_api_error(response)
+        raise RequestException(title, detail)
     elif response.status_code == 401:
         raise UnauthorizedException
 
@@ -39,6 +152,16 @@ def has_error_message(response):
         return False
 
 
+def extract_json_api_error(response):
+    error = response.json().get('error')
+    if error is None:
+        error = response.json().get('errors')[0]
+
+    title = error.get("title")
+    detail = error.get("detail")
+    return title, detail
+
+
 def extract_error_message_details(error_response):
     error = error_response.json().get('error')
     if error is None:
@@ -49,3 +172,7 @@ def extract_error_message_details(error_response):
     details = error.get("details", None) or error.get("detail", None)
 
     return type_, reason, details
+
+
+def is_unfinished_query_error(exception):
+    return isinstance(exception, UnfinishedQueryException)
