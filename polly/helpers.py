@@ -51,7 +51,7 @@ def upload_to_S3(cloud_path: str, local_path: str, credentials: dict) -> None:
     if(not source_path.exists()):
         source_path.mkdir()
     try:
-        source_path.upload_from(local_path)
+        source_path.upload_from(local_path, force_overwrite_to_cloud=True)
     except ClientError as e:
         raise OperationFailedException(e)
 
@@ -72,7 +72,7 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
     if(isFile):
         try:
             dest_path = os.getcwd()
-            source_path.copy(dest_path)
+            source_path.copy(dest_path, force_overwrite_to_cloud=True)
             logging.basicConfig(level=logging.INFO)
             logging.info(f'Download successful to path={dest_path}')
         except ClientError as e:
@@ -85,7 +85,7 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
             raise InvalidPathException
         try:
             dest_path = f'{make_path(os.getcwd(),workspace_path)}'
-            source_path.copytree(dest_path)
+            source_path.copytree(dest_path, force_overwrite_to_cloud=True)
             logging.basicConfig(level=logging.INFO)
             logging.info(f'Download successful to path={dest_path}')
         except ClientError as e:
