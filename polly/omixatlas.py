@@ -281,7 +281,7 @@ class OmixAtlas:
             )
         return resp_dict
 
-    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> None:
+    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
         """
             Visualizing the schema of the repository depending on schema_type
             schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
@@ -347,8 +347,17 @@ class OmixAtlas:
                 elif 'sample' in key and schema[key]['data']['attributes']['schema']:
                     schema[key] = schema[key]['data']['attributes']['schema']
         
-        self.flatten_nested_schema_dict(schema['sample'])
-        self.print_table(schema)
+        df_map = {}
+        for key, val in schema.items():
+            # print("-----key--------")
+            # print(key)
+            # print("-----data for that key----")
+            # print(schema[key])
+            flatten_dict = self.flatten_nested_schema_dict(schema[key])
+            df_map[key] = self.nested_dict_to_df(flatten_dict)
+
+        return df_map
+        # self.print_table(schema)
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
@@ -447,9 +456,19 @@ class OmixAtlas:
                 for inner_key, values in inner_dict_fields.items():
                     reformed_dict[(outer_key, middle_key, inner_key)] = values
 
-        print('-------reformed dict-------')
-        print(reformed_dict)
+        # print('-------reformed dict-------')
+        # print(reformed_dict)
+        return reformed_dict
 
+    def nested_dict_to_df(self, schema_dict: dict) -> pd.DataFrame:
+        """
+          Convert flatten dict into df and print it
+        """
+        # pd.options.display.max_columns = None
+        # pd.options.display.width = None
+        multiindex_schema_df = pd.DataFrame(schema_dict.items(), columns=['FieldName', 'FieldValue'])
+        
+        return multiindex_schema_df
 
     def format_type(self, data: dict) -> dict:
         """
