@@ -349,10 +349,6 @@ class OmixAtlas:
         
         df_map = {}
         for key, val in schema.items():
-            # print("-----key--------")
-            # print(key)
-            # print("-----data for that key----")
-            # print(schema[key])
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
             df_map[key] = self.nested_dict_to_df(flatten_dict)
 
@@ -466,7 +462,9 @@ class OmixAtlas:
         """
         # pd.options.display.max_columns = None
         # pd.options.display.width = None
-        multiindex_schema_df = pd.DataFrame(schema_dict.items(), columns=['FieldName', 'FieldValue'])
+        print('----schema_dict-----')
+        print(schema_dict)
+        multiindex_schema_df = pd.DataFrame(schema_dict.items(), columns=['Source','Datatype','Field Name', 'Field Description', 'Field Type'])
         
         return multiindex_schema_df
 
