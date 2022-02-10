@@ -338,7 +338,7 @@ class OmixAtlas:
                     schema[key] = schema[key]['data']['attributes']['schema']
                 elif 'sample' in key and schema[key]['data']['attributes']['schema']:
                     schema[key] = schema[key]['data']['attributes']['schema']
-        
+
         df_map = {}
         for key, val in schema.items():
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
@@ -393,7 +393,7 @@ class OmixAtlas:
                 detail="schema_level is either empty or its datatype is not correct"
             )
         return schema_type_dict
-    
+
     def flatten_nested_schema_dict(self, nested_schema_dict: dict) -> dict:
         """
          Flatten the nested dict
@@ -411,13 +411,13 @@ class OmixAtlas:
                     }
                     ... other Sources
                 }
-            
+
           Output:
                    {
-                       'Source':source_list, 
-                       'Datatype': datatype_list, 
-                       'Field Name':field_name_list, 
-                       'Field Description':field_desc_list, 
+                       'Source':source_list,
+                       'Datatype': datatype_list,
+                       'Field Name':field_name_list,
+                       'Field Description':field_desc_list,
                        'Field Type': field_type_list
                    }
 
@@ -446,17 +446,16 @@ class OmixAtlas:
         reformed_dict['Field Description'] = field_description_list
         reformed_dict['Field Type'] = field_type_list
         return reformed_dict
-        
 
     def nested_dict_to_df(self, schema_dict: dict) -> pd.DataFrame:
         """
           Convert flatten dict into df and print it
           Input:
                 {
-                       'Source':source_list, 
-                       'Datatype': datatype_list, 
-                       'Field Name':field_name_list, 
-                       'Field Description':field_desc_list, 
+                       'Source':source_list,
+                       'Datatype': datatype_list,
+                       'Field Name':field_name_list,
+                       'Field Description':field_desc_list,
                        'Field Type': field_type_list
                 }
           Output:
@@ -464,7 +463,7 @@ class OmixAtlas:
         """
         pd.options.display.max_columns = None
         pd.options.display.width = None
-        multiIndex_df = pd.DataFrame.from_dict(schema_dict,orient='columns')
+        multiIndex_df = pd.DataFrame.from_dict(schema_dict, orient='columns')
         return multiIndex_df
 
     def format_type(self, data: dict) -> dict:
