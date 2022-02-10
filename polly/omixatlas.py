@@ -345,7 +345,6 @@ class OmixAtlas:
             df_map[key] = self.nested_dict_to_df(flatten_dict)
 
         return df_map
-        # self.print_table(schema)
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
@@ -474,38 +473,6 @@ class OmixAtlas:
         """
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
-
-    # def print_table(self, schema_data: dict) -> None:
-    #     """
-    #         Print the Schema in a tabular format
-    #     """
-    #     global_fields = {}
-    #     col_fields = {}
-    #     if schema_data and isinstance(schema_data, Dict) and 'dataset' in schema_data:
-    #         dataset_data = schema_data['dataset']
-    #         global_fields = ''.join("\n '{name}': {type}".format(name=key,
-    #                                 type=self.format_type(val)) for key, val in dataset_data.items())
-
-    #     if schema_data and isinstance(schema_data, Dict) and 'sample' in schema_data:
-    #         sample_data = schema_data['sample']
-    #         col_fields = ''.join("\n '{name}': {type}".format(name=key,
-    #                              type=self.format_type(val)) for key, val in sample_data.items())
-
-    #     if global_fields and col_fields:
-    #         s = '----------------------------------------\n' \
-    #             'Global fields(dataset):{g}\n' \
-    #             '----------------------------------------\n' \
-    #             'Column fields(Sample):{c}\n' \
-    #             '----------------------------------------\n'.format(g=global_fields, c=col_fields)
-    #     elif global_fields:
-    #         s = '----------------------------------------\n' \
-    #             'Global fields(dataset):{g}\n' \
-    #             '----------------------------------------\n'.format(g=global_fields)
-    #     elif col_fields:
-    #         s = '----------------------------------------\n' \
-    #             'Column fields(Sample):{c}\n' \
-    #             '----------------------------------------\n'.format(c=col_fields)
-    #     print(s)
 
     def insert_schema(self, repo_id: str, body: dict) -> dict:
         """
