@@ -1,9 +1,13 @@
 import os
+import json
 import logging
+import urllib.request
 from cloudpathlib import S3Client
 from botocore.exceptions import ClientError
-from polly.errors import (InvalidParameterException, MissingKeyException,
+from cmapPy.pandasGEXpress.parse_gct import parse
+from polly.errors import (error_handler, InvalidParameterException, MissingKeyException,
                           InvalidPathException, OperationFailedException)
+from polly.constants import CBIOPORTAL_REPO_ID, CBIOPORTAL_FIELDS
 
 
 def make_path(prefix: any, postfix: any) -> str:
@@ -90,3 +94,59 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
             logging.info(f'Download successful to path={dest_path}')
         except ClientError as e:
             raise OperationFailedException(e)
+
+
+def file_conversion(self, repo_id: str, dataset_id: str, format: str) -> None:
+    download_dict = self.download_data(repo_id, dataset_id)
+    if('data' in download_dict):
+        data = download_dict['data']
+        if('attributes' in data):
+            attributes = data['attributes']
+            if('download_url' in attributes):
+                url = attributes['download_url']
+            else:
+                raise MissingKeyException('download_url')
+        else:
+            raise MissingKeyException('attributes')
+    else:
+        raise MissingKeyException('data')
+    file_name = f"{dataset_id}.gct"
+    try:
+        urllib.request.urlretrieve(url, file_name)
+        data = parse(file_name)
+        os.remove(file_name)
+        row_metadata = data.row_metadata_df
+        if(repo_id == CBIOPORTAL_REPO_ID):
+            row_metadata = row_metadata.rename(CBIOPORTAL_FIELDS, axis=1)
+        row_metadata.to_csv(f"{dataset_id}.{format}", sep="\t")
+    except Exception as e:
+        raise OperationFailedException(e)
+
+
+def get_index_name(self, url: str) -> str:
+    if(not (url and isinstance(url, str))):
+        raise InvalidParameterException('url')
+    response = self.session.get(url)
+    error_handler(response)
+    file_index = response.json().get('data', {}).get('attributes', {}).get('indexes', {}).get('files')
+    if not file_index:
+        raise MissingKeyException("indexes")
+    return file_index
+
+
+def get_data_type(self, url: str, payload: dict) -> str:
+    if(not (url and isinstance(url, str))):
+        raise InvalidParameterException('url')
+    if(not (payload and isinstance(payload, dict))):
+        raise InvalidParameterException('payload')
+    response = self.session.post(url, data=json.dumps(payload))
+    error_handler(response)
+    response_data = response.json()
+    hits = response_data.get("hits", {}).get("hits")
+    if not hits:
+        raise MissingKeyException("hits")
+    dataset = hits[0]
+    data_type = dataset.get("_source", {}).get("kw_data_type")
+    if not data_type:
+        raise MissingKeyException("data_type")
+    return data_type
