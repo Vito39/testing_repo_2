@@ -290,14 +290,7 @@ class OmixAtlas:
                     "<SOURCE>": {
                         "<DATATYPE>": {
                             "<FIELD_NAME>": {
-                            "original_name": "string" // this should match with source file/metadata
                             "type": "text | integer | object",
-                            "is_keyword": boolean,
-                            "is_array": boolean,
-                            "is_filter": boolean,
-                            "is_column": boolean,
-                            "filter_size": integer, (Min=1, Max=3000, Default=500)
-                            "display_name": "string", (Min=1, Max=30)
                             "description": "string", (Min=1, Max=100)
                             },
                             ... other fields
@@ -314,14 +307,7 @@ class OmixAtlas:
                         "ALL": {
                             "ALL": {
                                 "<FIELD_NAME>": {
-                                "original_name": "string" // this should match with source file/metadata
                                 "type": "text | integer | object",
-                                "is_keyword": boolean,
-                                "is_array": boolean,
-                                "is_filter": boolean,
-                                "is_column": boolean,
-                                "filter_size": integer, (Min=1, Max=3000, Default=500)
-                                "display_name": "string", (Min=1, Max=30)
                                 "description": "string", (Min=1, Max=100)
                                 },
                                 ... other fields
@@ -331,6 +317,12 @@ class OmixAtlas:
             at Dataset Level Information (applicable for sample metadata only)
             schema_type : gct_metadata i.e Row Fields (Feature)
             Not there right now
+
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
+                }
         """
 
         # get schema_type_dict
@@ -411,14 +403,7 @@ class OmixAtlas:
                     "<SOURCE>": {
                         "<DATATYPE>": {
                             "<FIELD_NAME>": {
-                            "original_name": "string" // this should match with source file/metadata
                             "type": "text | integer | object",
-                            "is_keyword": boolean,
-                            "is_array": boolean,
-                            "is_filter": boolean,
-                            "is_column": boolean,
-                            "filter_size": integer, (Min=1, Max=3000, Default=500)
-                            "display_name": "string", (Min=1, Max=30)
                             "description": "string", (Min=1, Max=100)
                             },
                             ... other fields
@@ -429,44 +414,59 @@ class OmixAtlas:
                 }
             
           Output:
-          schema:{
-                    "(<SOURCE>, <DATATYPE>, <FIELD_NAME>) ": {
-                        
-                            "original_name": "string" // this should match with source file/metadata
-                            "type": "text | integer | object",
-                            "is_keyword": boolean,
-                            "is_array": boolean,
-                            "is_filter": boolean,
-                            "is_column": boolean,
-                            "filter_size": integer, (Min=1, Max=3000, Default=500)
-                            "display_name": "string", (Min=1, Max=30)
-                            "description": "string", (Min=1, Max=100)
-                    }
-                    ... other Fields
-                }
+                   {
+                       'Source':source_list, 
+                       'Datatype': datatype_list, 
+                       'Field Name':field_name_list, 
+                       'Field Description':field_desc_list, 
+                       'Field Type': field_type_list
+                   }
 
         """
         reformed_dict = {}
+        source_list = []
+        data_type_list = []
+        field_name_list = []
+        field_description_list = []
+        field_type_list = []
         for outer_key, inner_dict_datatype in nested_schema_dict.items():
             for middle_key, inner_dict_fields in inner_dict_datatype.items():
-                for inner_key, values in inner_dict_fields.items():
-                    reformed_dict[(outer_key, middle_key, inner_key)] = values
+                for inner_key, field_values in inner_dict_fields.items():
+                    source_list.append(outer_key)
+                    data_type_list.append(middle_key)
+                    field_name_list.append(inner_key)
+                    for key, value in field_values.items():
+                        if key == 'description':
+                            field_description_list.append(field_values[key])
+                        if key == 'type':
+                            field_type_list.append(field_values[key])
 
-        # print('-------reformed dict-------')
-        # print(reformed_dict)
+        reformed_dict['Source'] = source_list
+        reformed_dict['Datatype'] = data_type_list
+        reformed_dict['Field Name'] = field_name_list
+        reformed_dict['Field Description'] = field_description_list
+        reformed_dict['Field Type'] = field_type_list
         return reformed_dict
+        
 
     def nested_dict_to_df(self, schema_dict: dict) -> pd.DataFrame:
         """
           Convert flatten dict into df and print it
+          Input:
+                {
+                       'Source':source_list, 
+                       'Datatype': datatype_list, 
+                       'Field Name':field_name_list, 
+                       'Field Description':field_desc_list, 
+                       'Field Type': field_type_list
+                }
+          Output:
+                DataFrame
         """
-        # pd.options.display.max_columns = None
-        # pd.options.display.width = None
-        print('----schema_dict-----')
-        print(schema_dict)
-        multiindex_schema_df = pd.DataFrame(schema_dict.items(), columns=['Source','Datatype','Field Name', 'Field Description', 'Field Type'])
-        
-        return multiindex_schema_df
+        pd.options.display.max_columns = None
+        pd.options.display.width = None
+        multiIndex_df = pd.DataFrame.from_dict(schema_dict,orient='columns')
+        return multiIndex_df
 
     def format_type(self, data: dict) -> dict:
         """
@@ -475,37 +475,37 @@ class OmixAtlas:
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
 
-    def print_table(self, schema_data: dict) -> None:
-        """
-            Print the Schema in a tabular format
-        """
-        global_fields = {}
-        col_fields = {}
-        if schema_data and isinstance(schema_data, Dict) and 'dataset' in schema_data:
-            dataset_data = schema_data['dataset']
-            global_fields = ''.join("\n '{name}': {type}".format(name=key,
-                                    type=self.format_type(val)) for key, val in dataset_data.items())
+    # def print_table(self, schema_data: dict) -> None:
+    #     """
+    #         Print the Schema in a tabular format
+    #     """
+    #     global_fields = {}
+    #     col_fields = {}
+    #     if schema_data and isinstance(schema_data, Dict) and 'dataset' in schema_data:
+    #         dataset_data = schema_data['dataset']
+    #         global_fields = ''.join("\n '{name}': {type}".format(name=key,
+    #                                 type=self.format_type(val)) for key, val in dataset_data.items())
 
-        if schema_data and isinstance(schema_data, Dict) and 'sample' in schema_data:
-            sample_data = schema_data['sample']
-            col_fields = ''.join("\n '{name}': {type}".format(name=key,
-                                 type=self.format_type(val)) for key, val in sample_data.items())
+    #     if schema_data and isinstance(schema_data, Dict) and 'sample' in schema_data:
+    #         sample_data = schema_data['sample']
+    #         col_fields = ''.join("\n '{name}': {type}".format(name=key,
+    #                              type=self.format_type(val)) for key, val in sample_data.items())
 
-        if global_fields and col_fields:
-            s = '----------------------------------------\n' \
-                'Global fields(dataset):{g}\n' \
-                '----------------------------------------\n' \
-                'Column fields(Sample):{c}\n' \
-                '----------------------------------------\n'.format(g=global_fields, c=col_fields)
-        elif global_fields:
-            s = '----------------------------------------\n' \
-                'Global fields(dataset):{g}\n' \
-                '----------------------------------------\n'.format(g=global_fields)
-        elif col_fields:
-            s = '----------------------------------------\n' \
-                'Column fields(Sample):{c}\n' \
-                '----------------------------------------\n'.format(c=col_fields)
-        print(s)
+    #     if global_fields and col_fields:
+    #         s = '----------------------------------------\n' \
+    #             'Global fields(dataset):{g}\n' \
+    #             '----------------------------------------\n' \
+    #             'Column fields(Sample):{c}\n' \
+    #             '----------------------------------------\n'.format(g=global_fields, c=col_fields)
+    #     elif global_fields:
+    #         s = '----------------------------------------\n' \
+    #             'Global fields(dataset):{g}\n' \
+    #             '----------------------------------------\n'.format(g=global_fields)
+    #     elif col_fields:
+    #         s = '----------------------------------------\n' \
+    #             'Column fields(Sample):{c}\n' \
+    #             '----------------------------------------\n'.format(c=col_fields)
+    #     print(s)
 
     def insert_schema(self, repo_id: str, body: dict) -> dict:
         """
