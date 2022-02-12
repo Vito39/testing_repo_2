@@ -280,7 +280,7 @@ class OmixAtlas:
                 detail="repo_id and schema_type_dict are either empty or its datatype is not correct"
             )
         return resp_dict
-    
+
     def get_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
         """
             Visualizing the schema of the repository depending on schema_type
