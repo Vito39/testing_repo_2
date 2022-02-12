@@ -242,7 +242,7 @@ class OmixAtlas:
 
         return data_df
 
-    def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
+    def get_schema_from_api(self, repo_id: str, schema_type_dict: dict) -> dict:
         """
             Gets the schema of a repo id for the given repo_id and
             schema_type definition at the top level
@@ -280,7 +280,73 @@ class OmixAtlas:
                 detail="repo_id and schema_type_dict are either empty or its datatype is not correct"
             )
         return resp_dict
+    
+    def get_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
+        """
+            Visualizing the schema of the repository depending on schema_type
+            schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            metdata schema definition for sample:
+                schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
+                            "<FIELD_NAME>": {
+                            "type": "text | integer | object",
+                            "description": "string", (Min=1, Max=100)
+                            },
+                            ... other fields
+                        }
+                        ... other Data types
+                    }
+                    ... other Sources
+                }
+            schema_type : files i.e Global Fields (dataset)
+            PS :- ALL, ALL keys is not rigid for dataset level schema also
+            There it can be Source and dataset key also
+            metadata schema definition for a dataset:
+                schema:{
+                        "ALL": {
+                            "ALL": {
+                                "<FIELD_NAME>": {
+                                "type": "text | integer | object",
+                                "description": "string", (Min=1, Max=100)
+                                },
+                                ... other fields
+                            }
+                        }
+            As Data Source and Data types segregation is not applicable
+            at Dataset Level Information (applicable for sample metadata only)
+            schema_type : gct_metadata i.e Row Fields (Feature)
+            Not there right now
 
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
+                }
+        """
+
+        # get schema_type_dict
+        schema_type_dict = self.get_schema_type(schema_level, data_type)
+
+        # schema from API calls
+        if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
+            schema = self.get_schema_from_api(repo_id, schema_type_dict)
+
+        if schema and isinstance(schema, Dict):
+            for key, val in schema_type_dict.items():
+                if 'dataset' in key and schema[key]['data']['attributes']['schema']:
+                    schema[key] = schema[key]['data']['attributes']['schema']
+                elif 'sample' in key and schema[key]['data']['attributes']['schema']:
+                    schema[key] = schema[key]['data']['attributes']['schema']
+
+        df_map = {}
+        for key, val in schema.items():
+            flatten_dict = self.flatten_nested_schema_dict(schema[key])
+            df_map[key] = self.nested_dict_to_df(flatten_dict)
+
+        return df_map
+
+    # ? DEPRECATED
     def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
         """
             Visualizing the schema of the repository depending on schema_type
@@ -330,7 +396,7 @@ class OmixAtlas:
 
         # schema from API calls
         if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema(repo_id, schema_type_dict)
+            schema = self.get_schema_from_api(repo_id, schema_type_dict)
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
