@@ -1,6 +1,7 @@
 name: Build Python Package
 
-on: [github.event.base_ref == 'refs/heads/ftr_automating_whl_file_creation']
+on: [push]
+
 
 jobs:
   build:
