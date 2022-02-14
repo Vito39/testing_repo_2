@@ -6,3 +6,4 @@ CBIOPORTAL_FIELDS = {'gene': 'Hugo_Symbol', 'chr': 'Chromosome', 'startPosition'
                      'variantAllele': 'Tumor_Seq_Allele2', 'mutationType': 'Variant_Classification',
                      'variantType': 'Variant_Type', 'uniqueSampleKey': 'Tumor_Sample_Barcode'}
 CBIOPORTAL_REPO_NAME = 'cbioportal'
+CBIOPORTAL_REPO_ID = '1623986995264'

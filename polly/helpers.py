@@ -6,8 +6,8 @@ from cloudpathlib import S3Client
 from botocore.exceptions import ClientError
 from cmapPy.pandasGEXpress.parse_gct import parse
 from polly.errors import (error_handler, InvalidParameterException, MissingKeyException,
-                          InvalidPathException, OperationFailedException)
-from polly.constants import CBIOPORTAL_REPO_NAME, CBIOPORTAL_FIELDS
+                          InvalidPathException, OperationFailedException, paramException)
+from polly.constants import CBIOPORTAL_REPO_ID, CBIOPORTAL_REPO_NAME, CBIOPORTAL_FIELDS
 
 
 def make_path(prefix: any, postfix: any) -> str:
@@ -96,17 +96,17 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
             raise OperationFailedException(e)
 
 
-def file_conversion(self, repo_name: str, dataset_id: str, format: str) -> None:
+def file_conversion(self, repo_info: str, dataset_id: str, format: str) -> None:
     '''
     Function that converts file to mentioned format
     '''
-    if(not (repo_name and isinstance(repo_name, str))):
-        raise InvalidParameterException('repo_name')
+    if(not (repo_info and isinstance(repo_info, str))):
+        raise InvalidParameterException('repo_name/repo_id')
     if(not (dataset_id and isinstance(dataset_id, str))):
         raise InvalidParameterException('dataset_id')
     if(not (format and isinstance(format, str))):
         raise InvalidParameterException('format')
-    download_dict = self.download_data(repo_name, dataset_id)
+    download_dict = self.download_data(repo_info, dataset_id)
     if('data' in download_dict):
         data = download_dict['data']
         if('attributes' in data):
@@ -125,7 +125,7 @@ def file_conversion(self, repo_name: str, dataset_id: str, format: str) -> None:
         data = parse(file_name)
         os.remove(file_name)
         row_metadata = data.row_metadata_df
-        if(repo_name == CBIOPORTAL_REPO_NAME):
+        if(repo_info == CBIOPORTAL_REPO_NAME or repo_info == CBIOPORTAL_REPO_ID):
             row_metadata = row_metadata.rename(CBIOPORTAL_FIELDS, axis=1)
         row_metadata.to_csv(f"{dataset_id}.{format}", sep="\t")
     except Exception as e:
@@ -145,7 +145,10 @@ def get_data_type(self, url: str, payload: dict) -> str:
     response_data = response.json()
     hits = response_data.get("hits", {}).get("hits")
     if(not (hits and isinstance(hits, list))):
-        raise MissingKeyException("hits")
+        raise paramException(
+            title="Param Error",
+            detail="No matches found with the given repo details. Please try again."
+        )
     dataset = hits[0]
     data_type = dataset.get("_source", {}).get("kw_data_type")
     if not data_type:
