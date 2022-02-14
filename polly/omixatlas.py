@@ -5,7 +5,7 @@ import platform
 import tempfile
 from pathlib import Path
 from typing import Union, Dict
-
+from collections import namedtuple
 import pandas as pd
 import requests
 from retrying import retry
@@ -18,6 +18,7 @@ from polly.errors import (
     is_unfinished_query_error,
     paramException, wrongParamException, apiErrorException
 )
+from deprecated import deprecated
 
 QUERY_API_V1 = "v1"
 QUERY_API_V2 = "v2"
@@ -344,9 +345,23 @@ class OmixAtlas:
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
             df_map[key] = self.nested_dict_to_df(flatten_dict)
 
-        return df_map
+        return self.return_schema_data(df_map)
 
-    # ? DEPRECATED
+    def return_schema_data(self, df_map: dict) -> tuple:
+        """
+            Return schema data as named tuple
+        """
+        if 'dataset' in df_map and 'sample' in df_map:
+            Schema = namedtuple("Schema", ["dataset", "sample"])
+            return Schema(df_map['dataset'], df_map['sample'])
+        elif 'dataset' in df_map:
+            Schema = namedtuple("Schema", "dataset")
+            return Schema(df_map['dataset'])
+        elif 'sample' in df_map:
+            Schema = namedtuple("Schema", "sample")
+            return Schema(df_map['sample'])
+
+    @deprecated(reason="use function get_schema")
     def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
         """
             Visualizing the schema of the repository depending on schema_type
@@ -410,7 +425,7 @@ class OmixAtlas:
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
             df_map[key] = self.nested_dict_to_df(flatten_dict)
 
-        return df_map
+        return self.return_schema_data(df_map)
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
