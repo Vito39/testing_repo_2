@@ -5,7 +5,7 @@ on:
       - '*'
 jobs:
   build:
-    - name: Test Pipeline
+    name: Test Pipeline
     steps:
       run: |
         echo github.event.base_ref
