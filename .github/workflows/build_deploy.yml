@@ -6,9 +6,11 @@ on:
 jobs:
   build:
     name: Test Pipeline
+    runs-on: ubuntu-latest
     steps:
       run: |
         echo github.event.base_ref
+
     if: github.event.base_ref == 'refs/heads/main'
     name: Upload Release Asset and publish to Pypi
     runs-on: ubuntu-latest
