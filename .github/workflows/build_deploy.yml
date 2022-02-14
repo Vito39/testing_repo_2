@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: Print Branch Info
-        run: |
-          echo github.event.base_ref
         
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -75,6 +71,3 @@ jobs:
           user: __token__
           password: ${{ secrets.PIPY_TOKEN }}
           packages_dir: ./polly-python-code/dist
-    
-    
-    
