@@ -1,0 +1,31 @@
+name: Build Python Package
+
+on: [github.event.base_ref == 'refs/heads/ftr_automating_whl_file_creation']
+
+jobs:
+  build:
+    name: Build Python Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          echo github.event.base_ref
+          python -m pip install .
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install wheel
+      - name: Build package
+        run: |
+          python -m build --sdist --wheel --outdir polly-python-code/dist/
+          
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
