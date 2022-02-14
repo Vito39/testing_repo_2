@@ -5,6 +5,10 @@ on:
       - '*'
 jobs:
   build:
+    - name: Test Pipeline
+    steps:
+      run: |
+        echo github.event.base_ref
     if: github.event.base_ref == 'refs/heads/main'
     name: Upload Release Asset and publish to Pypi
     runs-on: ubuntu-latest
@@ -70,3 +74,6 @@ jobs:
           user: __token__
           password: ${{ secrets.PIPY_TOKEN }}
           packages_dir: ./polly-python-code/dist
+    
+    
+    
