@@ -1,6 +1,5 @@
 import json
 import ssl
-import urllib.request
 import logging
 import os
 import platform
@@ -29,8 +28,6 @@ QUERY_API_V2 = "v2"
 
 
 class OmixAtlas:
-    datatype_mapping = None
-
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
@@ -563,35 +560,41 @@ class OmixAtlas:
             logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
 
-    def format_converter(self, repo_id: str, dataset_id: str, to: str) -> None:
-        if(not (repo_id and isinstance(repo_id, str))):
+    def format_converter(self, repo_name: str, dataset_id: str, to: str) -> None:
+        """
+        Function to convert a file to maf format
+        """
+        if(not (repo_name and isinstance(repo_name, str))):
             raise InvalidParameterException('repo_id')
         if(not (dataset_id and isinstance(dataset_id, str))):
             raise InvalidParameterException('dataset_id')
         if(not (to and isinstance(to, str))):
             raise InvalidParameterException('convert_to')
         ssl._create_default_https_context = ssl._create_unverified_context
-        if(OmixAtlas.datatype_mapping is None):
-            response = urllib.request.urlopen(DATA_TYPES)
-            OmixAtlas.datatype_mapping = json.loads(response.read())
-        repo_url = f"{self.discover_url}/repositories/{repo_id}"
-        file_index = helpers.get_index_name(self, repo_url)
-        elastic_url = f"{self.elastic_url}/{file_index}/_search"
+        response_omixatlas = self.omixatlas_summary(repo_name)
+        data = response_omixatlas.get('data')
+        index_name = data.get("indexes", {}).get("files")
+        if(index_name is None):
+            raise paramException(
+                title='Param Error',
+                detail='Index not found for this repo_name'
+            )
+        elastic_url = f"{self.elastic_url}/{index_name}/_search"
         query = {
             "query": {
                 "bool": {
                     "must": [
-                        {"term": {"_index": file_index}},
+                        {"term": {"_index": index_name}},
                         {"term": {"dataset_id.keyword": dataset_id}},
                     ]
                 }
             }
         }
         data_type = helpers.get_data_type(self, elastic_url, query)
-        if(data_type in OmixAtlas.datatype_mapping):
-            mapped_list = OmixAtlas.datatype_mapping[data_type]
+        if(data_type in DATA_TYPES):
+            mapped_list = DATA_TYPES[data_type]
             if(to in mapped_list):
-                helpers.file_conversion(self, repo_id, dataset_id, to)
+                helpers.file_conversion(self, repo_name, dataset_id, to)
             else:
                 raise paramException(
                     title="Param Error",

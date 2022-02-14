@@ -7,7 +7,7 @@ from botocore.exceptions import ClientError
 from cmapPy.pandasGEXpress.parse_gct import parse
 from polly.errors import (error_handler, InvalidParameterException, MissingKeyException,
                           InvalidPathException, OperationFailedException)
-from polly.constants import CBIOPORTAL_REPO_ID, CBIOPORTAL_FIELDS
+from polly.constants import CBIOPORTAL_REPO_NAME, CBIOPORTAL_FIELDS
 
 
 def make_path(prefix: any, postfix: any) -> str:
@@ -96,8 +96,17 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
             raise OperationFailedException(e)
 
 
-def file_conversion(self, repo_id: str, dataset_id: str, format: str) -> None:
-    download_dict = self.download_data(repo_id, dataset_id)
+def file_conversion(self, repo_name: str, dataset_id: str, format: str) -> None:
+    '''
+    Function that converts file to mentioned format
+    '''
+    if(not (repo_name and isinstance(repo_name, str))):
+        raise InvalidParameterException('repo_name')
+    if(not (dataset_id and isinstance(dataset_id, str))):
+        raise InvalidParameterException('dataset_id')
+    if(not (format and isinstance(format, str))):
+        raise InvalidParameterException('format')
+    download_dict = self.download_data(repo_name, dataset_id)
     if('data' in download_dict):
         data = download_dict['data']
         if('attributes' in data):
@@ -116,25 +125,17 @@ def file_conversion(self, repo_id: str, dataset_id: str, format: str) -> None:
         data = parse(file_name)
         os.remove(file_name)
         row_metadata = data.row_metadata_df
-        if(repo_id == CBIOPORTAL_REPO_ID):
+        if(repo_name == CBIOPORTAL_REPO_NAME):
             row_metadata = row_metadata.rename(CBIOPORTAL_FIELDS, axis=1)
         row_metadata.to_csv(f"{dataset_id}.{format}", sep="\t")
     except Exception as e:
         raise OperationFailedException(e)
 
 
-def get_index_name(self, url: str) -> str:
-    if(not (url and isinstance(url, str))):
-        raise InvalidParameterException('url')
-    response = self.session.get(url)
-    error_handler(response)
-    file_index = response.json().get('data', {}).get('attributes', {}).get('indexes', {}).get('files')
-    if not file_index:
-        raise MissingKeyException("indexes")
-    return file_index
-
-
 def get_data_type(self, url: str, payload: dict) -> str:
+    '''
+    Function to return the data-type of the required dataset
+    '''
     if(not (url and isinstance(url, str))):
         raise InvalidParameterException('url')
     if(not (payload and isinstance(payload, dict))):
@@ -143,7 +144,7 @@ def get_data_type(self, url: str, payload: dict) -> str:
     error_handler(response)
     response_data = response.json()
     hits = response_data.get("hits", {}).get("hits")
-    if not hits:
+    if(not (hits and isinstance(hits, list))):
         raise MissingKeyException("hits")
     dataset = hits[0]
     data_type = dataset.get("_source", {}).get("kw_data_type")
