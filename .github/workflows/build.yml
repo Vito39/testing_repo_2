@@ -49,10 +49,13 @@ jobs:
           base64 --version
           export WHL_BASE64="$(base64 polly-python-code/dist/polly_python-$version-py3-none-any.whl)"
           echo $WHL_BASE64
+          echo ${{ secrets.UPLOAD_TOKEN }}
+          export PATH = "builds/polly-python"
+          echo $PATH
           curl \
               -X PUT \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/ElucidataInc/PublicAssets/contents/builds/polly-python/ \
-              -d '{"message":"Uploading whl file","content":$WHL_BASE64}'
+              -H "Authorization: token ${{ secrets.UPLOAD_TOKEN }}" \
+              https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$PATH \
+              -d '{"message":"Uploading whl file","content":"$WHL_BASE64"}'
 
 
