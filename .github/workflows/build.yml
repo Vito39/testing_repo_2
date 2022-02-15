@@ -57,14 +57,15 @@ jobs:
           sudo apt install curl
           export timestamp=$(date +%s)
           echo $timestamp
-          message="Uploading whl file at"
+          message="Uploading whl file at "
           message+=$(date +%s)
           echo "$message"
           export FINAL_MESSAGE="$message"
+          echo $FINAL_MESSAGE
           curl --version
           curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{ secrets.UPLOAD_TOKEN }} -X PUT \
           -H "Accept: application/vnd.github.v3+json" \
-          -d "{\"message\":\"$message\",\"content\":\"${WHL_BASE64}\"}" \
+          -d "{\"message\":\"$FINAL_MESSAGE\",\"content\":\"${WHL_BASE64}\"}" \
           https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
           
 
