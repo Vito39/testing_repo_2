@@ -47,8 +47,7 @@ jobs:
       - name: Encode whl file and upload it to public assets
         run:  |
           base64 --version
-          export WHL_BASE64="$(cat polly-python-code/dist/polly_python-$version-py3-none-any.whl | \ base64)"
-        
+          export WHL_BASE64="$(cat polly-python-code/dist/polly_python-$version-py3-none-any.whl |base64)"
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
           export WHL_UPLOAD_PATH="builds/polly-python/polly_python-$version-py3-none-any.whl"
