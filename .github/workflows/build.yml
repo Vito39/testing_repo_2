@@ -3,12 +3,13 @@ name: Build Python Package
 on:
   push:
     branches:
+      - 'release\-[v][0-9\.]+|release\_[v][0-9\.]+'
       - ftr_automating_whl_file_creation
 
 
 jobs:
   build:
-    name: Build Python Package
+    name: Build Python Package on merge to release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,7 +22,6 @@ jobs:
           
       - name: Install dependencies
         run: |
-          echo github.event.base_ref
           python -m pip install .
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
@@ -33,3 +33,20 @@ jobs:
       - name: Set output
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+        
+      - name: Check tag output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+          
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      
+      - name: Output of get release step
+        run:  |
+          echo ${{ steps.get_release.outputs.upload_url }}
