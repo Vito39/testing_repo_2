@@ -1,6 +1,9 @@
 name: Build Python Package
 
-on: [push]
+on:
+  push:
+    branches:
+      - ftr_automating_whl_file_creation
 
 
 jobs:
