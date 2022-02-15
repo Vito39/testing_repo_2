@@ -28,28 +28,28 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
           python -m pip install wheel
+      
+      - name: Current Branch Name
+        run: |
+          echo ${GITHUB_REF#refs/*/}
 
       - name: Build package
         run: |
           python -m build --sdist --wheel --outdir polly-python-code/dist/
-          
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=branch::${GITHUB_REF#refs/*/}
-        
-      - name: Check output
-        env:
-          RELEASE_VERSION: ${{ steps.vars.outputs.branch }}
+
+      - name: List files inside dist
         run: |
-          echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.branch }}
-          
-      # - name: Get release
-      #   id: get_release
-      #   uses: bruceadams/get-release@v1.2.3
+          cd polly-python-code/dist/
+          ls
+
+      # - name: Upload whl to public assets
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
       #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      
-      # - name: Output of get release step
-      #   run:  |
-      #     echo ${{ steps.get_release.outputs.upload_url }}
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: 'polly-python-code/dist/polly_python-${GITHUB_REF#refs/*/}-py3-none-any.whl'
+      #     destination_repo: 'dmnemec/release-test'
+      #     destination_folder: 'test-dir'
+      #     user_email: 'example@email.com'
+      #     user_name: 'dmnemec'
+      #     commit_message: 'A custom message for the commit'
