@@ -3,7 +3,9 @@ name: Build Python Package
 on:
   push:
     branches:
-      - 'release\-[v][0-9\.]+|release\_[v][0-9\.]+'
+      # regex not supported in github actions
+      # - 'release\-[v][0-9\.]+|release\_[v][0-9\.]+'
+      - 'release**'
       - ftr_automating_whl_file_creation
 
 
