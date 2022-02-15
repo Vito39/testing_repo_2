@@ -13,6 +13,8 @@ jobs:
   build:
     name: Build Python Package on merge to release
     runs-on: ubuntu-latest
+    env:
+      version: "0.0.8"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -42,14 +44,15 @@ jobs:
           cd polly-python-code/dist/
           ls
 
-      # - name: Upload whl to public assets
-      #   uses: dmnemec/copy_file_to_another_repo_action@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      #   with:
-      #     source_file: 'polly-python-code/dist/polly_python-${GITHUB_REF#refs/*/}-py3-none-any.whl'
-      #     destination_repo: 'dmnemec/release-test'
-      #     destination_folder: 'test-dir'
-      #     user_email: 'example@email.com'
-      #     user_name: 'dmnemec'
-      #     commit_message: 'A custom message for the commit'
+      - name: Encode whl file and upload it to public assets
+        run:  |
+          base64 --version
+          export WHL_BASE64="$(base64 polly-python-code/dist/polly_python-$version-py3-none-any.whl)"
+          echo $WHL_BASE64
+          curl \
+              -X PUT \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/ElucidataInc/PublicAssets/contents/builds/polly-python/ \
+              -d '{"message":"Uploading whl file","content":$WHL_BASE64}'
+
+
