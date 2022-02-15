@@ -55,10 +55,9 @@ jobs:
           sudo apt-get update
           sudo apt install curl
           curl --version
-          curl \
+          curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{ secrets.UPLOAD_TOKEN }} \
           -X PUT \
-          -H "Accept: application/vnd.github.v3+json" \
-          -u ${{secrets.UPLOAD_USER_NAME}}:${{ secrets.UPLOAD_TOKEN }} \
+          -d '{"message":"Uploading whl file","content":"$WHL_BASE64"}' \
           https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH \
-          -d '{"message":"Uploading whl file","content":"$WHL_BASE64"}'
+          
 
