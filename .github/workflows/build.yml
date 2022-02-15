@@ -46,15 +46,15 @@ jobs:
 
       - name: Encode whl file and upload it to public assets
         run:  |
-          sudo apt update
-          sudo apt install curl
-          curl --version
           base64 --version
           export WHL_BASE64="$(base64 polly-python-code/dist/polly_python-$version-py3-none-any.whl)"
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
           export PATH="builds/polly-python"
           echo $PATH
+          sudo apt update
+          sudo apt install curl
+          curl --version
           curl \
               -X PUT \
               -H "Authorization: token ${{ secrets.UPLOAD_TOKEN }}" \
