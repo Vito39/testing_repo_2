@@ -52,7 +52,7 @@ jobs:
           echo ${{ secrets.UPLOAD_TOKEN }}
           export PATH="builds/polly-python"
           echo $PATH
-          sudo apt update
+          sudo apt-get update
           sudo apt install curl
           curl --version
           curl \
