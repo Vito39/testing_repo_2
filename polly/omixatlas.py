@@ -1,4 +1,5 @@
 import json
+import ssl
 import logging
 import os
 import platform
@@ -10,10 +11,13 @@ import pandas as pd
 import requests
 from retrying import retry
 
+from polly import helpers
 from polly.auth import Polly
+from polly.constants import DATA_TYPES
 from polly.errors import (
     QueryFailedException,
     UnfinishedQueryException,
+    InvalidParameterException,
     error_handler,
     is_unfinished_query_error,
     paramException, wrongParamException, apiErrorException
@@ -29,6 +33,7 @@ class OmixAtlas:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.discover_url = f"https://api.discover.{self.session.env}.elucidata.io"
+        self.elastic_url = f"https://api.datalake.discover.{self.session.env}.elucidata.io/elastic"
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
     def get_all_omixatlas(self):
@@ -672,6 +677,67 @@ class OmixAtlas:
             logging.basicConfig(level=logging.INFO)
             logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
+
+    def format_converter(self, repo_key: str, dataset_id: str, to: str) -> None:
+        """
+        Function to convert a file to maf format.
+        """
+        if(not (repo_key and isinstance(repo_key, str))):
+            raise InvalidParameterException('repo_id/repo_name')
+        if(not (dataset_id and isinstance(dataset_id, str))):
+            raise InvalidParameterException('dataset_id')
+        if(not (to and isinstance(to, str))):
+            raise InvalidParameterException('convert_to')
+        ssl._create_default_https_context = ssl._create_unverified_context
+        response_omixatlas = self.omixatlas_summary(repo_key)
+        data = response_omixatlas.get('data')
+        repo_name = data.get('repo_name')
+        index_name = data.get("indexes", {}).get("files")
+        if(index_name is None):
+            raise paramException(
+                title='Param Error',
+                detail='Repo entered is not an omixatlas.'
+            )
+        elastic_url = f"{self.elastic_url}/{index_name}/_search"
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"_index": index_name}},
+                        {"term": {"dataset_id.keyword": dataset_id}},
+                    ]
+                }
+            }
+        }
+        data_type = helpers.get_data_type(self, elastic_url, query)
+        if(data_type in DATA_TYPES):
+            mapped_list = DATA_TYPES[data_type][0]
+            if(to in mapped_list['format']):
+                supported_repo = mapped_list['supported_repo']
+                repo_found = False
+                for details in supported_repo:
+                    if(repo_name == details['name']):
+                        header_mapping = details['header_mapping']
+                        repo_found = True
+                if(not repo_found):
+                    raise paramException(
+                        title="Param Error",
+                        detail=f"Incompatible repository error: Repository:'{repo_name}' not yet \
+                                 incorporated for converter function"
+                    )
+                helpers.file_conversion(self, repo_name, dataset_id, to, header_mapping)
+            else:
+                raise paramException(
+                    title="Param Error",
+                    detail=f"Incompatible dataformat error: data format= {to} not yet incorporated for converter function"
+                )
+        else:
+            raise paramException(
+                title="Param Error",
+                detail=f"Incompatible dataype error: data_type={data_type} not yet incorporated for converter function"
+            )
+        logging.basicConfig(level=logging.INFO)
+        logging.info("File converted successfully!")
 
 
 if __name__ == "__main__":
