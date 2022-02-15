@@ -55,9 +55,8 @@ jobs:
           sudo apt-get update
           sudo apt install curl
           curl --version
-          curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{ secrets.UPLOAD_TOKEN }} \
-          -X PUT \
+          curl -i -X PUT -H 'Authorization: token ${{ secrets.UPLOAD_TOKEN }}' \
           -d '{"message":"Uploading whl file","content":"$WHL_BASE64"}' \
-          https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH \
+          https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
           
 
