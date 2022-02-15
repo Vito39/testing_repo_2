@@ -57,8 +57,8 @@ jobs:
           curl --version
           curl \
               -X PUT \
-              -H "Authorization: token ${{ secrets.UPLOAD_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -u ${{secrets.UPLOAD_USER_NAME}}:${{ secrets.UPLOAD_TOKEN }}
               https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH \
               -d '{"message":"Uploading whl file","content":"$WHL_BASE64"}'
-
 
