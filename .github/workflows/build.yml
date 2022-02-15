@@ -50,7 +50,7 @@ jobs:
           export WHL_BASE64="$(base64 polly-python-code/dist/polly_python-$version-py3-none-any.whl)"
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
-          export PATH = "builds/polly-python"
+          export PATH="builds/polly-python"
           echo $PATH
           curl \
               -X PUT \
