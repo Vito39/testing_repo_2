@@ -560,24 +560,25 @@ class OmixAtlas:
             logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
 
-    def format_converter(self, repo_info: str, dataset_id: str, to: str) -> None:
+    def format_converter(self, repo_key: str, dataset_id: str, to: str) -> None:
         """
         Function to convert a file to maf format.
         """
-        if(not (repo_info and isinstance(repo_info, str))):
+        if(not (repo_key and isinstance(repo_key, str))):
             raise InvalidParameterException('repo_id/repo_name')
         if(not (dataset_id and isinstance(dataset_id, str))):
             raise InvalidParameterException('dataset_id')
         if(not (to and isinstance(to, str))):
             raise InvalidParameterException('convert_to')
         ssl._create_default_https_context = ssl._create_unverified_context
-        response_omixatlas = self.omixatlas_summary(repo_info)
+        response_omixatlas = self.omixatlas_summary(repo_key)
         data = response_omixatlas.get('data')
+        repo_name = data.get('repo_name')
         index_name = data.get("indexes", {}).get("files")
         if(index_name is None):
             raise paramException(
                 title='Param Error',
-                detail='Index not found for this repo_name'
+                detail='Repo entered is not an omixatlas.'
             )
         elastic_url = f"{self.elastic_url}/{index_name}/_search"
         query = {
@@ -592,9 +593,21 @@ class OmixAtlas:
         }
         data_type = helpers.get_data_type(self, elastic_url, query)
         if(data_type in DATA_TYPES):
-            mapped_list = DATA_TYPES[data_type]
-            if(to in mapped_list):
-                helpers.file_conversion(self, repo_info, dataset_id, to)
+            mapped_list = DATA_TYPES[data_type][0]
+            if(to in mapped_list['format']):
+                supported_repo = mapped_list['supported_repo']
+                repo_found = False
+                for details in supported_repo:
+                    if(repo_name == details['name']):
+                        header_mapping = details['header_mapping']
+                        repo_found = True
+                if(not repo_found):
+                    raise paramException(
+                        title="Param Error",
+                        detail=f"Incompatible repository error: Repository:'{repo_name}' not yet \
+                                 incorporated for converter function"
+                    )
+                helpers.file_conversion(self, repo_name, dataset_id, to, header_mapping)
             else:
                 raise paramException(
                     title="Param Error",

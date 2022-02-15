@@ -7,7 +7,6 @@ from botocore.exceptions import ClientError
 from cmapPy.pandasGEXpress.parse_gct import parse
 from polly.errors import (error_handler, InvalidParameterException, MissingKeyException,
                           InvalidPathException, OperationFailedException, paramException)
-from polly.constants import CBIOPORTAL_REPO_ID, CBIOPORTAL_REPO_NAME, CBIOPORTAL_FIELDS
 
 
 def make_path(prefix: any, postfix: any) -> str:
@@ -96,7 +95,7 @@ def download_from_S3(cloud_path: str, workspace_path: str, credentials: dict) ->
             raise OperationFailedException(e)
 
 
-def file_conversion(self, repo_info: str, dataset_id: str, format: str) -> None:
+def file_conversion(self, repo_info: str, dataset_id: str, format: str, header_mapping: dict) -> None:
     '''
     Function that converts file to mentioned format
     '''
@@ -106,27 +105,20 @@ def file_conversion(self, repo_info: str, dataset_id: str, format: str) -> None:
         raise InvalidParameterException('dataset_id')
     if(not (format and isinstance(format, str))):
         raise InvalidParameterException('format')
+    if(not isinstance(header_mapping, dict)):
+        raise InvalidParameterException('header_mapping')
     download_dict = self.download_data(repo_info, dataset_id)
-    if('data' in download_dict):
-        data = download_dict['data']
-        if('attributes' in data):
-            attributes = data['attributes']
-            if('download_url' in attributes):
-                url = attributes['download_url']
-            else:
-                raise MissingKeyException('download_url')
-        else:
-            raise MissingKeyException('attributes')
-    else:
-        raise MissingKeyException('data')
+    url = download_dict.get("data", {}).get("attributes", {}).get("download_url")
+    if(not url):
+        raise MissingKeyException('dataset url')
     file_name = f"{dataset_id}.gct"
     try:
         urllib.request.urlretrieve(url, file_name)
         data = parse(file_name)
         os.remove(file_name)
         row_metadata = data.row_metadata_df
-        if(repo_info == CBIOPORTAL_REPO_NAME or repo_info == CBIOPORTAL_REPO_ID):
-            row_metadata = row_metadata.rename(CBIOPORTAL_FIELDS, axis=1)
+        if(header_mapping):
+            row_metadata = row_metadata.rename(header_mapping, axis=1)
         row_metadata.to_csv(f"{dataset_id}.{format}", sep="\t")
     except Exception as e:
         raise OperationFailedException(e)
