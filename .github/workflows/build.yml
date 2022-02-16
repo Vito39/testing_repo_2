@@ -48,14 +48,14 @@ jobs:
           whl_file="$(ls  *.whl | sort -V | tail -n1)"
           echo $whl_file
           base64 --version
-          WHL_BASE64=$(cat polly-python-code/dist/$whl_file | base64)
+          WHL_BASE64=$(cat polly-python-code/dist/$whl_file  | base64 -w 0)
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
           echo ${{secrets.UPLOAD_USER_NAME}}
           export WHL_UPLOAD_PATH="builds/polly-python/$whl_file"
           echo $WHL_UPLOAD_PATH
-          
-          curl -i -u ${{secrets.UPLOAD_TOKEN}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" -d "{\"message\":\"Uploading whl file $(date +%s)\",\"content\":\"$WHL_BAE64\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
+          sudo apt-get install -y jq
+          curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" -d "{\"message\":\"Uploading whl file\",\"content\":\"${WHL_BASE64}\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
 
           
           
