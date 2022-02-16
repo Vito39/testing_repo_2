@@ -46,12 +46,15 @@ jobs:
 
       - name: Encode whl file and upload it to public assets
         run:  |
+          cd polly-python-code/dist/
+          whl_file="$(ls  *.whl | sort -V | tail -n1)"
+          echo $whl_file
           base64 --version
-          WHL_BASE64=$(cat polly-python-code/dist/polly_python-$version-py3-none-any.whl | base64)
+          WHL_BASE64=$(cat polly-python-code/dist/$whl_file | base64)
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
           echo ${{secrets.UPLOAD_USER_NAME}}
-          export WHL_UPLOAD_PATH="builds/polly-python/polly_python-$version-py3-none-any.whl"
+          export WHL_UPLOAD_PATH="builds/polly-python/$whl_file"
           echo $WHL_UPLOAD_PATH
           
           curl -i -u ${{secrets.UPLOAD_TOKEN}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" -d "{\"message\":\"Uploading whl file $(date +%s)\",\"content\":\"$WHL_BAE64\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
