@@ -25,6 +25,10 @@ pip install polly-python
 * Examples of characteristics and functions of polly-python can be found as Jupyter Notebook [here](https://github.com/ElucidataInc/polly-python). 
 * Full documentation available [here](https://docs.elucidata.io/OmixAtlas/Polly%20Python.html).
 
+# Contributing Guidelines
+
+* Refer to the `CONTRIBUTING.md` file for detailed information
+
 # Contacts
 If you have questions, suggestions or problems, feel free to open an issue [here](https://github.com/ElucidataInc/polly-python/issues).
 

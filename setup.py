@@ -34,10 +34,12 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
+VERSION_NUMBER="0.0.8"
+
 # This call to setup() does all the work
 setup(
     name="polly-python",
-    version="0.0.8",
+    version=VERSION_NUMBER,
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -47,5 +49,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
-                  "polly-python/tests/polly/polly_python-0.0.8-py3-none-any.whl"),
+                  "polly-python/tests/polly/polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER)),
 )
