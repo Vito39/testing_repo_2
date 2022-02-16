@@ -48,7 +48,7 @@ jobs:
           whl_file="$(ls  *.whl | sort -V | tail -n1)"
           echo $whl_file
           base64 --version
-          WHL_BASE64=$(cat polly-python-code/dist/$whl_file  | base64 -w 0)
+          WHL_BASE64=$(cat polly-python-code/dist/$whl_file | base64 -w 0)
           echo $WHL_BASE64
           echo ${{ secrets.UPLOAD_TOKEN }}
           echo ${{secrets.UPLOAD_USER_NAME}}
