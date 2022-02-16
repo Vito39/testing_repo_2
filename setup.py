@@ -50,6 +50,6 @@ setup(
     setup_requires=['wheel'],
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
-    download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
+    download_url=("https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
                   "polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER))
 )
