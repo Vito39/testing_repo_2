@@ -63,11 +63,11 @@ jobs:
 
           if $sha_value_exists; then
             sha_value=$(curl https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH | jq '.sha')
-            echo $sha_value |
-            echo "{\"message\":\"Uploading whl file $(date +%s)\",\"content\":\"${WHL_BASE64}\",\"sha\":${sha_value}}" | json_pp |
-            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" -d "{\"message\":\"Uploading whl file\",\"content\":\"${WHL_BASE64}\",\"sha\":${sha_value}}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
+            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"message\":\"Uploading whl file $(date +%s)\",\"content\":\"${WHL_BASE64}\",\"sha\":${sha_value}}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
           else
-            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" -d "{\"message\":\"Uploading whl file\",\"content\":\"${WHL_BASE64}\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
+            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"message\":\"Uploading whl file at $(date +%s)\",\"content\":\"${WHL_BASE64}\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
           fi
 
           
