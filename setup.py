@@ -37,6 +37,8 @@ README = (HERE / "README.md").read_text()
 VERSION_NUMBER="0.0.8"
 
 # This call to setup() does all the work
+# circle bracket and format in the download_url parameter to resolve linting issue
+# of line too long
 setup(
     name="polly-python",
     version=VERSION_NUMBER,
@@ -49,5 +51,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
-                  "polly-python/tests/polly/polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER)),
+                  "polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER))
 )
