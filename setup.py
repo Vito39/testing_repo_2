@@ -37,7 +37,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="polly-python",
-    version="0.0.7",
+    version="0.0.8",
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -47,5 +47,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
-                  "polly-python/tests/polly/polly_python-0.0.7-py3-none-any.whl"),
+                  "polly-python/tests/polly/polly_python-0.0.8-py3-none-any.whl"),
 )

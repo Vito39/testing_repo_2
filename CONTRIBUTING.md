@@ -1,0 +1,3 @@
+## Steps to create a release branch
+* In the `setup.py` file in the setup function call update the `version` to latest version number of the `polly-python-library` and also update version number in `download_url` parameter string in whl file name
+* In the `first commit` of this branch put the `commit message` in the containing `changes made in above steps` and `current release branch name` as `release_v-x.x.x`
