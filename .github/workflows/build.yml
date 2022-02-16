@@ -13,8 +13,6 @@ jobs:
   build:
     name: Build Python Package on merge to release
     runs-on: ubuntu-latest
-    env:
-      version: "0.0.7"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
