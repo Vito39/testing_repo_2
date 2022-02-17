@@ -1,0 +1,81 @@
+name: Build Python Package
+
+on:
+  push:
+    branches:
+      # regex not supported in github actions
+      # - 'release\-[v][0-9\.]+|release\_[v][0-9\.]+'
+      - 'release**'
+      - ftr_automating_whl_file_creation
+
+
+jobs:
+  build:
+    name: Build Python Package on merge to release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install .
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install wheel
+      
+      - name: Current Branch Name
+        run: |
+          echo ${GITHUB_REF#refs/*/}
+
+      - name: Build package
+        run: |
+          python -m build --sdist --wheel --outdir polly-python-code/dist/
+
+      - name: List files inside dist
+        run: |
+          cd polly-python-code/dist/
+          ls
+
+      - name: Encode whl file and upload it to public assets
+        run:  |
+          cd polly-python-code/dist/
+          whl_file="$(ls  *.whl | sort -V | tail -n1)"
+          echo $whl_file
+          base64 --version
+          WHL_BASE64=$(cat $whl_file | base64 -w 0)
+          echo $WHL_BASE64
+          echo ${{ secrets.UPLOAD_TOKEN }}
+          echo ${{secrets.UPLOAD_USER_NAME}}
+          export WHL_UPLOAD_PATH="builds/polly-python/$whl_file"
+          echo $WHL_UPLOAD_PATH
+          sudo apt-get install -y jq
+
+          sha_value_exists=$(curl https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH | jq '.| has("sha")')
+
+          echo "--------Print starts for sha value exists--------"
+          echo "variable stating sha value exists or not"
+          echo $sha_value_exists
+          echo "--------Print ends for sha value exists--------"
+
+          if $sha_value_exists; then
+            echo "printing current timestamp"
+            echo $(date +%s)
+            sha_value=$(curl https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH | jq '.sha')
+            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"message\":\"Uploading whl file $(date +%s)\",\"content\":\"${WHL_BASE64}\",\"sha\":${sha_value}}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
+          else
+            echo "printing current timestamp"
+            echo $(date +%s)
+            curl -i -u ${{secrets.UPLOAD_USER_NAME}}:${{secrets.UPLOAD_TOKEN}} -X PUT -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"message\":\"Uploading whl file at $(date +%s)\",\"content\":\"${WHL_BASE64}\"}" https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH
+          fi
+
+          
+          
+

@@ -34,10 +34,14 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
+VERSION_NUMBER = "0.0.8"
+
 # This call to setup() does all the work
+# circle bracket and format in the download_url parameter to resolve linting issue
+# of line too long
 setup(
     name="polly-python",
-    version="0.0.7",
+    version=VERSION_NUMBER,
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -46,6 +50,6 @@ setup(
     setup_requires=['wheel'],
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
-    download_url=("https://elucidatainc.github.io/PublicAssets/builds/"
-                  "polly-python/tests/polly/polly_python-0.0.7-py3-none-any.whl"),
+    download_url=("https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
+                  "polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER))
 )
