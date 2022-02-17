@@ -58,8 +58,10 @@ jobs:
 
           sha_value_exists=$(curl https://api.github.com/repos/ElucidataInc/PublicAssets/contents/$WHL_UPLOAD_PATH | jq '.| has("sha")')
 
+          echo "--------Print starts for sha value exists--------"
           echo "variable stating sha value exists or not"
           echo $sha_value_exists
+          echo "--------Print ends for sha value exists--------"
 
           if $sha_value_exists; then
             echo "printing current timestamp"
