@@ -1,23 +1,28 @@
 import json
+import ssl
 import logging
 import os
 import platform
 import tempfile
 from pathlib import Path
 from typing import Union, Dict
-
+from collections import namedtuple
 import pandas as pd
 import requests
 from retrying import retry
 
+from polly import helpers
 from polly.auth import Polly
+from polly.constants import DATA_TYPES
 from polly.errors import (
     QueryFailedException,
     UnfinishedQueryException,
+    InvalidParameterException,
     error_handler,
     is_unfinished_query_error,
     paramException, wrongParamException, apiErrorException
 )
+from deprecated import deprecated
 
 QUERY_API_V1 = "v1"
 QUERY_API_V2 = "v2"
@@ -28,6 +33,7 @@ class OmixAtlas:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.discover_url = f"https://api.discover.{self.session.env}.elucidata.io"
+        self.elastic_url = f"https://api.datalake.discover.{self.session.env}.elucidata.io/elastic"
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
     def get_all_omixatlas(self):
@@ -242,7 +248,7 @@ class OmixAtlas:
 
         return data_df
 
-    def get_schema(self, repo_id: str, schema_type_dict: dict) -> dict:
+    def get_schema_from_api(self, repo_id: str, schema_type_dict: dict) -> dict:
         """
             Gets the schema of a repo id for the given repo_id and
             schema_type definition at the top level
@@ -281,7 +287,7 @@ class OmixAtlas:
             )
         return resp_dict
 
-    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> None:
+    def get_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
         """
             Visualizing the schema of the repository depending on schema_type
             schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
@@ -290,14 +296,7 @@ class OmixAtlas:
                     "<SOURCE>": {
                         "<DATATYPE>": {
                             "<FIELD_NAME>": {
-                            "original_name": "string" // this should match with source file/metadata
                             "type": "text | integer | object",
-                            "is_keyword": boolean,
-                            "is_array": boolean,
-                            "is_filter": boolean,
-                            "is_column": boolean,
-                            "filter_size": integer, (Min=1, Max=3000, Default=500)
-                            "display_name": "string", (Min=1, Max=30)
                             "description": "string", (Min=1, Max=100)
                             },
                             ... other fields
@@ -314,14 +313,7 @@ class OmixAtlas:
                         "ALL": {
                             "ALL": {
                                 "<FIELD_NAME>": {
-                                "original_name": "string" // this should match with source file/metadata
                                 "type": "text | integer | object",
-                                "is_keyword": boolean,
-                                "is_array": boolean,
-                                "is_filter": boolean,
-                                "is_column": boolean,
-                                "filter_size": integer, (Min=1, Max=3000, Default=500)
-                                "display_name": "string", (Min=1, Max=30)
                                 "description": "string", (Min=1, Max=100)
                                 },
                                 ... other fields
@@ -331,6 +323,12 @@ class OmixAtlas:
             at Dataset Level Information (applicable for sample metadata only)
             schema_type : gct_metadata i.e Row Fields (Feature)
             Not there right now
+
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
+                }
         """
 
         # get schema_type_dict
@@ -338,7 +336,7 @@ class OmixAtlas:
 
         # schema from API calls
         if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema(repo_id, schema_type_dict)
+            schema = self.get_schema_from_api(repo_id, schema_type_dict)
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -347,7 +345,92 @@ class OmixAtlas:
                 elif 'sample' in key and schema[key]['data']['attributes']['schema']:
                     schema[key] = schema[key]['data']['attributes']['schema']
 
-        self.print_table(schema)
+        df_map = {}
+        for key, val in schema.items():
+            flatten_dict = self.flatten_nested_schema_dict(schema[key])
+            df_map[key] = self.nested_dict_to_df(flatten_dict)
+
+        return self.return_schema_data(df_map)
+
+    def return_schema_data(self, df_map: dict) -> tuple:
+        """
+            Return schema data as named tuple
+        """
+        if 'dataset' in df_map and 'sample' in df_map:
+            Schema = namedtuple("Schema", ["dataset", "sample"])
+            return Schema(df_map['dataset'], df_map['sample'])
+        elif 'dataset' in df_map:
+            Schema = namedtuple("Schema", "dataset")
+            return Schema(df_map['dataset'])
+        elif 'sample' in df_map:
+            Schema = namedtuple("Schema", "sample")
+            return Schema(df_map['sample'])
+
+    @deprecated(reason="use function get_schema")
+    def visualize_schema(self, repo_id: str, schema_level=['dataset', 'sample'], data_type="others") -> dict:
+        """
+            Visualizing the schema of the repository depending on schema_type
+            schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            metdata schema definition for sample:
+                schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
+                            "<FIELD_NAME>": {
+                            "type": "text | integer | object",
+                            "description": "string", (Min=1, Max=100)
+                            },
+                            ... other fields
+                        }
+                        ... other Data types
+                    }
+                    ... other Sources
+                }
+            schema_type : files i.e Global Fields (dataset)
+            PS :- ALL, ALL keys is not rigid for dataset level schema also
+            There it can be Source and dataset key also
+            metadata schema definition for a dataset:
+                schema:{
+                        "ALL": {
+                            "ALL": {
+                                "<FIELD_NAME>": {
+                                "type": "text | integer | object",
+                                "description": "string", (Min=1, Max=100)
+                                },
+                                ... other fields
+                            }
+                        }
+            As Data Source and Data types segregation is not applicable
+            at Dataset Level Information (applicable for sample metadata only)
+            schema_type : gct_metadata i.e Row Fields (Feature)
+            Not there right now
+
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
+                }
+        """
+
+        # get schema_type_dict
+        schema_type_dict = self.get_schema_type(schema_level, data_type)
+
+        # schema from API calls
+        if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
+            schema = self.get_schema_from_api(repo_id, schema_type_dict)
+
+        if schema and isinstance(schema, Dict):
+            for key, val in schema_type_dict.items():
+                if 'dataset' in key and schema[key]['data']['attributes']['schema']:
+                    schema[key] = schema[key]['data']['attributes']['schema']
+                elif 'sample' in key and schema[key]['data']['attributes']['schema']:
+                    schema[key] = schema[key]['data']['attributes']['schema']
+
+        df_map = {}
+        for key, val in schema.items():
+            flatten_dict = self.flatten_nested_schema_dict(schema[key])
+            df_map[key] = self.nested_dict_to_df(flatten_dict)
+
+        return self.return_schema_data(df_map)
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
@@ -397,44 +480,84 @@ class OmixAtlas:
             )
         return schema_type_dict
 
+    def flatten_nested_schema_dict(self, nested_schema_dict: dict) -> dict:
+        """
+         Flatten the nested dict
+          Input:
+          schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
+                            "<FIELD_NAME>": {
+                            "type": "text | integer | object",
+                            "description": "string", (Min=1, Max=100)
+                            },
+                            ... other fields
+                        }
+                        ... other Data types
+                    }
+                    ... other Sources
+                }
+
+          Output:
+                   {
+                       'Source':source_list,
+                       'Datatype': datatype_list,
+                       'Field Name':field_name_list,
+                       'Field Description':field_desc_list,
+                       'Field Type': field_type_list
+                   }
+
+        """
+        reformed_dict = {}
+        source_list = []
+        data_type_list = []
+        field_name_list = []
+        field_description_list = []
+        field_type_list = []
+        for outer_key, inner_dict_datatype in nested_schema_dict.items():
+            for middle_key, inner_dict_fields in inner_dict_datatype.items():
+                for inner_key, field_values in inner_dict_fields.items():
+                    source_list.append(outer_key)
+                    data_type_list.append(middle_key)
+                    field_name_list.append(inner_key)
+                    for key, value in field_values.items():
+                        if key == 'description':
+                            field_description_list.append(field_values[key])
+                        if key == 'type':
+                            field_type_list.append(field_values[key])
+
+        reformed_dict['Source'] = source_list
+        reformed_dict['Datatype'] = data_type_list
+        reformed_dict['Field Name'] = field_name_list
+        reformed_dict['Field Description'] = field_description_list
+        reformed_dict['Field Type'] = field_type_list
+        return reformed_dict
+
+    def nested_dict_to_df(self, schema_dict: dict) -> pd.DataFrame:
+        """
+          Convert flatten dict into df and print it
+          Input:
+                {
+                       'Source':source_list,
+                       'Datatype': datatype_list,
+                       'Field Name':field_name_list,
+                       'Field Description':field_desc_list,
+                       'Field Type': field_type_list
+                }
+          Output:
+                DataFrame
+        """
+        pd.options.display.max_columns = None
+        pd.options.display.width = None
+        multiIndex_df = pd.DataFrame.from_dict(schema_dict, orient='columns')
+        return multiIndex_df
+
     def format_type(self, data: dict) -> dict:
         """
             Format the dict data
         """
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
-
-    def print_table(self, schema_data: dict) -> None:
-        """
-            Print the Schema in a tabular format
-        """
-        global_fields = {}
-        col_fields = {}
-        if schema_data and isinstance(schema_data, Dict) and 'dataset' in schema_data:
-            dataset_data = schema_data['dataset']
-            global_fields = ''.join("\n '{name}': {type}".format(name=key,
-                                    type=self.format_type(val)) for key, val in dataset_data.items())
-
-        if schema_data and isinstance(schema_data, Dict) and 'sample' in schema_data:
-            sample_data = schema_data['sample']
-            col_fields = ''.join("\n '{name}': {type}".format(name=key,
-                                 type=self.format_type(val)) for key, val in sample_data.items())
-
-        if global_fields and col_fields:
-            s = '----------------------------------------\n' \
-                'Global fields(dataset):{g}\n' \
-                '----------------------------------------\n' \
-                'Column fields(Sample):{c}\n' \
-                '----------------------------------------\n'.format(g=global_fields, c=col_fields)
-        elif global_fields:
-            s = '----------------------------------------\n' \
-                'Global fields(dataset):{g}\n' \
-                '----------------------------------------\n'.format(g=global_fields)
-        elif col_fields:
-            s = '----------------------------------------\n' \
-                'Column fields(Sample):{c}\n' \
-                '----------------------------------------\n'.format(c=col_fields)
-        print(s)
 
     def insert_schema(self, repo_id: str, body: dict) -> dict:
         """
@@ -554,6 +677,67 @@ class OmixAtlas:
             logging.basicConfig(level=logging.INFO)
             logging.info(f'Data Saved to workspace={workspace_id}')
         return response.json()
+
+    def format_converter(self, repo_key: str, dataset_id: str, to: str) -> None:
+        """
+        Function to convert a file to maf format.
+        """
+        if(not (repo_key and isinstance(repo_key, str))):
+            raise InvalidParameterException('repo_id/repo_name')
+        if(not (dataset_id and isinstance(dataset_id, str))):
+            raise InvalidParameterException('dataset_id')
+        if(not (to and isinstance(to, str))):
+            raise InvalidParameterException('convert_to')
+        ssl._create_default_https_context = ssl._create_unverified_context
+        response_omixatlas = self.omixatlas_summary(repo_key)
+        data = response_omixatlas.get('data')
+        repo_name = data.get('repo_name')
+        index_name = data.get("indexes", {}).get("files")
+        if(index_name is None):
+            raise paramException(
+                title='Param Error',
+                detail='Repo entered is not an omixatlas.'
+            )
+        elastic_url = f"{self.elastic_url}/{index_name}/_search"
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"_index": index_name}},
+                        {"term": {"dataset_id.keyword": dataset_id}},
+                    ]
+                }
+            }
+        }
+        data_type = helpers.get_data_type(self, elastic_url, query)
+        if(data_type in DATA_TYPES):
+            mapped_list = DATA_TYPES[data_type][0]
+            if(to in mapped_list['format']):
+                supported_repo = mapped_list['supported_repo']
+                repo_found = False
+                for details in supported_repo:
+                    if(repo_name == details['name']):
+                        header_mapping = details['header_mapping']
+                        repo_found = True
+                if(not repo_found):
+                    raise paramException(
+                        title="Param Error",
+                        detail=f"Incompatible repository error: Repository:'{repo_name}' not yet \
+                                 incorporated for converter function"
+                    )
+                helpers.file_conversion(self, repo_name, dataset_id, to, header_mapping)
+            else:
+                raise paramException(
+                    title="Param Error",
+                    detail=f"Incompatible dataformat error: data format= {to} not yet incorporated for converter function"
+                )
+        else:
+            raise paramException(
+                title="Param Error",
+                detail=f"Incompatible dataype error: data_type={data_type} not yet incorporated for converter function"
+            )
+        logging.basicConfig(level=logging.INFO)
+        logging.info("File converted successfully!")
 
 
 if __name__ == "__main__":
