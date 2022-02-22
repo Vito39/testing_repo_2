@@ -34,7 +34,7 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
-VERSION_NUMBER = "0.0.8"
+VERSION_NUMBER = "0.0.9"
 
 # This call to setup() does all the work
 # circle bracket and format in the download_url parameter to resolve linting issue
