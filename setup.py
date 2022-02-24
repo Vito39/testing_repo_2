@@ -36,6 +36,7 @@ README = (HERE / "README.md").read_text()
 
 VERSION_NUMBER = "0.0.9"
 
+
 # This call to setup() does all the work
 # circle bracket and format in the download_url parameter to resolve linting issue
 # of line too long
