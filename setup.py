@@ -1,4 +1,6 @@
 import pathlib
+import os
+import io
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
@@ -34,7 +36,13 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
-VERSION_NUMBER = "0.0.9"
+
+def read(file_name):
+    """Read a text file and return the content as a string."""
+    with io.open(
+        os.path.join(os.path.dirname(__file__), file_name), encoding="utf-8"
+    ) as f:
+        return f.read()
 
 
 # This call to setup() does all the work
@@ -42,7 +50,7 @@ VERSION_NUMBER = "0.0.9"
 # of line too long
 setup(
     name="polly-python",
-    version=VERSION_NUMBER,
+    version=read("polly/version.txt"),
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -52,5 +60,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
-                  "polly_python-{a}-none-any.whl".format(a=VERSION_NUMBER))
+                  "polly_python-{a}-none-any.whl".format(a=read("polly/version.txt")))
 )
