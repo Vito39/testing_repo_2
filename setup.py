@@ -1,6 +1,5 @@
 import pathlib
 import os
-import io
 from setuptools import setup, find_packages
 
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
@@ -37,12 +36,21 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 
-def read(file_name):
-    """Read a text file and return the content as a string."""
-    with io.open(
-        os.path.join(os.path.dirname(__file__), file_name), encoding="utf-8"
-    ) as f:
-        return f.read()
+def read(rel_path: str) -> str:
+    here = os.path.abspath(os.path.dirname(__file__))
+    # intentionally *not* adding an encoding option to open, See:
+    #   https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
+    with open(os.path.join(here, rel_path)) as fp:
+        return fp.read()
+
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
 
 # This call to setup() does all the work
@@ -50,7 +58,7 @@ def read(file_name):
 # of line too long
 setup(
     name="polly-python",
-    version=read("polly/version.txt"),
+    version=get_version("polly/__init__.py"),
     description="Polly SDK",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -60,5 +68,5 @@ setup(
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
     download_url=("https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
-                  "polly_python-{a}-none-any.whl".format(a=read("polly/version.txt")))
+                  "polly_python-{a}-none-any.whl".format(a=get_version("polly/__init__.py")))
 )
