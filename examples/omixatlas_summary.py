@@ -31,9 +31,7 @@ def get_dataset_details(dataset_index, headers, limit=20):
         "aggs": {
             "diseases": {"terms": {"field": "disease.keyword", "size": limit}},
             "disease-count": {"cardinality": {"field": "disease.keyword"}},
-            "organisms": {
-                "terms": {"field": "organism.keyword", "size": limit}
-            },
+            "organisms": {"terms": {"field": "organism.keyword", "size": limit}},
             "organism-count": {"cardinality": {"field": "organism.keyword"}},
             "sources": {"terms": {"field": "dataset_source.keyword"}},
             "datatypes": {"terms": {"field": "kw_data_type.keyword"}},
@@ -71,9 +69,7 @@ def get_sample_details(sample_index, headers):
     }
     response_data = repo_client.search_metadata(query)
 
-    data = {
-        "sample_count": response_data.get("hits").get("total").get("value")
-    }
+    data = {"sample_count": response_data.get("hits").get("total").get("value")}
     return data
 
 
