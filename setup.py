@@ -2,16 +2,16 @@ import pathlib
 import os
 from setuptools import setup, find_packages
 
-UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
+UPSTREAM_URLLIB3_FLAG = "--with-upstream-urllib3"
 
 
 def get_requirements(raw=False):
     """Build the requirements list for this project"""
     requirements_list = []
 
-    with open('requirements.txt') as reqs:
+    with open("requirements.txt") as reqs:
         for install in reqs:
-            if install.startswith('# only telegram.ext:'):
+            if install.startswith("# only telegram.ext:"):
                 if raw:
                     break
                 continue
@@ -23,7 +23,7 @@ def get_requirements(raw=False):
 def get_packages_requirements(raw=False):
     """Build the package & requirements list for this project"""
     reqs = get_requirements(raw=raw)
-    exclude = ['tests*']
+    exclude = ["tests*"]
     packs = find_packages(exclude=exclude)
     return packs, reqs
 
@@ -46,7 +46,7 @@ def read(rel_path: str) -> str:
 
 def get_version(rel_path):
     for line in read(rel_path).splitlines():
-        if line.startswith('__version__'):
+        if line.startswith("__version__"):
             delim = '"' if '"' in line else "'"
             return line.split(delim)[1]
     else:
@@ -64,9 +64,11 @@ setup(
     long_description_content_type="text/markdown",
     packages=packages,
     include_package_data=True,
-    setup_requires=['wheel'],
+    setup_requires=["wheel"],
     install_requires=requirements,
     url="https://github.com/ElucidataInc/polly-python",
-    download_url=("https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
-                  "polly_python-{a}-none-any.whl".format(a=get_version("polly/__init__.py")))
+    download_url=(
+        "https://elucidatainc.github.io/PublicAssets/builds/polly-python/"
+        "polly_python-{a}-none-any.whl".format(a=get_version("polly/__init__.py"))
+    ),
 )
