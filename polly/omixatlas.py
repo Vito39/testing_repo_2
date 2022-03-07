@@ -217,12 +217,12 @@ class OmixAtlas:
 
         return data_df
 
-    def get_schema_from_api(self, repo_id: str, schema_type_dict: dict) -> dict:
+    def get_schema_from_api(self, repo_key: str, schema_type_dict: dict) -> dict:
         """
-        Gets the schema of a repo id for the given repo_id and
+        Gets the schema of a repo id for the given repo_key and
         schema_type definition at the top level
         params:
-        repo_id => str
+        repo_key => str
         schema_type_dict => dictionary {schema_level:schema_type}
         example {'dataset': 'files', 'sample': 'gct_metadata'}
         Ouput:
@@ -242,72 +242,72 @@ class OmixAtlas:
         resp_dict = {}
         schema_base_url = f"{self.discover_url}/repositories"
         summary_query_param = "?response_format=summary"
-        if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
+        if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
             for key, val in schema_type_dict.items():
                 schema_type = val
-                dataset_url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}{summary_query_param}"
+                dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
                 resp_dict[key] = resp.json()
         else:
             raise paramException(
                 title="Param Error",
-                detail="repo_id and schema_type_dict are either empty or its datatype is not correct",
+                detail="repo_key and schema_type_dict are either empty or its datatype is not correct",
             )
         return resp_dict
 
     def get_schema(
-        self, repo_id: str, schema_level=["dataset", "sample"], data_type="others"
+        self, repo_key: str, schema_level=["dataset", "sample"], data_type="others"
     ) -> dict:
         """
-        Visualizing the schema of the repository depending on schema_type
-        schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-        metdata schema definition for sample:
-            schema:{
-                "<SOURCE>": {
-                    "<DATATYPE>": {
-                        "<FIELD_NAME>": {
-                        "type": "text | integer | object",
-                        "description": "string", (Min=1, Max=100)
-                        },
-                        ... other fields
-                    }
-                    ... other Data types
+        Input params:
+                repo_key => str => <owner_name.repo_name>/<repo_id>
+                schema_level => list => Default value => ['dataset', 'sample']
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
                 }
-                ... other Sources
-            }
-        schema_type : files i.e Global Fields (dataset)
-        PS :- ALL, ALL keys is not rigid for dataset level schema also
-        There it can be Source and dataset key also
-        metadata schema definition for a dataset:
-            schema:{
-                    "ALL": {
-                        "ALL": {
+            DataFrame consists of schema metadata summary
+            i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            metdata schema definition for sample:
+                schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
                             "<FIELD_NAME>": {
                             "type": "text | integer | object",
                             "description": "string", (Min=1, Max=100)
                             },
                             ... other fields
                         }
+                        ... other Data types
                     }
-        As Data Source and Data types segregation is not applicable
-        at Dataset Level Information (applicable for sample metadata only)
-        schema_type : gct_metadata i.e Row Fields (Feature)
-        Not there right now
-
-        Output:
-            {
-                'dataset':pd.DataFrame,
-                'sample':pd.DataFrame
-            }
+                    ... other Sources
+                }
+            ii) schema_type : files i.e Global Fields (dataset)
+            PS :- ALL, ALL keys is not rigid for dataset level schema also
+            There it can be <SOURCE> and <DATATYPE> key also
+            metadata schema definition for a dataset:
+                schema:{
+                        "ALL": {
+                            "ALL": {
+                                "<FIELD_NAME>": {
+                                "type": "text | integer | object",
+                                "description": "string", (Min=1, Max=100)
+                                },
+                                ... other fields
+                            }
+                        }
+            iii) schema_type : gct_metadata i.e Row Fields (Feature)
+            Not there right now
         """
 
         # get schema_type_dict
         schema_type_dict = self.get_schema_type(schema_level, data_type)
 
         # schema from API calls
-        if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_id, schema_type_dict)
+        if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
+            schema = self.get_schema_from_api(repo_key, schema_type_dict)
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -339,57 +339,57 @@ class OmixAtlas:
 
     @deprecated(reason="use function get_schema")
     def visualize_schema(
-        self, repo_id: str, schema_level=["dataset", "sample"], data_type="others"
+        self, repo_key: str, schema_level=["dataset", "sample"], data_type="others"
     ) -> dict:
         """
-        Visualizing the schema of the repository depending on schema_type
-        schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-        metdata schema definition for sample:
-            schema:{
-                "<SOURCE>": {
-                    "<DATATYPE>": {
-                        "<FIELD_NAME>": {
-                        "type": "text | integer | object",
-                        "description": "string", (Min=1, Max=100)
-                        },
-                        ... other fields
-                    }
-                    ... other Data types
+        Input params:
+                repo_key => str => <owner_name.repo_name>/<repo_id>
+                schema_level => list => Default value => ['dataset', 'sample']
+            Output:
+                {
+                    'dataset':pd.DataFrame,
+                    'sample':pd.DataFrame
                 }
-                ... other Sources
-            }
-        schema_type : files i.e Global Fields (dataset)
-        PS :- ALL, ALL keys is not rigid for dataset level schema also
-        There it can be Source and dataset key also
-        metadata schema definition for a dataset:
-            schema:{
-                    "ALL": {
-                        "ALL": {
+            DataFrame consists of schema metadata summary
+            i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            metdata schema definition for sample:
+                schema:{
+                    "<SOURCE>": {
+                        "<DATATYPE>": {
                             "<FIELD_NAME>": {
                             "type": "text | integer | object",
                             "description": "string", (Min=1, Max=100)
                             },
                             ... other fields
                         }
+                        ... other Data types
                     }
-        As Data Source and Data types segregation is not applicable
-        at Dataset Level Information (applicable for sample metadata only)
-        schema_type : gct_metadata i.e Row Fields (Feature)
-        Not there right now
-
-        Output:
-            {
-                'dataset':pd.DataFrame,
-                'sample':pd.DataFrame
-            }
+                    ... other Sources
+                }
+            ii) schema_type : files i.e Global Fields (dataset)
+            PS :- ALL, ALL keys is not rigid for dataset level schema also
+            There it can be <SOURCE> and <DATATYPE> key also
+            metadata schema definition for a dataset:
+                schema:{
+                        "ALL": {
+                            "ALL": {
+                                "<FIELD_NAME>": {
+                                "type": "text | integer | object",
+                                "description": "string", (Min=1, Max=100)
+                                },
+                                ... other fields
+                            }
+                        }
+            iii) schema_type : gct_metadata i.e Row Fields (Feature)
+            Not there right now
         """
 
         # get schema_type_dict
         schema_type_dict = self.get_schema_type(schema_level, data_type)
 
         # schema from API calls
-        if repo_id and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_id, schema_type_dict)
+        if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
+            schema = self.get_schema_from_api(repo_key, schema_type_dict)
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -407,7 +407,7 @@ class OmixAtlas:
 
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
-        Compute schema_type based on repo_id and schema_level
+        Compute schema_type based on data_type and schema_level
         schema_level         schema_type
         ------------------------------------
         dataset         ==   file
@@ -532,14 +532,14 @@ class OmixAtlas:
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
 
-    def insert_schema(self, repo_id: str, body: dict) -> dict:
+    def insert_schema(self, repo_key: str, body: dict) -> dict:
         """
         Params:
-            repo_id => str => ex:- "345652035432"
+            repo_key => str => <owner_name.repo_name> / <repo_id>
             body => dict
             {
                 "data": {
-                    "id": "<REPO_ID>",
+                    "id": "<REPO_KEY>",
                     "type": "schema",
                     "attributes": {
                     "schema_type": "files | gct_metadata | h5ad_metadata",
@@ -550,11 +550,11 @@ class OmixAtlas:
                 }
             }
         """
-        if repo_id and body and isinstance(body, dict):
+        if repo_key and body and isinstance(body, dict):
             body = json.dumps(body)
             try:
                 schema_base_url = f"{self.discover_url}/repositories"
-                url = f"{schema_base_url}/{repo_id}/schemas"
+                url = f"{schema_base_url}/{repo_key}/schemas"
                 resp = self.session.post(url, data=body)
                 error_handler(resp)
                 return resp.text
@@ -566,14 +566,14 @@ class OmixAtlas:
                 detail="Params are either empty or its datatype is not correct",
             )
 
-    def update_schema(self, repo_id: str, body: dict) -> dict:
+    def update_schema(self, repo_key: str, body: dict) -> dict:
         """
         Params:
-                repo_id => str => ex:- "345652035432"
+                repo_key => str => <owner_name.repo_name> / <repo_id>
                 body => dict
                 {
                     "data": {
-                        "id": "<REPO_ID>",
+                        "id": "<REPO_KEY>",
                         "type": "schema",
                         "attributes": {
                         "schema_type": "files | gct_metadata | h5ad_metadata",
@@ -586,8 +586,8 @@ class OmixAtlas:
         """
         schema_type = body["data"]["attributes"]["schema_type"]
         schema_base_url = f"{self.discover_url}/repositories"
-        url = f"{schema_base_url}/{repo_id}/schemas/{schema_type}"
-        if repo_id and body and isinstance(body, dict):
+        url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}"
+        if repo_key and body and isinstance(body, dict):
             body = json.dumps(body)
             try:
                 resp = self.session.patch(url, data=body)
