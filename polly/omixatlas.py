@@ -25,6 +25,7 @@ from polly.errors import (
     apiErrorException,
 )
 from deprecated import deprecated
+from polly.index_schema_level_conversion_const import indexes_schema_level_map
 
 QUERY_API_V1 = "v1"
 QUERY_API_V2 = "v2"
@@ -264,6 +265,14 @@ class OmixAtlas:
 
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
+                # making `schema_type` from the API response
+                # as the key of resp_dict
+                api_resp_dict = resp.json()
+                if "data" in api_resp_dict:
+                    if "attributes" in api_resp_dict:
+                        if "schema_type" in api_resp_dict["data"]["attributes"]:
+                            key = api_resp_dict["data"]["attributes"]["schema_type"]
+                print(f"key for the resp from api {key}")            
                 resp_dict[key] = resp.json()
         else:
             raise paramException(
@@ -328,10 +337,12 @@ class OmixAtlas:
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
-                if "dataset" in key and schema[key]["data"]["attributes"]["schema"]:
-                    schema[key] = schema[key]["data"]["attributes"]["schema"]
-                elif "sample" in key and schema[key]["data"]["attributes"]["schema"]:
-                    schema[key] = schema[key]["data"]["attributes"]["schema"]
+                if schema[key]["data"]["attributes"]["schema"]:
+                    schema[key] = schema[key]["data"]["attributes"]["schema"]  
+                # if "dataset" in key and schema[key]["data"]["attributes"]["schema"]:
+                #     schema[key] = schema[key]["data"]["attributes"]["schema"]
+                # elif "sample" in key and schema[key]["data"]["attributes"]["schema"]:
+                #     schema[key] = schema[key]["data"]["attributes"]["schema"]
 
         df_map = {}
         for key, val in schema.items():
@@ -344,15 +355,26 @@ class OmixAtlas:
         """
         Return schema data as named tuple
         """
-        if "dataset" in df_map and "sample" in df_map:
-            Schema = namedtuple("Schema", ["dataset", "sample"])
-            return Schema(df_map["dataset"], df_map["sample"])
-        elif "dataset" in df_map:
-            Schema = namedtuple("Schema", "dataset")
-            return Schema(df_map["dataset"])
-        elif "sample" in df_map:
-            Schema = namedtuple("Schema", "sample")
-            return Schema(df_map["sample"])
+        # change key value from index -> schema_level
+        # index and schema_level is in the const indexes_schema_level_map
+        schema_level_dict = {}
+        for key,value in df_map.items():
+            schema_level_key = indexes_schema_level_map[key]
+            schema_level_dict[schema_level_key] = value
+
+        print(f"---schema_level_dict---{schema_level_dict}---")
+        Schema = namedtuple("Schema", (key for key,value in schema_level_dict.items()))
+        return Schema(**schema_level_dict)
+
+        # if "dataset" in df_map and "sample" in df_map:
+        #     Schema = namedtuple("Schema", ["dataset", "sample"])
+        #     return Schema(df_map["dataset"], df_map["sample"])
+        # elif "dataset" in df_map:
+        #     Schema = namedtuple("Schema", "dataset")
+        #     return Schema(df_map["dataset"])
+        # elif "sample" in df_map:
+        #     Schema = namedtuple("Schema", "sample")
+        #     return Schema(df_map["sample"])
 
     @deprecated(reason="use function get_schema")
     def visualize_schema(
