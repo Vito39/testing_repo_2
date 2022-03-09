@@ -262,7 +262,6 @@ class OmixAtlas:
                     )
                 else:
                     dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
-
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
                 # making `schema_type` from the API response
