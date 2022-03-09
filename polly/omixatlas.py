@@ -217,7 +217,9 @@ class OmixAtlas:
 
         return data_df
 
-    def get_schema_from_api(self, repo_key: str, schema_type_dict: dict, source: str, data_type: str) -> dict:
+    def get_schema_from_api(
+        self, repo_key: str, schema_type_dict: dict, source: str, data_type: str
+    ) -> dict:
         """
         Gets the schema of a repo id for the given repo_key and
         schema_type definition at the top level
@@ -252,7 +254,11 @@ class OmixAtlas:
             for key, val in schema_type_dict.items():
                 schema_type = val
                 if filter_query_params:
-                    dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}{filter_query_params}"
+                    dataset_url = (
+                        f"{schema_base_url}/{repo_key}/"
+                        + "schemas/{schema_type}"
+                        + "{summary_query_param}{filter_query_params}"
+                    )
                 else:
                     dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
                 resp = self.session.get(dataset_url)
@@ -316,7 +322,9 @@ class OmixAtlas:
 
         # schema from API calls
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_key, schema_type_dict, source, data_type)
+            schema = self.get_schema_from_api(
+                repo_key, schema_type_dict, source, data_type
+            )
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -398,7 +406,9 @@ class OmixAtlas:
 
         # schema from API calls
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_key, schema_type_dict, source, data_type)
+            schema = self.get_schema_from_api(
+                repo_key, schema_type_dict, source, data_type
+            )
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
