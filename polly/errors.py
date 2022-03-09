@@ -128,6 +128,13 @@ class apiErrorException(BaseExceptionError):
         if detail:
             self.detail = detail
 
+class invalidApiResponseException(BaseExceptionError):
+    def __init__(self, title=None, detail=None):
+        if title:
+            self.title = title
+        if detail:
+            self.detail = detail
+
 
 def error_handler(response):
     if has_error_message(response):

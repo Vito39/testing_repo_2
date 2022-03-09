@@ -23,6 +23,7 @@ from polly.errors import (
     paramException,
     wrongParamException,
     apiErrorException,
+    invalidApiResponseException
 )
 from deprecated import deprecated
 from polly.index_schema_level_conversion_const import indexes_schema_level_map
@@ -267,12 +268,28 @@ class OmixAtlas:
                 # making `schema_type` from the API response
                 # as the key of resp_dict
                 api_resp_dict = resp.json()
+                # print(f"----api resp dict---{api_resp_dict}---")
                 if "data" in api_resp_dict:
-                    if "attributes" in api_resp_dict:
+                    if "attributes" in api_resp_dict["data"]:
                         if "schema_type" in api_resp_dict["data"]["attributes"]:
-                            key = api_resp_dict["data"]["attributes"]["schema_type"]
-                print(f"key for the resp from api {key}")            
-                resp_dict[key] = resp.json()
+                            schema_type_key = api_resp_dict["data"]["attributes"]["schema_type"]
+                        else:
+                            raise invalidApiResponseException(
+                                title="schema_type not present",
+                                detail="schema_type not present in the repository schema"
+                            )
+                    else:
+                        raise invalidApiResponseException(
+                            title="attributes not present",
+                            detail="attributes not present in the repository schema"
+                        )
+                else:
+                    raise invalidApiResponseException(
+                        title="data key not present",
+                        detail="data key not present in the repository schema"
+                    )
+                # print(f"schema_type key for the resp from api--: {schema_type_key}")            
+                resp_dict[schema_type_key] = resp.json()
         else:
             raise paramException(
                 title="Param Error",
@@ -335,14 +352,14 @@ class OmixAtlas:
             )
 
         if schema and isinstance(schema, Dict):
-            for key, val in schema_type_dict.items():
+            for key, val in schema.items():
                 if schema[key]["data"]["attributes"]["schema"]:
                     schema[key] = schema[key]["data"]["attributes"]["schema"]  
                 # if "dataset" in key and schema[key]["data"]["attributes"]["schema"]:
                 #     schema[key] = schema[key]["data"]["attributes"]["schema"]
                 # elif "sample" in key and schema[key]["data"]["attributes"]["schema"]:
                 #     schema[key] = schema[key]["data"]["attributes"]["schema"]
-
+        # print(f"------step 2--------api schema resp after pruning : {schema}")
         df_map = {}
         for key, val in schema.items():
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
@@ -356,24 +373,14 @@ class OmixAtlas:
         """
         # change key value from index -> schema_level
         # index and schema_level is in the const indexes_schema_level_map
+        # print(f"----dfmap: {df_map}---")
         schema_level_dict = {}
         for key,value in df_map.items():
             schema_level_key = indexes_schema_level_map[key]
             schema_level_dict[schema_level_key] = value
-
-        print(f"---schema_level_dict---{schema_level_dict}---")
+        # print(f"---schema_level_dict---{schema_level_dict}---")
         Schema = namedtuple("Schema", (key for key,value in schema_level_dict.items()))
         return Schema(**schema_level_dict)
-
-        # if "dataset" in df_map and "sample" in df_map:
-        #     Schema = namedtuple("Schema", ["dataset", "sample"])
-        #     return Schema(df_map["dataset"], df_map["sample"])
-        # elif "dataset" in df_map:
-        #     Schema = namedtuple("Schema", "dataset")
-        #     return Schema(df_map["dataset"])
-        # elif "sample" in df_map:
-        #     Schema = namedtuple("Schema", "sample")
-        #     return Schema(df_map["sample"])
 
     @deprecated(reason="use function get_schema")
     def visualize_schema(
@@ -431,6 +438,7 @@ class OmixAtlas:
                 repo_key, schema_type_dict, source, data_type
             )
 
+        print("------step 1--------")
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
                 if "dataset" in key and schema[key]["data"]["attributes"]["schema"]:
