@@ -268,7 +268,6 @@ class OmixAtlas:
                 # making `schema_type` from the API response
                 # as the key of resp_dict
                 api_resp_dict = resp.json()
-                # print(f"----api resp dict---{api_resp_dict}---")
                 if "data" in api_resp_dict:
                     if "attributes" in api_resp_dict["data"]:
                         if "schema_type" in api_resp_dict["data"]["attributes"]:
@@ -290,7 +289,6 @@ class OmixAtlas:
                         title="data key not present",
                         detail="data key not present in the repository schema",
                     )
-                # print(f"schema_type key for the resp from api--: {schema_type_key}")
                 resp_dict[schema_type_key] = resp.json()
         else:
             raise paramException(
@@ -356,7 +354,6 @@ class OmixAtlas:
             for key, val in schema.items():
                 if schema[key]["data"]["attributes"]["schema"]:
                     schema[key] = schema[key]["data"]["attributes"]["schema"]
-        # print(f"------step 2--------api schema resp after pruning : {schema}")
         df_map = {}
         for key, val in schema.items():
             flatten_dict = self.flatten_nested_schema_dict(schema[key])
@@ -375,7 +372,6 @@ class OmixAtlas:
         for key, value in df_map.items():
             schema_level_key = indexes_schema_level_map[key]
             schema_level_dict[schema_level_key] = value
-        # print(f"---schema_level_dict---{schema_level_dict}---")
         Schema = namedtuple("Schema", (key for key, value in schema_level_dict.items()))
         return Schema(**schema_level_dict)
 
