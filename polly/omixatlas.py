@@ -256,11 +256,12 @@ class OmixAtlas:
                 if filter_query_params:
                     dataset_url = (
                         f"{schema_base_url}/{repo_key}/"
-                        + "schemas/{schema_type}"
-                        + "{summary_query_param}{filter_query_params}"
+                        + f"schemas/{schema_type}"
+                        + f"{summary_query_param}{filter_query_params}"
                     )
                 else:
                     dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
+
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
                 resp_dict[key] = resp.json()
@@ -319,7 +320,6 @@ class OmixAtlas:
 
         # get schema_type_dict
         schema_type_dict = self.get_schema_type(schema_level, data_type)
-
         # schema from API calls
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
             schema = self.get_schema_from_api(
