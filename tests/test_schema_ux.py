@@ -16,7 +16,11 @@ def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
     repo_id = "1622526550765"
     schema_type_dict = {"dataset": "files", "sample": "gct_metadata"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema = schema_obj.get_schema_from_api(repo_id, schema_type_dict)
+    source = ""
+    data_type = ""
+    schema = schema_obj.get_schema_from_api(
+        repo_id, schema_type_dict, source, data_type
+    )
     assert isinstance(schema, Dict)
     assert schema["dataset"] is not None
     assert schema["sample"] is not None
@@ -26,7 +30,11 @@ def test_get_schema_with_repo_id_and_sample_schema_param():
     repo_id = "1622526550765"
     schema_type_dict = {"sample": "gct_metadata"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema = schema_obj.get_schema_from_api(repo_id, schema_type_dict)
+    source = ""
+    data_type = ""
+    schema = schema_obj.get_schema_from_api(
+        repo_id, schema_type_dict, source, data_type
+    )
     assert isinstance(schema, Dict)
     assert schema["sample"] is not None
 
@@ -35,7 +43,11 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
     repo_id = "1622526550765"
     schema_type_dict = {"dataset": "files"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
-    schema = schema_obj.get_schema_from_api(repo_id, schema_type_dict)
+    source = ""
+    data_type = ""
+    schema = schema_obj.get_schema_from_api(
+        repo_id, schema_type_dict, source, data_type
+    )
     assert isinstance(schema, Dict)
     assert schema["dataset"] is not None
 

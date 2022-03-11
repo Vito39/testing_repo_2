@@ -217,7 +217,9 @@ class OmixAtlas:
 
         return data_df
 
-    def get_schema_from_api(self, repo_key: str, schema_type_dict: dict) -> dict:
+    def get_schema_from_api(
+        self, repo_key: str, schema_type_dict: dict, source: str, data_type: str
+    ) -> dict:
         """
         Gets the schema of a repo id for the given repo_key and
         schema_type definition at the top level
@@ -242,10 +244,24 @@ class OmixAtlas:
         resp_dict = {}
         schema_base_url = f"{self.discover_url}/repositories"
         summary_query_param = "?response_format=summary"
+        filter_query_params = ""
+        if source:
+            if data_type:
+                filter_query_params = f"&source={source}&datatype={data_type}"
+            else:
+                filter_query_params = f"&source={source}"
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
             for key, val in schema_type_dict.items():
                 schema_type = val
-                dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
+                if filter_query_params:
+                    dataset_url = (
+                        f"{schema_base_url}/{repo_key}/"
+                        + f"schemas/{schema_type}"
+                        + f"{summary_query_param}{filter_query_params}"
+                    )
+                else:
+                    dataset_url = f"{schema_base_url}/{repo_key}/schemas/{schema_type}{summary_query_param}"
+
                 resp = self.session.get(dataset_url)
                 error_handler(resp)
                 resp_dict[key] = resp.json()
@@ -257,7 +273,7 @@ class OmixAtlas:
         return resp_dict
 
     def get_schema(
-        self, repo_key: str, schema_level=["dataset", "sample"], data_type="others"
+        self, repo_key: str, schema_level=["dataset", "sample"], source="", data_type=""
     ) -> dict:
         """
         Input params:
@@ -304,10 +320,11 @@ class OmixAtlas:
 
         # get schema_type_dict
         schema_type_dict = self.get_schema_type(schema_level, data_type)
-
         # schema from API calls
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_key, schema_type_dict)
+            schema = self.get_schema_from_api(
+                repo_key, schema_type_dict, source, data_type
+            )
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -339,7 +356,7 @@ class OmixAtlas:
 
     @deprecated(reason="use function get_schema")
     def visualize_schema(
-        self, repo_key: str, schema_level=["dataset", "sample"], data_type="others"
+        self, repo_key: str, schema_level=["dataset", "sample"], source="", data_type=""
     ) -> dict:
         """
         Input params:
@@ -389,7 +406,9 @@ class OmixAtlas:
 
         # schema from API calls
         if repo_key and schema_type_dict and isinstance(schema_type_dict, Dict):
-            schema = self.get_schema_from_api(repo_key, schema_type_dict)
+            schema = self.get_schema_from_api(
+                repo_key, schema_type_dict, source, data_type
+            )
 
         if schema and isinstance(schema, Dict):
             for key, val in schema_type_dict.items():
@@ -419,7 +438,7 @@ class OmixAtlas:
         """
         if schema_level and isinstance(schema_level, list):
             if "dataset" in schema_level and "sample" in schema_level:
-                if data_type == "others":
+                if data_type != "single_cell" or data_type == "":
                     schema_type_dict = {"dataset": "files", "sample": "gct_metadata"}
                 elif data_type == "single_cell":
                     schema_type_dict = {"dataset": "files", "sample": "h5ad_metadata"}
@@ -432,7 +451,7 @@ class OmixAtlas:
                 if "dataset" in schema_level:
                     schema_type_dict = {"dataset": "files"}
                 elif "sample" in schema_level:
-                    if data_type == "others":
+                    if data_type != "single_cell" or data_type == "":
                         schema_type_dict = {"sample": "gct_metadata"}
                     elif data_type == "single_cell":
                         schema_type_dict = {"sample": "h5ad_metadata"}
