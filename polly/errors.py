@@ -28,10 +28,7 @@ class BaseExceptionError(Exception):
         self.detail = detail
 
     def as_dict(self):
-        return {
-            "title": self.title,
-            "detail": self.detail
-        }
+        return {"title": self.title, "detail": self.detail}
 
     def as_str(self):
         exception_str = "Exception Type : " + self.__class__.__name__
@@ -60,7 +57,7 @@ class UnfinishedQueryException(Exception):
         self.query_id = query_id
 
     def __str__(self):
-        return f"Query \"{self.query_id}\" has not finished executing"
+        return f'Query "{self.query_id}" has not finished executing'
 
 
 class QueryFailedException(Exception):
@@ -132,6 +129,14 @@ class apiErrorException(BaseExceptionError):
             self.detail = detail
 
 
+class invalidApiResponseException(BaseExceptionError):
+    def __init__(self, title=None, detail=None):
+        if title:
+            self.title = title
+        if detail:
+            self.detail = detail
+
+
 def error_handler(response):
     if has_error_message(response):
         title, detail = extract_json_api_error(response)
@@ -145,7 +150,7 @@ def error_handler(response):
 def has_error_message(response):
     try:
         for key in response.json().keys():
-            if key in {'error', 'errors'}:
+            if key in {"error", "errors"}:
                 return True
         return False
     except Exception:
@@ -153,9 +158,9 @@ def has_error_message(response):
 
 
 def extract_json_api_error(response):
-    error = response.json().get('error')
+    error = response.json().get("error")
     if error is None:
-        error = response.json().get('errors')[0]
+        error = response.json().get("errors")[0]
 
     title = error.get("title")
     detail = error.get("detail")
@@ -163,9 +168,9 @@ def extract_json_api_error(response):
 
 
 def extract_error_message_details(error_response):
-    error = error_response.json().get('error')
+    error = error_response.json().get("error")
     if error is None:
-        error = error_response.json().get('errors')[0]
+        error = error_response.json().get("errors")[0]
 
     type_ = error.get("type", None) or error.get("code", None)
     reason = error.get("reason", None) or error.get("title", None)

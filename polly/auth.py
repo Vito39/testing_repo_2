@@ -1,5 +1,6 @@
 from polly.session import PollySession
-link_doc = 'https://docs.elucidata.io/OmixAtlas/Polly%20Python.html'
+
+link_doc = "https://docs.elucidata.io/OmixAtlas/Polly%20Python.html"
 
 
 class UnauthorizedException(Exception):
@@ -11,11 +12,11 @@ class Polly:
     default_session = None
 
     @classmethod
-    def auth(cls, token, env='polly'):
+    def auth(cls, token, env="polly"):
         cls.default_session = PollySession(token, env=env)
 
     @classmethod
-    def get_session(cls, token=None, env='polly'):
+    def get_session(cls, token=None, env="polly"):
         if not token:
             if not cls.default_session:
                 raise UnauthorizedException
