@@ -22,8 +22,8 @@ def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
         repo_id, schema_type_dict, source, data_type
     )
     assert isinstance(schema, Dict)
-    assert schema["dataset"] is not None
-    assert schema["sample"] is not None
+    assert schema["files"] is not None
+    assert schema["gct_metadata"] is not None
 
 
 def test_get_schema_with_repo_id_and_sample_schema_param():
@@ -36,7 +36,7 @@ def test_get_schema_with_repo_id_and_sample_schema_param():
         repo_id, schema_type_dict, source, data_type
     )
     assert isinstance(schema, Dict)
-    assert schema["sample"] is not None
+    assert schema["gct_metadata"] is not None
 
 
 def test_get_schema_with_repo_id_and_dataset_schema_param():
@@ -49,7 +49,7 @@ def test_get_schema_with_repo_id_and_dataset_schema_param():
         repo_id, schema_type_dict, source, data_type
     )
     assert isinstance(schema, Dict)
-    assert schema["dataset"] is not None
+    assert schema["files"] is not None
 
 
 def test_get_schema_type_dataset_schema_level_single_cell_bool_false_as_params():
