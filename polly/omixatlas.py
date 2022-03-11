@@ -367,7 +367,6 @@ class OmixAtlas:
         """
         # change key value from index -> schema_level
         # index and schema_level is in the const indexes_schema_level_map
-        # print(f"----dfmap: {df_map}---")
         schema_level_dict = {}
         for key, value in df_map.items():
             schema_level_key = indexes_schema_level_map[key]
