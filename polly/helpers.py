@@ -160,3 +160,63 @@ def get_data_type(self, url: str, payload: dict) -> str:
     if not data_type:
         raise MissingKeyException("data_type")
     return data_type
+
+def make_discover_request(method, url, **kwargs):
+    """ 
+        Call requests.request() with headers required for authentication and
+        json config.
+        params:
+            method: HttpMethod eg., GET, POST, etc..
+            url:    httpUrl
+            kwargs: keyword arguments supported by requests.request
+        response:
+            <requests.models.Response> object
+    """
+    import requests
+
+    if not kwargs.get('headers'):
+        kwargs['headers'] = {}
+    kwargs['headers']['Content-Type'] = 'application/vnd.api+json'
+    kwargs['headers']['Cookie'] = get_cookie()
+    return requests.request(method, url, **kwargs)
+
+
+
+def get_cookie():
+    id_key = __get_cookie_id_token_key()
+    id_value = os.getenv('POLLY_ID_TOKEN')
+    refresh_key = __get_cookie_refresh_token_key()
+    refresh_value = os.getenv('POLLY_REFRESH_TOKEN')
+    if id_key and id_value and refresh_key and refresh_value:
+        cookie = f'{id_key}={id_value};{refresh_key}={refresh_value}'
+        return cookie
+    else:
+        raise EnvironmentError('PollyDiscover: No valid cookies are present')
+
+
+def __get_cookie_id_token_key():
+    key = os.getenv('POLLY_ID_TOKEN_KEY')
+    if not key:
+        prefix = __get_cookie_token_key_prefix()
+        key = f'{prefix}.idToken'
+    return key
+
+
+def __get_cookie_refresh_token_key():
+    key = os.getenv('POLLY_REFRESH_TOKEN_KEY')
+    if not key:
+        prefix = __get_cookie_token_key_prefix()
+        key = f'{prefix}.refreshToken'
+    return key
+
+
+def __get_cookie_token_key_prefix():
+    prefix = None
+    aud = os.getenv('POLLY_AUD')
+    sub = os.getenv('POLLY_SUB')
+    if aud and sub:
+        prefix = f'CognitoIdentityServiceProvider.{aud}.{sub}'
+    else:
+        raise EnvironmentError("Missing env vars for cookie creation - "
+                               "POLLY_AUD/POLLY_SUB")
+    return prefix
