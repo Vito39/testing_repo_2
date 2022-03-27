@@ -28,15 +28,15 @@ def get_curr_exec_env():
     return env
 
 
-try:
-    DISCOVER_API_URL = __get_discover_api_url()
-    CONSTANTS_URL = DISCOVER_API_URL+'/constants'
-    resp = make_discover_request('GET', CONSTANTS_URL)
-    CONSTANTS = resp.json()['data']['attributes']
-    ELASTIC_DOMAIN_URL = CONSTANTS['ELASTIC_DOMAIN_URL']
-    S3_DATALAKE_BUCKET = CONSTANTS['S3_DATALAKE_BUCKET']
-    AWS_REGION = CONSTANTS['AWS_REGION']
-    TOKENS_URL = CONSTANTS['REPOSITORY_TOKENS_URL']
-except Exception:
-    raise Exception('Unable to set Discover Configuration. '
-                    'Contact Administrator')
+# try:
+#     DISCOVER_API_URL = __get_discover_api_url()
+#     CONSTANTS_URL = DISCOVER_API_URL+'/constants'
+#     resp = make_discover_request('GET', CONSTANTS_URL)
+#     CONSTANTS = resp.json()['data']['attributes']
+#     ELASTIC_DOMAIN_URL = CONSTANTS['ELASTIC_DOMAIN_URL']
+#     S3_DATALAKE_BUCKET = CONSTANTS['S3_DATALAKE_BUCKET']
+#     AWS_REGION = CONSTANTS['AWS_REGION']
+#     TOKENS_URL = CONSTANTS['REPOSITORY_TOKENS_URL']
+# except Exception:
+#     raise Exception('Unable to set Discover Configuration. '
+#                     'Contact Administrator')

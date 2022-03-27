@@ -14,10 +14,6 @@ from polly.errors import (
     paramException,
 )
 
-devpolly_token = "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.TRzwIPGWSPqP6dr1Pu3J0AgHbmb9u7cmg-6bSSo-8LTZE9nv_c9G5YDEFCqKagNRfd4OxkVp3lH50LUEN25jQnmpn6TQwOQfVJUH5CF-Z70B2uZaAAYicFi_nfjltZR6sgf8xd6a5StjALyGwidU97o8_yBOfPipxW6hY-3D94MgceL8AjLW3GhHtX2eda3h2uFVb1-NCSFcJIzKjy_a-Zrn9yiOPog57-nyG79TOZamyGQ4zxJrOUTVFAnnlhwYkBtDlUBl5KkZVNNUa5OKauwxKRwkjCNc2IaqQRlA6Hj_rNAeEUaGZIhRelZYWj9RoKFBx91GoG7z72JUvJiScg.KWS1Z1G8uQUnOGlR.6knmdcKmV9qRDM1lwpIWQcFwpCM2pDAl9kKODS-jtoUGZAP2ONB9BDwdgYJIv0LfwVBix8dAAamar3jAh0_UDT-A75YSX0QzfTsEPwl2qPCTQpvt8oDYU_1b1GCkeUMNhMCj18hJ0X_q3nyqVAy_ZEoZQCb4LAuqWrts8vNY6SIideeXeStYGEcJnXWAVf5wvWUuiVgLVa5m3dX53D9jAGzltM0HqazTL7jpXO0G5AFaFziPbXBcM0quaV6vS5S96d3iAp-OFud5YzH4u7rl3eC8X_KsDLlcuJ8SQMtBMIXZlVSq-eKvL0kc_5ugOXB19JAKlV6Ie4D8s7X7N33LxO0TF4hc6BVBdV4eLmhdF59teZTSHB2dzqVl_0nCzjXArJs1Yp4SUTpqdXpQK4w_7PPUwSUrZt4EY93PQBO4Pi6FDStsvchZqqcAAUVAkPliT-PVTh6wnxI--XO71criYtQByeyn1rRJ5NZ_LaYA9sbLvv46-O7T7o5zjYjZNMvINP6yVM6xYno6EeVfcVivk6PeJ1rAk2ihwjCAH-j8QZ-M-is6lKYeaKyT63Ol9H8Br9zF_26Nxpk5phSJ2Z93KWwXKjGF4Il6TFuX5MC9gfC4_41UDSYHqgs4c3TB1XIWQb6q8MlD7M166GOWIrMVA-1DCb-4VtyPMTHfUpnQOf-Jny8uVhsec8Vda2V2d-zdlOKB_wrGuAkrMsasfSvntR2kalJRTYiYV4aBJeTS1sB4_2rkI0qVe1z4Re5yCfCxUcQITijvrkKX10rQl_2-y1K7fGHTlzrIKATgnfX9R6t0y-rGcA2Ojl_XNGFS1mu499KeZpz35oSnwOl5Ixp6KYmMvA1_Gkk1zkr_xNhCGbTH3Q1NVtWZzsPiH21y5ixBFa_NXIbNXZiPHgDKD7Vivu7yikikLKxHVxZ8juNiZB3TEvxksqfegMUbRwnSWwiON5u1pCy2dYo_8PMzqpaz9KF5rWK57_oC349GiuVHo03yZbEsTxM2SP_yxfnzTdu5UQnyRjBAK3wEOosF80h5QDfSiQCE9De-3u0RC3D9R6q469AI_Z_-Pde1qLEoDbVyXf2wVibDIuEUwP3wE5kSwd5t6iDyBHz82KGxH4O8CsP9EIOMwI5ft_H4DfSMQUCWE6WTWKmJH-Wmnkd3IizxOkiAl9EBRikxJBzZKN8WUkGyWjenrq5VOpqio7Byz-O4ZZW78j409mlHJ2SxBck7xn8BATZ6fRy6dHS1ndsyHGOZYdlYhZ7KFZpNWG2FLBQlGS-q-v1p_yofb1drs_bffdM72qznYqp4XTomJosDb3s2zRwL3DFE_p3O6O7MLWqgi3jX7EPYydu2w7EYcQw.4PbeKTbr7ES_c4n7t76EgA"
-
-
-
 def make_path(prefix: any, postfix: any) -> str:
     """
     Function to make and return a valid path
@@ -179,50 +175,50 @@ def make_discover_request(method, url, **kwargs):
 
     if not kwargs.get('headers'):
         kwargs['headers'] = {}
-    kwargs['headers']['Content-Type'] = 'application/vnd.api+json'
-    kwargs['headers']['Cookie'] = get_cookie()
+    # kwargs['headers']['Content-Type'] = 'application/vnd.api+json'
+    # kwargs['headers']['Cookie'] = get_cookie()
     return requests.request(method, url, **kwargs)
 
 
 
-def get_cookie():
-    # id_key = __get_cookie_id_token_key()
-    # id_value = os.getenv('POLLY_ID_TOKEN')
-    # refresh_key = __get_cookie_refresh_token_key()
-    refresh_key = "refreshToken"
-    refresh_value = devpolly_token
-    if refresh_key and refresh_value:
-    # if id_key and id_value and refresh_key and refresh_value:
-        # cookie = f'{id_key}={id_value};{refresh_key}={refresh_value}'
-        cookie = f'{refresh_key}={refresh_value}'
-        return cookie
-    else:
-        raise EnvironmentError('PollyDiscover: No valid cookies are present')
+# def get_cookie():
+#     # id_key = __get_cookie_id_token_key()
+#     # id_value = os.getenv('POLLY_ID_TOKEN')
+#     # refresh_key = __get_cookie_refresh_token_key()
+#     refresh_key = "refreshToken"
+#     refresh_value = devpolly_token
+#     if refresh_key and refresh_value:
+#     # if id_key and id_value and refresh_key and refresh_value:
+#         # cookie = f'{id_key}={id_value};{refresh_key}={refresh_value}'
+#         cookie = f'{refresh_key}={refresh_value}'
+#         return cookie
+#     else:
+#         raise EnvironmentError('PollyDiscover: No valid cookies are present')
 
 
-def __get_cookie_id_token_key():
-    key = os.getenv('POLLY_ID_TOKEN_KEY')
-    if not key:
-        prefix = __get_cookie_token_key_prefix()
-        key = f'{prefix}.idToken'
-    return key
+# def __get_cookie_id_token_key():
+#     key = os.getenv('POLLY_ID_TOKEN_KEY')
+#     if not key:
+#         prefix = __get_cookie_token_key_prefix()
+#         key = f'{prefix}.idToken'
+#     return key
 
 
-def __get_cookie_refresh_token_key():
-    key = os.getenv('POLLY_REFRESH_TOKEN_KEY')
-    if not key:
-        prefix = __get_cookie_token_key_prefix()
-        key = f'{prefix}.refreshToken'
-    return key
+# def __get_cookie_refresh_token_key():
+#     key = os.getenv('POLLY_REFRESH_TOKEN_KEY')
+#     if not key:
+#         prefix = __get_cookie_token_key_prefix()
+#         key = f'{prefix}.refreshToken'
+#     return key
 
 
-def __get_cookie_token_key_prefix():
-    prefix = None
-    aud = os.getenv('POLLY_AUD')
-    sub = os.getenv('POLLY_SUB')
-    if aud and sub:
-        prefix = f'CognitoIdentityServiceProvider.{aud}.{sub}'
-    else:
-        raise EnvironmentError("Missing env vars for cookie creation - "
-                               "POLLY_AUD/POLLY_SUB")
-    return prefix
+# def __get_cookie_token_key_prefix():
+#     prefix = None
+#     aud = os.getenv('POLLY_AUD')
+#     sub = os.getenv('POLLY_SUB')
+#     if aud and sub:
+#         prefix = f'CognitoIdentityServiceProvider.{aud}.{sub}'
+#     else:
+#         raise EnvironmentError("Missing env vars for cookie creation - "
+#                                "POLLY_AUD/POLLY_SUB")
+#     return prefix

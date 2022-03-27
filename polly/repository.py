@@ -1,8 +1,10 @@
 import json
+from polly.auth import Polly
 from polly.helpers import make_discover_request
-from polly.env import DISCOVER_API_URL
+# from polly.env import DISCOVER_API_URL
 from polly import constants as const
-from polly.package import Package
+# from polly.package import Package
+from polly.errors import error_handler
 from polly import repository_validators as validator
 
 class Repository(object):
@@ -10,9 +12,11 @@ class Repository(object):
     Repository Model
     """
 
-    _REPOSITORY_URL = DISCOVER_API_URL + const.REPOSITORIES_ENDPOINT
+    # _REPOSITORY_URL = DISCOVER_API_URL + const.REPOSITORIES_ENDPOINT
 
-    def __init__(self) -> None:
+    def __init__(self, token=None, env="polly") -> None:
+        self.session = Polly.get_session(token, env=env)
+        self.discover_url = f"https://api.discover.{self.session.env}.elucidata.io"
         self._frontend_info = {}
         self._components = []
         self._studio_presets = []
@@ -85,24 +89,29 @@ class Repository(object):
         """
         if self.repo_id:
             raise Exception("Error: Repository already exists")
-
+        print("----1------")
         payload = get_repository_payload()
         payload["data"]["attributes"]["repo_name"] = self.repo_name
         payload["data"]["attributes"]["frontend_info"] = self.frontend_info
         payload["data"]["attributes"]["components"] = self.components
         payload["data"]["attributes"]["studio_presets"] = self.studio_presets
-
+        print("-----2-------")
         indexes = payload["data"]["attributes"]["indexes"]
         for key in indexes.keys():
             indexes[key] = f"{self.repo_name}_{key}"
-
+        print("-----3-------")
         validator.validate_repository_schema(payload["data"]["attributes"])
-
-        resp = make_discover_request("POST", self._REPOSITORY_URL, json=payload)
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
+        print(f"---repository url----{repository_url}---")
+        resp = self.session.post(repository_url, json=payload)
+        print("-----4-------")
+        error_handler(resp)
+        # resp = make_discover_request("POST", repository_url, json=payload)
+        print("-----5-------")
         if resp.status_code != const.CREATED:
             raise Exception(resp.text)
-
-        self._repo_id = resp.json()["data"]["id"]
+        else:
+            self._repo_id = resp.json()["data"]["id"]
 
     def _update(self):
         """
@@ -127,9 +136,12 @@ class Repository(object):
             payload["data"]["attributes"], update=True
         )
 
-        resp = make_discover_request(
-            "PATCH", f"{self._REPOSITORY_URL}/{self.repo_id}", json=payload
-        )
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
+        resp = self.session.patch(repository_url)
+        error_handler(resp)
+        # resp = make_discover_request(
+        #     "PATCH", f"{repository_url}/{self.repo_id}", json=payload
+        # )
         if resp.status_code != const.OK:
             raise Exception(resp.text)
 
@@ -139,10 +151,10 @@ class Repository(object):
         """
         return self._update() if self.repo_id else self._create()
 
-    @classmethod
-    def get(cls, repo_id):
+    
+    def get(self, repo_id):
         """
-        Return a Repository by a give ID
+        Return a Repository by a given ID
 
         Args:
             repo_id (int): Repository ID
@@ -153,39 +165,42 @@ class Repository(object):
         Returns:
             repo (Repository): Repository object
         """
-        response = make_discover_request(
-            "GET", f"{cls._REPOSITORY_URL}/{repo_id}"
-        )
-
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
+        response = self.session.post(repository_url)
+        error_handler(response)
+        # response = make_discover_request(
+        #     "GET", f"{repository_url}/{repo_id}"
+        # )
         if response.status_code != const.OK:
             raise Exception(response.text)
 
-        return cls.as_object(response.json()["data"]["attributes"])
+        return response.json()["data"]["attributes"]
+        # return cls.as_object(response.json()["data"]["attributes"])
 
-    def add_package(self, package_name):
-        """
-        Create a new package in the repository
+    # def add_package(self, package_name):
+    #     """
+    #     Create a new package in the repository
 
-        Args:
-            package_name (str): Package to be created
+    #     Args:
+    #         package_name (str): Package to be created
 
-        Returns:
-            package (Package): created package
-        """
-        package = Package(package_name, self.repo_id)
-        return package.create()
+    #     Returns:
+    #         package (Package): created package
+    #     """
+    #     package = Package(package_name, self.repo_id)
+    #     return package.create()
 
-    def get_package(self):
-        """
-        Return Package for current Repository
+    # def get_package(self):
+    #     """
+    #     Return Package for current Repository
 
-        Returns:
-            dict: Package
-        """
-        package = Package.get(self.repo_id)
-        if package is None:
-            raise Exception("No package exists for this repository")
-        return package
+    #     Returns:
+    #         dict: Package
+    #     """
+    #     package = Package.get(self.repo_id)
+    #     if package is None:
+    #         raise Exception("No package exists for this repository")
+    #     return package
 
     @staticmethod
     def as_object(repo: dict):
