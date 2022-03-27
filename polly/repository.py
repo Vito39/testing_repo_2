@@ -3,6 +3,7 @@ from polly.helpers import make_discover_request
 from polly.env import DISCOVER_API_URL
 from polly import constants as const
 from polly.package import Package
+from polly import repository_validators as validator
 
 class Repository(object):
     """

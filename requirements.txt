@@ -16,3 +16,4 @@ elucidatacloudpathlib==0.6.6
 cmapPy
 Deprecated
 black
+Cerberus==1.3.2

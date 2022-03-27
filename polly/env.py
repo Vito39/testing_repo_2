@@ -15,7 +15,7 @@ def __get_discover_api_url():
 
 
 def get_curr_exec_env():
-    env = os.getenv('POLLY_ENV')
+    env = "dev"
     if not env:
         POLLY_API_URL = os.getenv('POLLY_TYPE')
         if POLLY_API_URL:
