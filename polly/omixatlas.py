@@ -798,11 +798,12 @@ class OmixAtlas:
             if resp.json()["data"]["id"]:
                 repo_id = resp.json()["data"]["id"]
                 print(f" OmixAtlas {repo_id} Created  ")
+                #return as DF
+                # return resp.json()
+                return self.repo_creation_response_df(resp.json())
             else:
                 ValueError("Repository creation response is in Incorrect format")
-            #return as DF
-            # return resp.json()
-            return self.repo_creation_response_df(resp.json())
+            
 
     def repo_creation_response_df(self, original_response):
         """
