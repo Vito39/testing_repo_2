@@ -746,7 +746,7 @@ class OmixAtlas:
         logging.info("File converted successfully!")
     
 
-    def create(self, display_name: str, description: str, repo_name = "", initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
+    def create(self, display_name: str, description: str, repo_name = "", image_url="", initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
         """
             User facing in this release are only 1st 3 params and image_url(to be added)
         """
@@ -756,6 +756,10 @@ class OmixAtlas:
         frontend_info["description"] = description
         frontend_info["display_name"] = display_name
         frontend_info["explorer_enabled"] = explorer_enabled
+        if image_url:
+            frontend_info["icon_image_url"] = image_url
+        else:
+            frontend_info["icon_image_url"] = "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
         if initials:
             frontend_info["initials"] = initials
         else:
