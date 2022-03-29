@@ -196,3 +196,20 @@
     #             }
     #         }    
 
+ for omixatlas_key, omixatlas_val in all_omixatlases.items():
+            print(f"----{omixatlas_val}----")
+            omixatlases = omixatlas_val
+
+all_omixatlases = self.get_all_omixatlas()
+        omixatlases = all_omixatlases.get('data')
+        # print("----1-----")
+        # search for passed repo_name in all omixatlases
+        # to see if it exists from before or not
+        # for omixatlas in omixatlases:
+        #     for key, value in omixatlas.items():
+        #         if key == "attributes":
+        #             attribute_data = value
+        #             for attribute_key, attribute_value in attribute_data.items():
+        #                 if attribute_key == "repo_name":
+        #                     if repo_name == attribute_value:
+        #                         raise ValueError(f"{repo_name} already exists in one of the omixatlases")

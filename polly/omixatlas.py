@@ -748,6 +748,7 @@ class OmixAtlas:
 
     def create(self, display_name: str, description: str, repo_name = "", initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
         """
+            User facing in this release are only 1st 3 params and image_url(to be added)
         """
         payload = self.get_repository_payload()
         # print("----1------")
@@ -782,7 +783,7 @@ class OmixAtlas:
         validator.validate_repository_schema(payload["data"]["attributes"])
 
         repository_url = f"{self.resource_url}"
-        print(f"---repository url----{repository_url}---")
+        # print(f"---repository url----{repository_url}---")
         resp = self.session.post(repository_url, json=payload)
         # print("-----4-------")
         error_handler(resp)
@@ -790,10 +791,35 @@ class OmixAtlas:
         if resp.status_code != const.CREATED:
             raise Exception(resp.text)
         else:
-            repo_id = resp.json()["data"]["id"]
-            print(f" OmixAtlas {repo_id} Created  ")
+            if resp.json()["data"]["id"]:
+                repo_id = resp.json()["data"]["id"]
+                print(f" OmixAtlas {repo_id} Created  ")
+            else:
+                ValueError("Repository creation response is in Incorrect format")
             #return as DF
-            return resp.json()
+            # return resp.json()
+            return self.repo_creation_response_df(resp.json())
+
+    def repo_creation_response_df(self, original_response):
+        """
+        """
+        response_df_dict = {}
+        if original_response["data"]:
+            if original_response["data"]["attributes"]:
+                attribute_data = original_response["data"]["attributes"]
+                response_df_dict["Repository Id"] = attribute_data.get("repo_id","")
+                response_df_dict["Repository Name"] = attribute_data.get("repo_name","")
+                if attribute_data["frontend_info"]:
+                    front_info_dict = attribute_data["frontend_info"]
+                    response_df_dict["Display Name"] = front_info_dict.get("display_name","")
+                    response_df_dict["Description"] = front_info_dict.get("description","")
+        
+        # pd.options.display.max_columns = None
+        # pd.options.display.width = None
+        # rep_creation_df = pd.DataFrame.from_dict(response_df_dict, orient="index", columns=["Repository Id", "Repository Name", "Display Name", "Description"])
+        # rep_creation_df = pd.DataFrame(response_df_dict.items(),orient="columns")
+        rep_creation_df = pd.DataFrame([response_df_dict])
+        return rep_creation_df
 
 
     def construct_initials(self, display_name):
@@ -827,19 +853,6 @@ class OmixAtlas:
         pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
         if not re.fullmatch(pattern, repo_name):
             raise ValueError(f"{repo_name} is in incorrect format, Refer to the function doc")
-        
-        all_omixatlases = self.get_all_omixatlas()
-
-        # search for passed repo_name in all omixatlases
-        # to see if it exists from before or not
-        for omixatlas in all_omixatlases:
-            for key, value in omixatlas.items():
-                if key == "attributes":
-                    attribute_data = value
-                    for attribute_key, attribute_value in attribute_data.items():
-                        if attribute_key == "repo_name":
-                            if repo_name == attribute_value:
-                                raise ValueError(f"{repo_name} already exists in one of the omixatlases")
 
     def get_repository_payload(self):
         """
