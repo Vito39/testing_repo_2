@@ -1,31 +1,31 @@
-import os
-import re
+# import os
+# import re
 
-from polly.helpers import make_discover_request
+# from polly.helpers import make_discover_request
 
-def __get_discover_api_url():
-    env = get_curr_exec_env()
-    discover_api_base_urls = {
-        "dev": "https://api.discover.devpolly.elucidata.io",
-        "test": "https://api.discover.testpolly.elucidata.io",
-        "prod": "https://api.discover.polly.elucidata.io",
-        "eupolly": "https://api.discover.eu-polly.elucidata.io"
-    }
-    return discover_api_base_urls.get(env)
+# def __get_discover_api_url():
+#     env = get_curr_exec_env()
+#     discover_api_base_urls = {
+#         "dev": "https://api.discover.devpolly.elucidata.io",
+#         "test": "https://api.discover.testpolly.elucidata.io",
+#         "prod": "https://api.discover.polly.elucidata.io",
+#         "eupolly": "https://api.discover.eu-polly.elucidata.io"
+#     }
+#     return discover_api_base_urls.get(env)
 
 
-def get_curr_exec_env():
-    env = "dev"
-    if not env:
-        POLLY_API_URL = os.getenv('POLLY_TYPE')
-        if POLLY_API_URL:
-            env = re.search('https://(.*)polly.elucidata.io',
-                            POLLY_API_URL).group(1)
-            if not env:
-                env = "prod"
-        else:
-            raise Exception('Unable to set identify execution env')
-    return env
+# def get_curr_exec_env():
+#     env = "dev"
+#     if not env:
+#         POLLY_API_URL = os.getenv('POLLY_TYPE')
+#         if POLLY_API_URL:
+#             env = re.search('https://(.*)polly.elucidata.io',
+#                             POLLY_API_URL).group(1)
+#             if not env:
+#                 env = "prod"
+#         else:
+#             raise Exception('Unable to set identify execution env')
+#     return env
 
 
 # try:

@@ -1,3 +1,4 @@
+from dis import dis
 import json
 import ssl
 import logging
@@ -10,6 +11,9 @@ from collections import namedtuple
 import pandas as pd
 import requests
 from retrying import retry
+
+from polly import repository_validators as validator
+from polly import constants as const
 
 from polly import helpers
 from polly.auth import Polly
@@ -739,6 +743,149 @@ class OmixAtlas:
             )
         logging.basicConfig(level=logging.INFO)
         logging.info("File converted successfully!")
+    
+
+    def create(self, display_name: str, description: str, initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
+        """
+        """
+        payload = self.get_repository_payload()
+        # print("----1------")
+        frontend_info = {}
+        frontend_info["description"] = description
+        frontend_info["display_name"] = display_name
+        frontend_info["explorer_enabled"] = explorer_enabled
+        if initials:
+            frontend_info["initials"] = initials
+        else:
+            frontend_info["initials"] = self.construct_initials(display_name)
+
+        # print(f"----frontendinfo---{frontend_info}---")
+
+        validator.validate_frontend_info(frontend_info)
+
+        repo_name = self.create_repo_name(display_name)
+
+        payload["data"]["attributes"]["repo_name"] = repo_name
+        payload["data"]["attributes"]["frontend_info"] = frontend_info
+        payload["data"]["attributes"]["components"] = components
+        payload["data"]["attributes"]["studio_presets"] = studio_presets
+        # print("-----2-------")
+        indexes = payload["data"]["attributes"]["indexes"]
+
+        for key in indexes.keys():
+            indexes[key] = f"{repo_name}_{key}"
+        
+        validator.validate_repository_schema(payload["data"]["attributes"])
+
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
+        # print(f"---repository url----{repository_url}---")
+        resp = self.session.post(repository_url, json=payload)
+        # print("-----4-------")
+        error_handler(resp)
+
+        if resp.status_code != const.CREATED:
+            raise Exception(resp.text)
+        else:
+            repo_id = resp.json()["data"]["id"]
+            print(f" OmixAtlas {repo_id} Created  ")
+            return resp.json()
+        # return as DF
+
+
+    def construct_initials(self, display_name):
+        """
+        """
+        words = display_name.split()
+        letters = [word[0] for word in words]
+        # print("".join(letters))
+        initials = "".join(letters)
+        initials = initials.upper()
+        return initials
+
+
+    def create_repo_name(self, display_name):
+        """
+        """
+        repo_name = display_name.lower().replace(" ", "_")
+        return repo_name
+
+
+    def update(self, repo_id: str, display_name="", description=""):
+        """
+        """
+        repo = self.get_omixatlas(repo_id)
+        payload = self.get_repository_payload()
+        frontend_info = {}
+        print(f"--- repo info-----{repo}------")
+        frontend_info = repo["frontend_info"]
+
+        if display_name:
+            frontend_info["display_name"] = display_name
+            frontend_info["initials"] = self.construct_initials(display_name)
+        if description:
+            frontend_info["description"] = description
+        
+        del payload["data"]["attributes"]["repo_name"]
+        del payload["data"]["attributes"]["indexes"]
+        payload["data"]["id"] = repo_id
+        payload["data"]["attributes"]["frontend_info"] = frontend_info
+        payload["data"]["attributes"]["components"] = repo["components"]
+        payload["data"]["attributes"]["studio_presets"] = repo["studio_presets"]
+
+        print("-----1-------")
+        validator.validate_repository_schema(payload["data"]["attributes"], update=True)
+        print("-----2-------")
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}/{repo_id}"
+        print(f"----repository-url-{repository_url}----")
+        print(f"----json--payload--{payload}----")
+        resp = self.session.patch(repository_url, json=payload)
+
+        error_handler(resp)
+        print("--------3-------")
+        if resp.status_code != const.OK:
+            raise Exception(resp.text)
+        else:
+            repo_id = resp.json()["data"]["id"]
+            print(f" OmixAtlas {repo_id} Updated  ")
+            return resp.json()
+
+    def get_omixatlas(self, repo_id):
+        """
+        """
+        repository_url = f"{self.discover_url}/repositories/{repo_id}"
+        response = self.session.get(repository_url)
+        error_handler(response)
+        return response.json()["data"]["attributes"]
+
+    def get_repository_payload(self):
+        """
+        """
+        return {
+            "data": {
+                "type": "repositories",
+                "attributes": {
+                    "frontend_info": {
+                        "description": "<DESCRIPTION>",
+                        "display_name": "<REPO_DISPLAY_NAME>",
+                        "explorer_enabled": True,
+                        "initials": "<INITIALS>",
+                    },
+                    "indexes": {
+                        "csv": "<REPO_NAME>_csv",
+                        "files": "<REPO_NAME>_files",
+                        "gct_data": "<REPO_NAME>_gct_data",
+                        "gct_metadata": "<REPO_NAME>_gct_metadata",
+                        "h5ad_data": "<REPO_NAME>_h5ad_data",
+                        "h5ad_metadata": "<REPO_NAME>_h5ad_metadata",
+                        "ipynb": "<REPO_NAME>_ipynb",
+                        "json": "<REPO_NAME>_json",
+                    },
+                    "repo_name": "<REPO_NAME>",
+                },
+            }
+        }
+
+        
 
 
 if __name__ == "__main__":

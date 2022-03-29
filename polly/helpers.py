@@ -160,24 +160,24 @@ def get_data_type(self, url: str, payload: dict) -> str:
         raise MissingKeyException("data_type")
     return data_type
 
-def make_discover_request(method, url, **kwargs):
-    """ 
-        Call requests.request() with headers required for authentication and
-        json config.
-        params:
-            method: HttpMethod eg., GET, POST, etc..
-            url:    httpUrl
-            kwargs: keyword arguments supported by requests.request
-        response:
-            <requests.models.Response> object
-    """
-    import requests
+# def make_discover_request(method, url, **kwargs):
+#     """ 
+#         Call requests.request() with headers required for authentication and
+#         json config.
+#         params:
+#             method: HttpMethod eg., GET, POST, etc..
+#             url:    httpUrl
+#             kwargs: keyword arguments supported by requests.request
+#         response:
+#             <requests.models.Response> object
+#     """
+#     import requests
 
-    if not kwargs.get('headers'):
-        kwargs['headers'] = {}
-    # kwargs['headers']['Content-Type'] = 'application/vnd.api+json'
-    # kwargs['headers']['Cookie'] = get_cookie()
-    return requests.request(method, url, **kwargs)
+#     if not kwargs.get('headers'):
+#         kwargs['headers'] = {}
+#     # kwargs['headers']['Content-Type'] = 'application/vnd.api+json'
+#     # kwargs['headers']['Cookie'] = get_cookie()
+#     return requests.request(method, url, **kwargs)
 
 
 

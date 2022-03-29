@@ -1,6 +1,6 @@
 import json
 from polly.auth import Polly
-from polly.helpers import make_discover_request
+# from polly.helpers import make_discover_request
 # from polly.env import DISCOVER_API_URL
 from polly import constants as const
 # from polly.package import Package
@@ -151,7 +151,8 @@ class Repository(object):
         """
         return self._update() if self.repo_id else self._create()
 
-    
+    #Needed to change it to normal instance method instance of 
+    # isko dekho once, dhang se test karo ye repository ka object dena chahiye
     def get(self, repo_id):
         """
         Return a Repository by a given ID
@@ -165,7 +166,8 @@ class Repository(object):
         Returns:
             repo (Repository): Repository object
         """
-        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
+        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}/{repo_id}"
+        print(f"--repository url in get function----{repository_url}")
         response = self.session.post(repository_url)
         error_handler(response)
         # response = make_discover_request(
@@ -174,6 +176,9 @@ class Repository(object):
         if response.status_code != const.OK:
             raise Exception(response.text)
 
+        print("-----data from response----")
+        print(response.json()["data"]["attributes"])
+        print(type(response.json()["data"]["attributes"]))
         return response.json()["data"]["attributes"]
         # return cls.as_object(response.json()["data"]["attributes"])
 
