@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 from retrying import retry
 
-from polly import repository_validators as validator
+from polly import repository, repository_validators as validator
 from polly import constants as const
 
 from polly import helpers
@@ -810,7 +810,7 @@ class OmixAtlas:
         return repo_name
 
 
-    def update(self, repo_id: str, display_name="", description=""):
+    def update(self, repo_id: int, display_name="", description=""):
         """
         """
         repo = self.get_omixatlas(repo_id)
@@ -856,6 +856,43 @@ class OmixAtlas:
         response = self.session.get(repository_url)
         error_handler(response)
         return response.json()["data"]["attributes"]
+    
+
+    def add_package(self, repo_id: int, package_name: int):
+        """
+        """
+        if not isinstance(package_name, str) or not package_name:
+                raise ValueError("package_name must be a str and cannot be empty")
+
+        if (not isinstance(repo_id, str) and not isinstance(repo_id, int)) or not repo_id:
+            raise ValueError("repo_id must be a str or int and cannot be empty")
+
+
+    def get_package(self, repo_id: int):
+        """
+        """
+        if (
+            not isinstance(repo_id, str) and not isinstance(repo_id, int)
+        ) or not repo_id:
+            raise ValueError("repo_id must be a str or int and cannot be empty")
+        
+        repository_package = const.REPOSITORY_PACKAGE_ENDPOINT.format(str(repo_id))
+        print(f"-------package----{repository_package}----")
+        repository_url = f"{self.discover_url}{repository_package}"
+        print(f"---repository_url-----{repository_url}----")
+        
+
+
+    def get_package_payload(package_name):
+        """
+        """
+        return {
+                "data": {
+                    "type": "packages",
+                    "attributes": {"package_name": package_name},
+                }
+            }    
+
 
     def get_repository_payload(self):
         """
