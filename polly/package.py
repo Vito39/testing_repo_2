@@ -112,3 +112,87 @@
 #             "attributes": {"package_name": package_name},
 #         }
 #     }
+
+# def update(self, repo_id: int, display_name="", description=""):
+    #     """
+    #     """
+    #     repo = self.get_omixatlas(repo_id)
+    #     payload = self.get_repository_payload()
+    #     frontend_info = {}
+    #     print(f"--- repo info-----{repo}------")
+    #     frontend_info = repo["frontend_info"]
+
+    #     if display_name:
+    #         frontend_info["display_name"] = display_name
+    #         frontend_info["initials"] = self.construct_initials(display_name)
+    #     if description:
+    #         frontend_info["description"] = description
+        
+    #     del payload["data"]["attributes"]["repo_name"]
+    #     del payload["data"]["attributes"]["indexes"]
+    #     payload["data"]["id"] = repo_id
+    #     payload["data"]["attributes"]["frontend_info"] = frontend_info
+    #     payload["data"]["attributes"]["components"] = repo["components"]
+    #     payload["data"]["attributes"]["studio_presets"] = repo["studio_presets"]
+
+    #     print("-----1-------")
+    #     validator.validate_repository_schema(payload["data"]["attributes"], update=True)
+    #     print("-----2-------")
+    #     repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}/{repo_id}"
+    #     print(f"----repository-url-{repository_url}----")
+    #     print(f"----json--payload--{payload}----")
+    #     resp = self.session.patch(repository_url, json=payload)
+
+    #     error_handler(resp)
+    #     print("--------3-------")
+    #     if resp.status_code != const.OK:
+    #         raise Exception(resp.text)
+    #     else:
+    #         repo_id = resp.json()["data"]["id"]
+    #         print(f" OmixAtlas {repo_id} Updated  ")
+    #         return resp.json()
+
+    # def get_omixatlas(self, repo_id):
+    #     """
+    #     """
+    #     repository_url = f"{self.discover_url}/repositories/{repo_id}"
+    #     response = self.session.get(repository_url)
+    #     error_handler(response)
+    #     return response.json()["data"]["attributes"]
+    
+
+    # def add_package(self, repo_id: int, package_name: int):
+    #     """
+    #     """
+    #     if not isinstance(package_name, str) or not package_name:
+    #             raise ValueError("package_name must be a str and cannot be empty")
+
+    #     if (not isinstance(repo_id, str) and not isinstance(repo_id, int)) or not repo_id:
+    #         raise ValueError("repo_id must be a str or int and cannot be empty")
+
+
+    # def get_package(self, repo_id: int):
+    #     """
+    #     """
+    #     if (
+    #         not isinstance(repo_id, str) and not isinstance(repo_id, int)
+    #     ) or not repo_id:
+    #         raise ValueError("repo_id must be a str or int and cannot be empty")
+        
+    #     repository_package = const.REPOSITORY_PACKAGE_ENDPOINT.format(str(repo_id))
+    #     print(f"-------package----{repository_package}----")
+    #     repository_url = f"{self.discover_url}{repository_package}"
+    #     print(f"---repository_url-----{repository_url}----")
+        
+
+
+    # def get_package_payload(package_name):
+    #     """
+    #     """
+    #     return {
+    #             "data": {
+    #                 "type": "packages",
+    #                 "attributes": {"package_name": package_name},
+    #             }
+    #         }    
+

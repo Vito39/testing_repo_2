@@ -1,4 +1,5 @@
 from dis import dis
+import re
 import json
 import ssl
 import logging
@@ -745,7 +746,7 @@ class OmixAtlas:
         logging.info("File converted successfully!")
     
 
-    def create(self, display_name: str, description: str, initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
+    def create(self, display_name: str, description: str, repo_name = "", initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
         """
         """
         payload = self.get_repository_payload()
@@ -763,7 +764,10 @@ class OmixAtlas:
 
         validator.validate_frontend_info(frontend_info)
 
-        repo_name = self.create_repo_name(display_name)
+        if not repo_name:
+            repo_name = self.create_repo_name(display_name)
+        else:
+            self.check_for_valid_repo_name(repo_name)
 
         payload["data"]["attributes"]["repo_name"] = repo_name
         payload["data"]["attributes"]["frontend_info"] = frontend_info
@@ -777,8 +781,8 @@ class OmixAtlas:
         
         validator.validate_repository_schema(payload["data"]["attributes"])
 
-        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}"
-        # print(f"---repository url----{repository_url}---")
+        repository_url = f"{self.resource_url}"
+        print(f"---repository url----{repository_url}---")
         resp = self.session.post(repository_url, json=payload)
         # print("-----4-------")
         error_handler(resp)
@@ -788,8 +792,8 @@ class OmixAtlas:
         else:
             repo_id = resp.json()["data"]["id"]
             print(f" OmixAtlas {repo_id} Created  ")
+            #return as DF
             return resp.json()
-        # return as DF
 
 
     def construct_initials(self, display_name):
@@ -797,7 +801,6 @@ class OmixAtlas:
         """
         words = display_name.split()
         letters = [word[0] for word in words]
-        # print("".join(letters))
         initials = "".join(letters)
         initials = initials.upper()
         return initials
@@ -810,89 +813,33 @@ class OmixAtlas:
         return repo_name
 
 
-    def update(self, repo_id: int, display_name="", description=""):
+    def check_for_valid_repo_name(self, repo_name):
         """
+            Constraints:
+            1. max length is 20
+            2. all lowercase
+            3. words seperated by "_"
+            4. repo_name should be unique
         """
-        repo = self.get_omixatlas(repo_id)
-        payload = self.get_repository_payload()
-        frontend_info = {}
-        print(f"--- repo info-----{repo}------")
-        frontend_info = repo["frontend_info"]
+        if len(repo_name) > 20:
+            raise ValueError('Max length of repo_name can be 20')
 
-        if display_name:
-            frontend_info["display_name"] = display_name
-            frontend_info["initials"] = self.construct_initials(display_name)
-        if description:
-            frontend_info["description"] = description
+        pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
+        if not re.fullmatch(pattern, repo_name):
+            raise ValueError(f"{repo_name} is in incorrect format, Refer to the function doc")
         
-        del payload["data"]["attributes"]["repo_name"]
-        del payload["data"]["attributes"]["indexes"]
-        payload["data"]["id"] = repo_id
-        payload["data"]["attributes"]["frontend_info"] = frontend_info
-        payload["data"]["attributes"]["components"] = repo["components"]
-        payload["data"]["attributes"]["studio_presets"] = repo["studio_presets"]
+        all_omixatlases = self.get_all_omixatlas()
 
-        print("-----1-------")
-        validator.validate_repository_schema(payload["data"]["attributes"], update=True)
-        print("-----2-------")
-        repository_url = f"{self.discover_url}{const.REPOSITORIES_ENDPOINT}/{repo_id}"
-        print(f"----repository-url-{repository_url}----")
-        print(f"----json--payload--{payload}----")
-        resp = self.session.patch(repository_url, json=payload)
-
-        error_handler(resp)
-        print("--------3-------")
-        if resp.status_code != const.OK:
-            raise Exception(resp.text)
-        else:
-            repo_id = resp.json()["data"]["id"]
-            print(f" OmixAtlas {repo_id} Updated  ")
-            return resp.json()
-
-    def get_omixatlas(self, repo_id):
-        """
-        """
-        repository_url = f"{self.discover_url}/repositories/{repo_id}"
-        response = self.session.get(repository_url)
-        error_handler(response)
-        return response.json()["data"]["attributes"]
-    
-
-    def add_package(self, repo_id: int, package_name: int):
-        """
-        """
-        if not isinstance(package_name, str) or not package_name:
-                raise ValueError("package_name must be a str and cannot be empty")
-
-        if (not isinstance(repo_id, str) and not isinstance(repo_id, int)) or not repo_id:
-            raise ValueError("repo_id must be a str or int and cannot be empty")
-
-
-    def get_package(self, repo_id: int):
-        """
-        """
-        if (
-            not isinstance(repo_id, str) and not isinstance(repo_id, int)
-        ) or not repo_id:
-            raise ValueError("repo_id must be a str or int and cannot be empty")
-        
-        repository_package = const.REPOSITORY_PACKAGE_ENDPOINT.format(str(repo_id))
-        print(f"-------package----{repository_package}----")
-        repository_url = f"{self.discover_url}{repository_package}"
-        print(f"---repository_url-----{repository_url}----")
-        
-
-
-    def get_package_payload(package_name):
-        """
-        """
-        return {
-                "data": {
-                    "type": "packages",
-                    "attributes": {"package_name": package_name},
-                }
-            }    
-
+        # search for passed repo_name in all omixatlases
+        # to see if it exists from before or not
+        for omixatlas in all_omixatlases:
+            for key, value in omixatlas.items():
+                if key == "attributes":
+                    attribute_data = value
+                    for attribute_key, attribute_value in attribute_data.items():
+                        if attribute_key == "repo_name":
+                            if repo_name == attribute_value:
+                                raise ValueError(f"{repo_name} already exists in one of the omixatlases")
 
     def get_repository_payload(self):
         """
