@@ -9,17 +9,17 @@ def validate(document, schema, require_all=False, allow_unknown=True, update=Fal
     but validate the fields you're expecting to have
 
     Args:
-        document (dict): Document to be validate
-        schema (dict): Cerberus schema
-        require_all (bool, optional): Whether all fields are required.
+        | document (dict): Document to be validate
+        | schema (dict): Cerberus schema
+        | require_all (bool, optional): Whether all fields are required.
             Defaults to False.
-        allow_unknown (bool, optional): Whether allow fields other than
+        | allow_unknown (bool, optional): Whether allow fields other than
             specified. Defaults to True.
-        update (bool, optional): Ignore required flags while validating
+        | update (bool, optional): Ignore required flags while validating
             Defaults to False.
 
     Raises:
-        ValueError: if Document is invalid
+        | ValueError: if Document is invalid
     """
     validator = Validator(require_all=require_all, allow_unknown=allow_unknown)
     if not validator.validate(document, schema, update=update):
