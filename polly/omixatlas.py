@@ -890,7 +890,7 @@ class OmixAtlas:
         pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
         if not re.fullmatch(pattern, repo_name):
             raise ValueError(
-                f"{repo_name} is in incorrect format, Refer to the function doc"
+                f"{repo_name} is in incorrect format, Refer to the documentation"
             )
 
     def get_repository_payload(self):
