@@ -744,11 +744,20 @@ class OmixAtlas:
             )
         logging.basicConfig(level=logging.INFO)
         logging.info("File converted successfully!")
-    
 
-    def create(self, display_name: str, description: str, repo_name = "", image_url="", initials = "", explorer_enabled=True, studio_presets = [], components = []) -> dict:
+    def create(
+        self,
+        display_name: str,
+        description: str,
+        repo_name="",
+        image_url="",
+        initials="",
+        explorer_enabled=True,
+        studio_presets=[],
+        components=[],
+    ) -> dict:
         """
-            User facing in this release are only 1st 3 params and image_url(to be added)
+        User facing in this release are only 1st 3 params and image_url(to be added)
         """
         payload = self.get_repository_payload()
         frontend_info = {}
@@ -758,7 +767,9 @@ class OmixAtlas:
         if image_url:
             frontend_info["icon_image_url"] = image_url
         else:
-            frontend_info["icon_image_url"] = "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
+            frontend_info[
+                "icon_image_url"
+            ] = "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
         if initials:
             frontend_info["initials"] = initials
         else:
@@ -779,7 +790,7 @@ class OmixAtlas:
 
         for key in indexes.keys():
             indexes[key] = f"{repo_name}_{key}"
-        
+
         validator.validate_repository_schema(payload["data"]["attributes"])
 
         repository_url = f"{self.resource_url}"
@@ -795,60 +806,60 @@ class OmixAtlas:
                 return self.repo_creation_response_df(resp.json())
             else:
                 ValueError("Repository creation response is in Incorrect format")
-            
 
     def repo_creation_response_df(self, original_response):
-        """
-        """
+        """ """
         response_df_dict = {}
         if original_response["data"]:
             if original_response["data"]["attributes"]:
                 attribute_data = original_response["data"]["attributes"]
-                response_df_dict["Repository Id"] = attribute_data.get("repo_id","")
-                response_df_dict["Repository Name"] = attribute_data.get("repo_name","")
+                response_df_dict["Repository Id"] = attribute_data.get("repo_id", "")
+                response_df_dict["Repository Name"] = attribute_data.get(
+                    "repo_name", ""
+                )
                 if attribute_data["frontend_info"]:
                     front_info_dict = attribute_data["frontend_info"]
-                    response_df_dict["Display Name"] = front_info_dict.get("display_name","")
-                    response_df_dict["Description"] = front_info_dict.get("description","")
+                    response_df_dict["Display Name"] = front_info_dict.get(
+                        "display_name", ""
+                    )
+                    response_df_dict["Description"] = front_info_dict.get(
+                        "description", ""
+                    )
         rep_creation_df = pd.DataFrame([response_df_dict])
         return rep_creation_df
 
-
     def construct_initials(self, display_name):
-        """
-        """
+        """ """
         words = display_name.split()
         letters = [word[0] for word in words]
         initials = "".join(letters)
         initials = initials.upper()
         return initials
 
-
     def create_repo_name(self, display_name):
-        """
-        """
+        """ """
         repo_name = display_name.lower().replace(" ", "_")
         return repo_name
 
-
     def check_for_valid_repo_name(self, repo_name):
         """
-            Constraints:
-            1. max length is 20
-            2. all lowercase
-            3. words seperated by "_"
-            4. repo_name should be unique
+        Constraints:
+        1. max length is 20
+        2. all lowercase
+        3. words seperated by "_"
+        4. repo_name should be unique
         """
         if len(repo_name) > 20:
-            raise ValueError('Max length of repo_name can be 20')
+            raise ValueError("Max length of repo_name can be 20")
 
         pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
         if not re.fullmatch(pattern, repo_name):
-            raise ValueError(f"{repo_name} is in incorrect format, Refer to the function doc")
+            raise ValueError(
+                f"{repo_name} is in incorrect format, Refer to the function doc"
+            )
 
     def get_repository_payload(self):
-        """
-        """
+        """ """
         return {
             "data": {
                 "type": "repositories",
@@ -873,8 +884,6 @@ class OmixAtlas:
                 },
             }
         }
-
-        
 
 
 if __name__ == "__main__":

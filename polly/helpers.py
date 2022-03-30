@@ -14,6 +14,7 @@ from polly.errors import (
     paramException,
 )
 
+
 def make_path(prefix: any, postfix: any) -> str:
     """
     Function to make and return a valid path

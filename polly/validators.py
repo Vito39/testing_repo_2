@@ -1,9 +1,7 @@
 from cerberus import Validator
 
 
-def validate(
-    document, schema, require_all=False, allow_unknown=True, update=False
-):
+def validate(document, schema, require_all=False, allow_unknown=True, update=False):
     """
     Validate the document against the schema
 
