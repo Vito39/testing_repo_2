@@ -1,4 +1,3 @@
-from dis import dis
 import re
 import json
 import ssl
@@ -13,7 +12,7 @@ import pandas as pd
 import requests
 from retrying import retry
 
-from polly import repository, repository_validators as validator
+from polly import repository_validators as validator
 from polly import constants as const
 
 from polly import helpers
