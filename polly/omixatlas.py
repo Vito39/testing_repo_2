@@ -769,28 +769,24 @@ class OmixAtlas:
         Returns:
             | Dataframe after creation of omixatlas
         """
-        payload = self.get_repository_payload()
+        payload = self._get_repository_payload()
         frontend_info = {}
         frontend_info["description"] = description
         frontend_info["display_name"] = display_name
         frontend_info["explorer_enabled"] = explorer_enabled
-        if image_url:
-            frontend_info["icon_image_url"] = image_url
-        else:
-            frontend_info[
-                "icon_image_url"
-            ] = "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
-        if initials:
-            frontend_info["initials"] = initials
-        else:
-            frontend_info["initials"] = self.construct_initials(display_name)
+        frontend_info["icon_image_url"] = (
+            image_url if image_url else const.IMAGE_URL_ENDPOINT
+        )
+        frontend_info["initials"] = (
+            initials if initials else self._construct_initials(display_name)
+        )
 
         validator.validate_frontend_info(frontend_info)
 
         if not repo_name:
-            repo_name = self.create_repo_name(display_name)
+            repo_name = self._create_repo_name(display_name)
         else:
-            self.check_for_valid_repo_name(repo_name)
+            self._check_for_valid_repo_name(repo_name)
 
         payload["data"]["attributes"]["repo_name"] = repo_name
         payload["data"]["attributes"]["frontend_info"] = frontend_info
@@ -813,11 +809,11 @@ class OmixAtlas:
             if resp.json()["data"]["id"]:
                 repo_id = resp.json()["data"]["id"]
                 print(f" OmixAtlas {repo_id} Created  ")
-                return self.repo_creation_response_df(resp.json())
+                return self._repo_creation_response_df(resp.json())
             else:
                 ValueError("Repository creation response is in Incorrect format")
 
-    def repo_creation_response_df(self, original_response) -> pd.DataFrame:
+    def _repo_creation_response_df(self, original_response) -> pd.DataFrame:
         """
         This function is used to create dataframe from json reponse of
         creation api
@@ -847,7 +843,7 @@ class OmixAtlas:
         rep_creation_df = pd.DataFrame([response_df_dict])
         return rep_creation_df
 
-    def construct_initials(self, display_name) -> str:
+    def _construct_initials(self, display_name) -> str:
         """
         This function is used to create initials from the display name
         Args:
@@ -861,7 +857,7 @@ class OmixAtlas:
         initials = initials.upper()
         return initials
 
-    def create_repo_name(self, display_name) -> str:
+    def _create_repo_name(self, display_name) -> str:
         """
         This function is used to repo_name from display_name
         Args:
@@ -872,7 +868,7 @@ class OmixAtlas:
         repo_name = display_name.lower().replace(" ", "_")
         return repo_name
 
-    def check_for_valid_repo_name(self, repo_name):
+    def _check_for_valid_repo_name(self, repo_name):
         """
         This function is checks if the repo_name is valid
         according to the constraints of
@@ -893,7 +889,7 @@ class OmixAtlas:
                 f"{repo_name} is in incorrect format, Refer to the documentation"
             )
 
-    def get_repository_payload(self):
+    def _get_repository_payload(self):
         """ """
         return {
             "data": {

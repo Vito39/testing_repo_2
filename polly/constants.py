@@ -27,6 +27,9 @@ DATA_TYPES = {
 CONSTANTS_ENDPOINT = "/constants"
 REPOSITORIES_ENDPOINT = "/repositories"
 REPOSITORY_PACKAGE_ENDPOINT = REPOSITORIES_ENDPOINT + "/{}/packages"
+IMAGE_URL_ENDPOINT = (
+    "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
+)
 
 # statuscodes
 OK = 200
