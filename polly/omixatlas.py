@@ -751,7 +751,6 @@ class OmixAtlas:
             User facing in this release are only 1st 3 params and image_url(to be added)
         """
         payload = self.get_repository_payload()
-        # print("----1------")
         frontend_info = {}
         frontend_info["description"] = description
         frontend_info["display_name"] = display_name
@@ -765,8 +764,6 @@ class OmixAtlas:
         else:
             frontend_info["initials"] = self.construct_initials(display_name)
 
-        # print(f"----frontendinfo---{frontend_info}---")
-
         validator.validate_frontend_info(frontend_info)
 
         if not repo_name:
@@ -778,7 +775,6 @@ class OmixAtlas:
         payload["data"]["attributes"]["frontend_info"] = frontend_info
         payload["data"]["attributes"]["components"] = components
         payload["data"]["attributes"]["studio_presets"] = studio_presets
-        # print("-----2-------")
         indexes = payload["data"]["attributes"]["indexes"]
 
         for key in indexes.keys():
@@ -787,9 +783,7 @@ class OmixAtlas:
         validator.validate_repository_schema(payload["data"]["attributes"])
 
         repository_url = f"{self.resource_url}"
-        # print(f"---repository url----{repository_url}---")
         resp = self.session.post(repository_url, json=payload)
-        # print("-----4-------")
         error_handler(resp)
 
         if resp.status_code != const.CREATED:
@@ -798,8 +792,6 @@ class OmixAtlas:
             if resp.json()["data"]["id"]:
                 repo_id = resp.json()["data"]["id"]
                 print(f" OmixAtlas {repo_id} Created  ")
-                #return as DF
-                # return resp.json()
                 return self.repo_creation_response_df(resp.json())
             else:
                 ValueError("Repository creation response is in Incorrect format")
@@ -818,11 +810,6 @@ class OmixAtlas:
                     front_info_dict = attribute_data["frontend_info"]
                     response_df_dict["Display Name"] = front_info_dict.get("display_name","")
                     response_df_dict["Description"] = front_info_dict.get("description","")
-        
-        # pd.options.display.max_columns = None
-        # pd.options.display.width = None
-        # rep_creation_df = pd.DataFrame.from_dict(response_df_dict, orient="index", columns=["Repository Id", "Repository Name", "Display Name", "Description"])
-        # rep_creation_df = pd.DataFrame(response_df_dict.items(),orient="columns")
         rep_creation_df = pd.DataFrame([response_df_dict])
         return rep_creation_df
 

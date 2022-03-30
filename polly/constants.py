@@ -23,11 +23,6 @@ DATA_TYPES = {
     ]
 }
 
-import os
-
-HOME_PATH = os.getenv("HOME")
-DISCOVER_CREDS_FOLDER_PATH = HOME_PATH + "/.discover/credentials"
-
 # endpoints
 CONSTANTS_ENDPOINT = "/constants"
 REPOSITORIES_ENDPOINT = "/repositories"
