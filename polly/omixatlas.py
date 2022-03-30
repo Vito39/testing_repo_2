@@ -756,18 +756,18 @@ class OmixAtlas:
         components=[],
     ) -> pd.DataFrame:
         """
-            This function is used to create a new omixatlas
-            Args:
-                | display_name(str): display name of the omixatlas
-                | description(str): description of the omixatlas
-                | repo_name(str): repo_name which is used to create index in db
-                | image_url(str): Url of the icon for omixatlas. Optional Parameter
-                | initials(str): Initials shown in the icon of omixatlas. Optional Parameter
-                | explorer_enabled(bool): Default True. Optional Parameter
-                | studio_presets(list): Optional Paramter
-                | components(list): Optional Parameter
-            Returns:
-                | Dataframe after creation of omixatlas
+        This function is used to create a new omixatlas
+        Args:
+            | display_name(str): display name of the omixatlas
+            | description(str): description of the omixatlas
+            | repo_name(str): repo_name which is used to create index in db
+            | image_url(str): Url of the icon for omixatlas. Optional Parameter
+            | initials(str): Initials shown in the icon of omixatlas. Optional Parameter
+            | explorer_enabled(bool): Default True. Optional Parameter
+            | studio_presets(list): Optional Paramter
+            | components(list): Optional Parameter
+        Returns:
+            | Dataframe after creation of omixatlas
         """
         payload = self.get_repository_payload()
         frontend_info = {}
@@ -819,14 +819,14 @@ class OmixAtlas:
 
     def repo_creation_response_df(self, original_response) -> pd.DataFrame:
         """
-            This function is used to create dataframe from json reponse of
-            creation api
+        This function is used to create dataframe from json reponse of
+        creation api
 
-            Args:
-                | original response(dict): creation api response
-            Returns:
-                | DataFrame consisting of 4 columns ["Repository Id", "Repository Name", "Display Name", "Description"]
-            
+        Args:
+            | original response(dict): creation api response
+        Returns:
+            | DataFrame consisting of 4 columns ["Repository Id", "Repository Name", "Display Name", "Description"]
+
         """
         response_df_dict = {}
         if original_response["data"]:
@@ -849,11 +849,11 @@ class OmixAtlas:
 
     def construct_initials(self, display_name) -> str:
         """
-            This function is used to create initials from the display name
-            Args:
-                | display_name(str): display name of the omixatlas
-            Returns:
-                | initials string
+        This function is used to create initials from the display name
+        Args:
+            | display_name(str): display name of the omixatlas
+        Returns:
+            | initials string
         """
         words = display_name.split()
         letters = [word[0] for word in words]
@@ -862,27 +862,27 @@ class OmixAtlas:
         return initials
 
     def create_repo_name(self, display_name) -> str:
-        """ 
-            This function is used to repo_name from display_name
-            Args:
-                | display_name(str): display name of the omixatlas
-            Returns:
-                | Constructed repo name
+        """
+        This function is used to repo_name from display_name
+        Args:
+            | display_name(str): display name of the omixatlas
+        Returns:
+            | Constructed repo name
         """
         repo_name = display_name.lower().replace(" ", "_")
         return repo_name
 
     def check_for_valid_repo_name(self, repo_name):
         """
-            This function is checks if the repo_name is valid
-            according to the constraints of 
-            1. max length is 20
-            2. all lowercase alphabets and words seperated by "_"
+        This function is checks if the repo_name is valid
+        according to the constraints of
+        1. max length is 20
+        2. all lowercase alphabets and words seperated by "_"
 
-            Args:
-                | repo_name(str): repo_name which is used to create index in db
-            Returns:
-                | Error in case of failed constraints
+        Args:
+            | repo_name(str): repo_name which is used to create index in db
+        Returns:
+            | Error in case of failed constraints
         """
         if len(repo_name) > 20:
             raise ValueError("Max length of repo_name can be 20")
