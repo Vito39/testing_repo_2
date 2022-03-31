@@ -19,6 +19,7 @@ from polly.errors import (
     InvalidPathException,
     InvalidRepoException,
     InvalidDatasetException,
+    CohortEditException,
     EmptyCohortException,
     InvalidCohortPathException,
     error_handler,
@@ -85,37 +86,63 @@ class Cohort:
         )
         return All_data_matrix
 
-    def edit_cohort(self, new_cohort_name: str, new_desc: str):
+    def edit_cohort(self, new_cohort_name=None, new_description=None):
         """
         Function to edit a cohort name and description
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
+        if new_cohort_name is None and new_description is None:
+            raise CohortEditException
+        if new_cohort_name:
+            self._edit_cohort_name(new_cohort_name)
+        if new_description:
+            self._edit_cohort_description(new_description)
+
+    def _edit_cohort_name(self, new_cohort_name: str):
+        if not (new_cohort_name and isinstance(new_cohort_name, str)):
+            return
+        if len(new_cohort_name) > 50:
+            logging.error(
+                "Length of Cohort Name greater than 50 characters. Please try again."
+            )
+            return
         if dot in new_cohort_name:
-            raise InvalidCohortNameException(new_cohort_name)
-        if not (new_desc and isinstance(new_desc, str)):
-            raise InvalidParameterException("description")
+            logging.error("The cohort name is not valid. Please try again.")
         p = Path(self.folder_path)
         parent = p.parent
         str_parent = str(parent.resolve())
         new_path = helpers.make_path(str_parent, f"{new_cohort_name}.pco")
+        existing_path = self.folder_path
+        os.rename(existing_path, new_path)
+        self.folder_path = new_path
+        logging.basicConfig(level=logging.INFO)
+        logging.info("Cohort Name Updated!")
+
+    def _edit_cohort_description(self, new_description: str):
+        if not (new_description and isinstance(new_description, str)):
+            return
+        if len(new_description) > 50:
+            logging.basicConfig()
+            logging.warning(
+                "Description length more than 50 characters. Please try again"
+            )
+            return
         existing_path = self.folder_path
         meta_path = f"{existing_path}/.meta"
         with open(meta_path, "r+b") as openfile:
             byte = openfile.read()
             data = base64.b64decode((byte))
             json_data = json.loads(data.decode("utf-8"))
-            os.rename(existing_path, new_path)
-            json_data["description"] = new_desc
+            json_data["description"] = new_description
             self._cohort_details = json_data
-            self.folder_path = new_path
             input = json.dumps(json_data)
             encoded_data = base64.b64encode(input.encode("utf-8"))
             openfile.seek(0)
             openfile.write(encoded_data)
             openfile.truncate()
         logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Edited!")
+        logging.info("Cohort Description Updated!")
 
     def is_valid(self) -> bool:
         """
@@ -184,13 +211,13 @@ class Cohort:
             for key, value in omixatlas_dict.items():
                 if value == []:
                     empty_keys.append(key)
-                    # del omixatlas_dict[key]
             for key in empty_keys:
                 del omixatlas_dict[key]
             json_data["number_of_samples"] -= dataset_count
             json_data["source_omixatlas"] = omixatlas_dict
             if not bool(json_data.get("entity_id")):
-                del json_data["entity_type"]
+                if "entity_type" in json_data:
+                    del json_data["entity_type"]
             self._cohort_details = json_data
             input = json.dumps(json_data)
             encoded_data = base64.b64encode(input.encode("utf-8"))
@@ -306,7 +333,7 @@ class Cohort:
         if not (description and isinstance(description, str)):
             raise InvalidParameterException("dataset_id")
         if not os.path.exists(local_path):
-            raise InvalidPathException  # make a better exception class
+            raise InvalidPathException
         if dot in cohort_name:
             raise InvalidCohortNameException(cohort_name)
         file_path = os.path.join(local_path, f"{cohort_name}.pco")
@@ -379,6 +406,9 @@ class Cohort:
         """
         data = self._cohort_details
         meta_dict = {}
+        folder_name = os.path.basename(self.folder_path)
+        cohort_name = folder_name.split(".")[0]
+        meta_dict["cohort_name"] = cohort_name
         meta_details = ["description", "number_of_samples"]
         for key, value in data.items():
             if key.lower() in meta_details:
@@ -390,7 +420,7 @@ class Cohort:
         Function to return cohort summary in a dataframe
         """
         data = self._cohort_details
-        df_dict = {"source_omixatlas": [], "entity_id": [], "datatype": []}
+        df_dict = {"source_omixatlas": [], "datatype": [], "entity_id": []}
         dataset_list = list(data["entity_id"].keys())
         for entity in dataset_list:
             omixatlas = data.get("entity_id", {}).get(entity, {})[0]
@@ -398,6 +428,12 @@ class Cohort:
             df_dict["entity_id"].append(entity)
             df_dict["source_omixatlas"].append(omixatlas)
             df_dict["datatype"].append(data_type)
+        if len(dataset_list) > 0:
+            entity = data["entity_type"]
+            if entity == "dataset":
+                df_dict["dataset_id"] = df_dict.pop("entity_id")
+            else:
+                df_dict["sample_id"] = df_dict.pop("entity_id")
         dataframe = pd.DataFrame.from_dict(df_dict)
         return dataframe
 

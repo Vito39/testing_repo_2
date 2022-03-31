@@ -114,6 +114,11 @@ class EmptyCohortException(Exception):
         return "There are no datasets to be merged in the cohort. Please try adding datasets using add_to_cohort() function."
 
 
+class CohortEditException(Exception):
+    def __str__(self):
+        return "No parameter specified for editing in cohort"
+
+
 class MissingKeyException(Exception):
     def __init__(self, key):
         self.key = key
