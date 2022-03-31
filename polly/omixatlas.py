@@ -1,3 +1,4 @@
+import re
 import json
 import ssl
 import logging
@@ -10,6 +11,9 @@ from collections import namedtuple
 import pandas as pd
 import requests
 from retrying import retry
+
+from polly import repository_validators as validator
+from polly import constants as const
 
 from polly import helpers
 from polly.auth import Polly
@@ -739,6 +743,178 @@ class OmixAtlas:
             )
         logging.basicConfig(level=logging.INFO)
         logging.info("File converted successfully!")
+
+    def create(
+        self,
+        display_name: str,
+        description: str,
+        repo_name="",
+        image_url="",
+        initials="",
+        explorer_enabled=True,
+        studio_presets=[],
+        components=[],
+    ) -> pd.DataFrame:
+        """
+        This function is used to create a new omixatlas
+        Args:
+            | display_name(str): display name of the omixatlas
+            | description(str): description of the omixatlas
+            | repo_name(str): repo_name which is used to create index in db
+            | image_url(str): Url of the icon for omixatlas. Optional Parameter
+            | initials(str): Initials shown in the icon of omixatlas. Optional Parameter
+            | explorer_enabled(bool): Default True. Optional Parameter
+            | studio_presets(list): Optional Paramter
+            | components(list): Optional Parameter
+        Returns:
+            | Dataframe after creation of omixatlas
+        """
+        payload = self._get_repository_payload()
+        frontend_info = {}
+        frontend_info["description"] = description
+        frontend_info["display_name"] = display_name
+        frontend_info["explorer_enabled"] = explorer_enabled
+        frontend_info["icon_image_url"] = (
+            image_url if image_url else const.IMAGE_URL_ENDPOINT
+        )
+        frontend_info["initials"] = (
+            initials if initials else self._construct_initials(display_name)
+        )
+
+        validator.validate_frontend_info(frontend_info)
+
+        if not repo_name:
+            repo_name = self._create_repo_name(display_name)
+        else:
+            self._check_for_valid_repo_name(repo_name)
+
+        payload["data"]["attributes"]["repo_name"] = repo_name
+        payload["data"]["attributes"]["frontend_info"] = frontend_info
+        payload["data"]["attributes"]["components"] = components
+        payload["data"]["attributes"]["studio_presets"] = studio_presets
+        indexes = payload["data"]["attributes"]["indexes"]
+
+        for key in indexes.keys():
+            indexes[key] = f"{repo_name}_{key}"
+
+        validator.validate_repository_schema(payload["data"]["attributes"])
+
+        repository_url = f"{self.resource_url}"
+        resp = self.session.post(repository_url, json=payload)
+        error_handler(resp)
+
+        if resp.status_code != const.CREATED:
+            raise Exception(resp.text)
+        else:
+            if resp.json()["data"]["id"]:
+                repo_id = resp.json()["data"]["id"]
+                print(f" OmixAtlas {repo_id} Created  ")
+                return self._repo_creation_response_df(resp.json())
+            else:
+                ValueError("Repository creation response is in Incorrect format")
+
+    def _repo_creation_response_df(self, original_response) -> pd.DataFrame:
+        """
+        This function is used to create dataframe from json reponse of
+        creation api
+
+        Args:
+            | original response(dict): creation api response
+        Returns:
+            | DataFrame consisting of 4 columns ["Repository Id", "Repository Name", "Display Name", "Description"]
+
+        """
+        response_df_dict = {}
+        if original_response["data"]:
+            if original_response["data"]["attributes"]:
+                attribute_data = original_response["data"]["attributes"]
+                response_df_dict["Repository Id"] = attribute_data.get("repo_id", "")
+                response_df_dict["Repository Name"] = attribute_data.get(
+                    "repo_name", ""
+                )
+                if attribute_data["frontend_info"]:
+                    front_info_dict = attribute_data["frontend_info"]
+                    response_df_dict["Display Name"] = front_info_dict.get(
+                        "display_name", ""
+                    )
+                    response_df_dict["Description"] = front_info_dict.get(
+                        "description", ""
+                    )
+        rep_creation_df = pd.DataFrame([response_df_dict])
+        return rep_creation_df
+
+    def _construct_initials(self, display_name) -> str:
+        """
+        This function is used to create initials from the display name
+        Args:
+            | display_name(str): display name of the omixatlas
+        Returns:
+            | initials string
+        """
+        words = display_name.split()
+        letters = [word[0] for word in words]
+        initials = "".join(letters)
+        initials = initials.upper()
+        return initials
+
+    def _create_repo_name(self, display_name) -> str:
+        """
+        This function is used to repo_name from display_name
+        Args:
+            | display_name(str): display name of the omixatlas
+        Returns:
+            | Constructed repo name
+        """
+        repo_name = display_name.lower().replace(" ", "_")
+        return repo_name
+
+    def _check_for_valid_repo_name(self, repo_name):
+        """
+        This function is checks if the repo_name is valid
+        according to the constraints of
+        1. max length is 20
+        2. all lowercase alphabets and words seperated by "_"
+
+        Args:
+            | repo_name(str): repo_name which is used to create index in db
+        Returns:
+            | Error in case of failed constraints
+        """
+        if len(repo_name) > 20:
+            raise ValueError("Max length of repo_name can be 20")
+
+        pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
+        if not re.fullmatch(pattern, repo_name):
+            raise ValueError(
+                f"{repo_name} is in incorrect format, Refer to the documentation"
+            )
+
+    def _get_repository_payload(self):
+        """ """
+        return {
+            "data": {
+                "type": "repositories",
+                "attributes": {
+                    "frontend_info": {
+                        "description": "<DESCRIPTION>",
+                        "display_name": "<REPO_DISPLAY_NAME>",
+                        "explorer_enabled": True,
+                        "initials": "<INITIALS>",
+                    },
+                    "indexes": {
+                        "csv": "<REPO_NAME>_csv",
+                        "files": "<REPO_NAME>_files",
+                        "gct_data": "<REPO_NAME>_gct_data",
+                        "gct_metadata": "<REPO_NAME>_gct_metadata",
+                        "h5ad_data": "<REPO_NAME>_h5ad_data",
+                        "h5ad_metadata": "<REPO_NAME>_h5ad_metadata",
+                        "ipynb": "<REPO_NAME>_ipynb",
+                        "json": "<REPO_NAME>_json",
+                    },
+                    "repo_name": "<REPO_NAME>",
+                },
+            }
+        }
 
 
 if __name__ == "__main__":

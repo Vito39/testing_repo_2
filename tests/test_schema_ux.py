@@ -13,7 +13,7 @@ def test_obj_initialization():
 
 
 def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
-    repo_id = "1622526550765"
+    repo_id = "31"
     schema_type_dict = {"dataset": "files", "sample": "gct_metadata"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     source = ""
@@ -27,7 +27,7 @@ def test_get_schema_with_repo_id_and_both_dataset_and_sample_schema_param():
 
 
 def test_get_schema_with_repo_id_and_sample_schema_param():
-    repo_id = "1622526550765"
+    repo_id = "31"
     schema_type_dict = {"sample": "gct_metadata"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     source = ""
@@ -40,7 +40,7 @@ def test_get_schema_with_repo_id_and_sample_schema_param():
 
 
 def test_get_schema_with_repo_id_and_dataset_schema_param():
-    repo_id = "1622526550765"
+    repo_id = "31"
     schema_type_dict = {"dataset": "files"}
     schema_obj = omixatlas.OmixAtlas(token, env="testpolly")
     source = ""

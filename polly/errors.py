@@ -161,7 +161,6 @@ def extract_json_api_error(response):
     error = response.json().get("error")
     if error is None:
         error = response.json().get("errors")[0]
-
     title = error.get("title")
     detail = error.get("detail")
     return title, detail
