@@ -81,9 +81,47 @@ class InvalidPathException(Exception):
         return "This path does not represent a file or a directory. Please try again."
 
 
+class InvalidCohortPathException(Exception):
+    def __str__(self):
+        return "This path does not represent a Cohort. Please try again."
+
+
+class InvalidCohortNameException(Exception):
+    def __str__(self, cohort_name):
+        return f"The identifier {cohort_name} does not represent a valid cohort name. Please try again."
+
+
+class InvalidRepoException(Exception):
+    def __init__(self, repo_name):
+        self.repo_name = repo_name
+
+    def __str__(self):
+        return "This feature supports the repo : 'tcga' . Please try again."
+
+
+class InvalidDatasetException(Exception):
+    def __str__(self):
+        return "Dataset/s not added."
+
+
+class InvalidCohortOperationException(Exception):
+    def __str__(self):
+        return "This operation is not valid as no cohort has been instantiated."
+
+
+class EmptyCohortException(Exception):
+    def __str__(self):
+        return "There are no datasets to be merged in the cohort. Please try adding datasets using add_to_cohort() function."
+
+
+class CohortEditException(Exception):
+    def __str__(self):
+        return "No parameter specified for editing in cohort"
+
+
 class MissingKeyException(Exception):
     def __init__(self, key):
-        self.reason = key
+        self.key = key
 
     def __str__(self):
         return f"Missing keys {self.key}"
