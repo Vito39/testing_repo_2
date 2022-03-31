@@ -35,10 +35,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul class="simple">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../polly.html">polly package</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -71,23 +72,54 @@
 </dd>
 </dl>
 </dd>
-<dt>class Polly:</dt><dd><p>default_session = None</p>
+<dt>class Polly:</dt><dd><p>“””
+This is a class for authorization for polly.
+There are function classmethods
+auth(token,env)
+get_session(token,env)
+“””
+default_session = None</p>
 <p>&#64;classmethod
 def auth(cls, token, env=”polly”):</p>
 <blockquote>
-<div><p>cls.default_session = PollySession(token, env=env)</p>
+<div><p>“””
+function for auth to connect on polly</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>token (str): token copy from polly.
+env (str): polly or testpolly or devpolly.</p>
+</dd>
+</dl>
+<p>To use auth function import class Polly
+Polly.auth(token,’env’)
+if token is not satisfied it will throw a error.</p>
+<p>“””
+cls.default_session = PollySession(token, env=env)</p>
 </div></blockquote>
 <p>&#64;classmethod
 def get_session(cls, token=None, env=”polly”):</p>
 <blockquote>
+<div><p>“””
+function to get session for polly</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>token (str): token copy from polly.
+env (str): polly or testpolly or devpolly.</p>
+</dd>
+</dl>
+<p>To use auth function import class Polly
+Polly.auth(token,’env’)
+if token is not satisfied it will throw UnauthorizedException.
+else it will return a polly.session object
+“””
+if not token:</p>
+<blockquote>
 <div><dl class="simple">
-<dt>if not token:</dt><dd><dl class="simple">
 <dt>if not cls.default_session:</dt><dd><p>raise UnauthorizedException</p>
 </dd>
 <dt>else:</dt><dd><p>return cls.default_session</p>
 </dd>
 </dl>
-</dd>
+</div></blockquote>
+<dl class="simple">
 <dt>else:</dt><dd><p>return PollySession(token, env=env)</p>
 </dd>
 </dl>

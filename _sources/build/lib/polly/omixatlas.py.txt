@@ -33,6 +33,21 @@ QUERY_API_V2 = "v2"
 
 
 class OmixAtlas:
+    """
+    OmixAtlas class interact with omixatlases datalakes 
+    that contain datasets to query
+
+    |  we can init a OmixAtlas class object using 
+    |  obj = Omixatlas(token,env)
+
+    Args:
+        |  token (str): token copy from polly.
+        |  env (str): polly or testpolly or devpolly.
+    
+    |  to use OmixAtlas class functions
+    |  obj.get_all_omixatlas()
+    
+    """
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
@@ -43,6 +58,52 @@ class OmixAtlas:
         self.resource_url = f"{self.base_url}/v1/omixatlases"
 
     def get_all_omixatlas(self):
+        """
+        This function will return a list of datalakes that are 
+        available to query.
+        
+        |  to use this function import Omixatlas class
+        |  and make a object 
+        |  obj = Omixatlas(token,env)
+        |  obj.get_all_omixatlas()
+
+        Args:
+            None
+
+        Returns:
+            |  It will return a list of objects like this
+            |  {
+            |  'repo_name': 'repo', 
+            |  'repo_id': '1646', 
+            |  'indexes': {
+            |     'gct_metadata': 'repo_gct_metadata', 
+            |      'h5ad_metadata': 'repo_h5ad_metadata',
+            |      'csv': 'repo_csv',
+            |      'files': 'repo_files', 
+            |      'json': 'repo_json', 
+            |      'ipynb': 'repo_ipynb', 
+            |      'gct_data': 'repo_gct_data', 
+            |      'h5ad_data': 'repo_h5ad_data'
+            |      },
+            |  'diseases': [], 
+            |  'organisms': [], 
+            |  'sources': [], 
+            |  'datatypes': [], 
+            |  'dataset_count': 0, 
+            |  'disease_count': 0, 
+            |  'tissue_count': 0, 
+            |  'organism_count': 0, 
+            |  'cell_line_count': 0, 
+            |  'cell_type_count': 0, 
+            |  'drug_count': 0, 
+            |  'data_type_count': 0, 
+            |  'data_source_count': 0, 
+            |  'sample_count': 0,
+            |  'normal_sample_count': 0
+            |  }
+        
+        """
+
         url = self.resource_url
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
@@ -50,6 +111,45 @@ class OmixAtlas:
         return response.json()
 
     def omixatlas_summary(self, key: str):
+        """
+        This function will return you a object that contain information 
+        about that repo.
+
+        Args:
+            key (str) : repo_id 
+
+        Returns:
+            |  It will return a object like this  
+            |  {
+            |  'repo_name': 'repo', 
+            |  'repo_id': '1646', 
+            |  'indexes': {
+            |      'gct_metadata': 'repo_gct_metadata', 
+            |      'h5ad_metadata': 'repo_h5ad_metadata',
+            |      'csv': 'repo_csv',
+            |      'files': 'repo_files', 
+            |      'json': 'repo_json', 
+            |      'ipynb': 'repo_ipynb', 
+            |      'gct_data': 'repo_gct_data', 
+            |      'h5ad_data': 'repo_h5ad_data'
+            |      },
+            |  'diseases': [], 
+            |  'organisms': [], 
+            |  'sources': [], 
+            |  'datatypes': [], 
+            |  'dataset_count': 0, 
+            |  'disease_count': 0, 
+            |  'tissue_count': 0, 
+            |  'organism_count': 0, 
+            |  'cell_line_count': 0, 
+            |  'cell_type_count': 0, 
+            |  'drug_count': 0, 
+            |  'data_type_count': 0, 
+            |  'data_source_count': 0, 
+            |  'sample_count': 0,
+            |  'normal_sample_count': 0
+            |  }
+        """
         url = f"{self.resource_url}/{key}"
         params = {"summarize": "true"}
         response = self.session.get(url, params=params)
@@ -63,6 +163,22 @@ class OmixAtlas:
         query_api_version=QUERY_API_V1,
         page_size=None,  # Note: do not increase page size more than 999
     ):
+        """
+        This function will returns a table containing the datasets that satisfied
+        the sql query
+
+        Args:
+            |  query (str) : sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets"
+            |  experimental_features :
+            |  query_api_version (str) : v1 or v2
+            |  page_size (int): page size for query
+
+        
+        Returns:
+            |  it will return a table that will contain metadata (for example- disease,
+            |  total_num_cells) and datasets that satisfied the sql query
+
+        """
         max_page_size = 999
         if page_size is not None and page_size > max_page_size:
             raise ValueError(
@@ -225,23 +341,25 @@ class OmixAtlas:
         """
         Gets the schema of a repo id for the given repo_key and
         schema_type definition at the top level
-        params:
-        repo_key => str
-        schema_type_dict => dictionary {schema_level:schema_type}
-        example {'dataset': 'files', 'sample': 'gct_metadata'}
-        Ouput:
-            {
-                "data": {
-                    "id": "<REPO_ID>",
-                    "type": "schema",
-                    "attributes": {
-                        "schema_type": "files | gct_metadata | h5ad_metadata",
-                        "schema": {
-                            ... field definitions
-                        }
-                    }
-                }
-            }
+
+        Args:
+            |  repo_key (str) : repo id or repo name
+            |  schema_type_dict (dictionary) : {schema_level:schema_type}
+            |  example {'dataset': 'files', 'sample': 'gct_metadata'}
+        
+        Returns:
+            |  {
+            |      "data": {
+            |          "id": "<REPO_ID>",
+            |          "type": "schema",
+            |          "attributes": {
+            |              "schema_type": "files | gct_metadata | h5ad_metadata",
+            |              "schema": {
+            |                  ... field definitions
+            |              }
+            |          }
+            |      }
+            |  }
         """
         resp_dict = {}
         schema_base_url = f"{self.discover_url}/repositories"
@@ -301,46 +419,60 @@ class OmixAtlas:
         self, repo_key: str, schema_level=["dataset", "sample"], source="", data_type=""
     ) -> dict:
         """
-        Input params:
-                repo_key => str => <owner_name.repo_name>/<repo_id>
-                schema_level => list => Default value => ['dataset', 'sample']
-            Output:
-                {
-                    'dataset':pd.DataFrame,
-                    'sample':pd.DataFrame
-                }
-            DataFrame consists of schema metadata summary
-            i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-            metdata schema definition for sample:
-                schema:{
-                    "<SOURCE>": {
-                        "<DATATYPE>": {
-                            "<FIELD_NAME>": {
-                            "type": "text | integer | object",
-                            "description": "string", (Min=1, Max=100)
-                            },
-                            ... other fields
-                        }
-                        ... other Data types
-                    }
-                    ... other Sources
-                }
-            ii) schema_type : files i.e Global Fields (dataset)
-            PS :- ALL, ALL keys is not rigid for dataset level schema also
-            There it can be <SOURCE> and <DATATYPE> key also
-            metadata schema definition for a dataset:
-                schema:{
-                        "ALL": {
-                            "ALL": {
-                                "<FIELD_NAME>": {
-                                "type": "text | integer | object",
-                                "description": "string", (Min=1, Max=100)
-                                },
-                                ... other fields
-                            }
-                        }
-            iii) schema_type : gct_metadata i.e Row Fields (Feature)
-            Not there right now
+        Using this function to extract the schema of an OmixAtlas.
+        
+        Args:
+            |  repo_key (str) : repo_id OR repo_name. This is a mandatory field.
+            |  schema_level (list) : The default value is ['dataset', 'sample']. The users can use ['dataset'] OR ['sample'] to fetch the schema of dataset OR sample level metadata respectively.
+            |  source (str) : is the source from where data is ingested into the Omixatlas.
+            |  data_type (str) : is the datatype for which user wants to get the schema for. The default value is 'all', which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use 'single_cell'.
+        
+        Returns:
+            |  {
+            |      'dataset':pd.DataFrame,
+            |      'sample':pd.DataFrame
+            |  }
+            |  DataFrame consists of schema metadata summary
+            |  i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            |  metdata schema definition for sample:
+            |      schema:{
+            |          "<SOURCE>": {
+            |              "<DATATYPE>": {
+            |                  "<FIELD_NAME>": {
+            |                  "type": "text | integer | object",
+            |                  "description": "string", (Min=1, Max=100)
+            |                  },
+            |                  ... other fields
+            |              }
+            |              ... other Data types
+            |          }
+            |          ... other Sources
+            |      }
+            |  ii) schema_type : files i.e Global Fields (dataset)
+            |  PS :- ALL, ALL keys is not rigid for dataset level schema also
+            |  There it can be <SOURCE> and <DATATYPE> key also
+            |  metadata schema definition for a dataset:
+            |      schema:{
+            |              "ALL": {
+            |                  "ALL": {
+            |                      "<FIELD_NAME>": {
+            |                      "type": "text | integer | object",
+            |                      "description": "string", (Min=1, Max=100)
+            |                      },
+            |                      ... other fields
+            |                  }
+            |              }
+            |  iii) schema_type : gct_metadata i.e Row Fields (Feature)
+            |  Not there right now
+
+        |  Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas
+        |  schema = omixatlas.get_schema("geo", ['dataset', 'sample'], "all", "all")
+
+        |  to fetch the dataframe with dataset level metadata,
+        |  schema.dataset
+
+        |  to fetch the dataframe with sample level metadata,
+        |  schema.sample
         """
 
         # get schema_type_dict
@@ -379,46 +511,49 @@ class OmixAtlas:
         self, repo_key: str, schema_level=["dataset", "sample"], source="", data_type=""
     ) -> dict:
         """
-        Input params:
-                repo_key => str => <owner_name.repo_name>/<repo_id>
-                schema_level => list => Default value => ['dataset', 'sample']
-            Output:
-                {
-                    'dataset':pd.DataFrame,
-                    'sample':pd.DataFrame
-                }
-            DataFrame consists of schema metadata summary
-            i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-            metdata schema definition for sample:
-                schema:{
-                    "<SOURCE>": {
-                        "<DATATYPE>": {
-                            "<FIELD_NAME>": {
-                            "type": "text | integer | object",
-                            "description": "string", (Min=1, Max=100)
-                            },
-                            ... other fields
-                        }
-                        ... other Data types
-                    }
-                    ... other Sources
-                }
-            ii) schema_type : files i.e Global Fields (dataset)
-            PS :- ALL, ALL keys is not rigid for dataset level schema also
-            There it can be <SOURCE> and <DATATYPE> key also
-            metadata schema definition for a dataset:
-                schema:{
-                        "ALL": {
-                            "ALL": {
-                                "<FIELD_NAME>": {
-                                "type": "text | integer | object",
-                                "description": "string", (Min=1, Max=100)
-                                },
-                                ... other fields
-                            }
-                        }
-            iii) schema_type : gct_metadata i.e Row Fields (Feature)
-            Not there right now
+        To visulize schema of a repository.
+
+        Args:
+            |  repo_key => str => <owner_name.repo_name>/<repo_id>
+            |  schema_level => list => Default value => ['dataset', 'sample']
+
+        Returns:
+            |  {
+            |      'dataset':pd.DataFrame,
+            |      'sample':pd.DataFrame
+            |  }
+            |  DataFrame consists of schema metadata summary
+            |  i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+            |  metdata schema definition for sample:
+            |      schema:{
+            |          "<SOURCE>": {
+            |              "<DATATYPE>": {
+            |                  "<FIELD_NAME>": {
+            |                  "type": "text | integer | object",
+            |                  "description": "string", (Min=1, Max=100)
+            |                  },
+            |                  ... other fields
+            |              }
+            |              ... other Data types
+            |          }
+            |          ... other Sources
+            |      }
+            |  ii) schema_type : files i.e Global Fields (dataset)
+            |  PS :- ALL, ALL keys is not rigid for dataset level schema also
+            |  There it can be <SOURCE> and <DATATYPE> key also
+            |  metadata schema definition for a dataset:
+            |      schema:{
+            |              "ALL": {
+            |                  "ALL": {
+            |                      "<FIELD_NAME>": {
+            |                      "type": "text | integer | object",
+            |                      "description": "string", (Min=1, Max=100)
+            |                      },
+            |                      ... other fields
+            |                  }
+            |              }
+            |  iii) schema_type : gct_metadata i.e Row Fields (Feature)
+            |  Not there right now
         """
 
         # get schema_type_dict
@@ -445,14 +580,12 @@ class OmixAtlas:
     def get_schema_type(self, schema_level: list, data_type: str) -> dict:
         """
         Compute schema_type based on data_type and schema_level
-        schema_level         schema_type
-        ------------------------------------
-        dataset         ==   file
-        ----------------------------------
-        sample          ==   gct_metadata
-        -----------------------------------
-        sample and      ==    h5ad_metadata
-        single cell
+
+        |  schema_level   --------    schema_type
+        |  dataset       --------     file
+        |  sample    --------      gct_metadata
+        |  sample and  ------       h5ad_metadata
+        |  single cell
         """
         if schema_level and isinstance(schema_level, list):
             if "dataset" in schema_level and "sample" in schema_level:
@@ -493,29 +626,30 @@ class OmixAtlas:
     def flatten_nested_schema_dict(self, nested_schema_dict: dict) -> dict:
         """
         Flatten the nested dict
-         Input:
-         schema:{
-                   "<SOURCE>": {
-                       "<DATATYPE>": {
-                           "<FIELD_NAME>": {
-                           "type": "text | integer | object",
-                           "description": "string", (Min=1, Max=100)
-                           },
-                           ... other fields
-                       }
-                       ... other Data types
-                   }
-                   ... other Sources
-               }
 
-         Output:
-                  {
-                      'Source':source_list,
-                      'Datatype': datatype_list,
-                      'Field Name':field_name_list,
-                      'Field Description':field_desc_list,
-                      'Field Type': field_type_list
-                  }
+        Args:
+            |  schema:{
+            |         "<SOURCE>": {
+            |             "<DATATYPE>": {
+            |                 "<FIELD_NAME>": {
+            |                 "type": "text | integer | object",
+            |                 "description": "string", (Min=1, Max=100)
+            |                 },
+            |                 ... other fields
+            |             }
+            |             ... other Data types
+            |         }
+            |         ... other Sources
+            |     }
+
+        Returns:
+            |  {
+            |      'Source':source_list,
+            |      'Datatype': datatype_list,
+            |      'Field Name':field_name_list,
+            |      'Field Description':field_desc_list,
+            |      'Field Type': field_type_list
+            |  }
 
         """
         reformed_dict = {}
@@ -546,16 +680,18 @@ class OmixAtlas:
     def nested_dict_to_df(self, schema_dict: dict) -> pd.DataFrame:
         """
         Convert flatten dict into df and print it
-        Input:
-              {
-                     'Source':source_list,
-                     'Datatype': datatype_list,
-                     'Field Name':field_name_list,
-                     'Field Description':field_desc_list,
-                     'Field Type': field_type_list
-              }
-        Output:
-              DataFrame
+        
+        Args:
+            |  {
+            |      'Source':source_list,
+            |      'Datatype': datatype_list,
+            |      'Field Name':field_name_list,
+            |      'Field Description':field_desc_list,
+            |      'Field Type': field_type_list
+            |  }
+
+        Returns:
+            DataFrame
         """
         pd.options.display.max_columns = None
         pd.options.display.width = None
@@ -565,27 +701,36 @@ class OmixAtlas:
     def format_type(self, data: dict) -> dict:
         """
         Format the dict data
+        
+        Args:
+            |  data (dict) 
+        
+        Returns:
+            |  It will return Equivalent json string of dictionary.
         """
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
 
     def insert_schema(self, repo_key: str, body: dict) -> dict:
         """
-        Params:
-            repo_key => str => <owner_name.repo_name> / <repo_id>
-            body => dict
-            {
-                "data": {
-                    "id": "<REPO_KEY>",
-                    "type": "schema",
-                    "attributes": {
-                    "schema_type": "files | gct_metadata | h5ad_metadata",
-                    "schema": {
-                        ... field definitions
-                    }
-                    }
-                }
-            }
+        Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
+        |  omixatlas.insert_schema(repo_key, payload)
+
+        Args :
+            |  repo_key: (str) repo_id OR repo_name. This is a mandatory field.
+            |  payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
+            |  {
+            |      "data": {
+            |          "id": "<REPO_KEY>",
+            |          "type": "schema",
+            |          "attributes": {
+            |          "schema_type": "files | gct_metadata | h5ad_metadata",
+            |          "schema": {
+            |              ... field definitions
+            |          }
+            |          }
+            |      }
+            |  }
         """
         if repo_key and body and isinstance(body, dict):
             body = json.dumps(body)
@@ -605,21 +750,33 @@ class OmixAtlas:
 
     def update_schema(self, repo_key: str, body: dict) -> dict:
         """
-        Params:
-                repo_key => str => <owner_name.repo_name> / <repo_id>
-                body => dict
-                {
-                    "data": {
-                        "id": "<REPO_KEY>",
-                        "type": "schema",
-                        "attributes": {
-                        "schema_type": "files | gct_metadata | h5ad_metadata",
-                        "schema": {
-                            ... field definitions
-                        }
-                        }
-                    }
-                }
+        Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
+        |  omixatlas.update_schema(repo_key, payload)
+
+        Args :
+            |  repo_key: (str) repo_id OR repo_name. This is a mandatory field.
+            |  payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
+            |  {
+            |      "data": {
+            |          "id": "<REPO_KEY>",
+            |          "type": "schema",
+            |          "attributes": {
+            |          "schema_type": "files | gct_metadata | h5ad_metadata",
+            |          "schema": {
+            |              ... field definitions
+            |          }
+            |          }
+            |      }
+            |  }
+        payload can be loaded from the JSON file in which schema is defined in the following manner:
+
+        |  import json
+
+        |  # Opening JSON file
+        |  schema = open('schema_file.json')
+
+        |  # returns JSON object as a dictionary
+        |  payload = json.load(schema)
         """
         schema_type = body["data"]["attributes"]["schema_type"]
         schema_base_url = f"{self.discover_url}/repositories"
@@ -640,6 +797,9 @@ class OmixAtlas:
 
     # ? DEPRECATED
     def search_metadata(self, query: dict):
+        """
+        
+        """
         url = f"{self.resource_url}/_search"
         payload = query
         response = self.session.get(url, json=payload)
@@ -647,6 +807,24 @@ class OmixAtlas:
         return response.json()
 
     def download_data(self, repo_name, _id: str):
+        """
+        To download any dataset, the following function can be used to get the signed URL of the dataset.
+
+        |  omixatlas.download_data("repo_key", "[dataset_id]")
+
+        Args:
+            |  repo_key: (str) repo_id OR repo_name from where the data needs to be downloaded.
+            |  dataset_id: (str) dataset_id which the user wants to download.
+
+        |  The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function.
+        |  The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata("[query written in SQL]").
+
+        Returns:
+            |  The output of this function is a signed URL. The data can be downloaded by clicking on this URL.
+            |  NOTE: This signed URL expires after 60 minutes from when it is generated.
+        
+        |  The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:        
+        """
         url = f"{self.resource_url}/{repo_name}/download"
         params = {"_id": _id}
         response = self.session.get(url, params=params)
@@ -659,6 +837,15 @@ class OmixAtlas:
         """
         Function for saving data from omixatlas to workspaces.
         Makes a call to v1/omixatlas/workspace_jobs
+
+        Args:
+            |  repo_id (str) : repo id
+            |  dataset_id (str) : dataset id
+            |  workspace_id (str) : workspace id of polly
+            |  workspace_path (str) : path in workspace where you want to save file
+        
+        | Example to save the dataset_id 'GSE101127_GPL1355' from repo_id 1615965444377 to a workspace_id 8025 in a folder named 'data'
+        | omixatlas.save_to_workspace('1615965444377', 'GSE101127_GPL1355', 8025, 'data')
         """
         url = f"{self.resource_url}/workspace_jobs"
         params = {"action": "copy"}
@@ -683,6 +870,14 @@ class OmixAtlas:
     def format_converter(self, repo_key: str, dataset_id: str, to: str) -> None:
         """
         Function to convert a file to maf format.
+        
+        Args:
+            |  repo_key (str) : repo_id
+            |  dataset_id (str) : dataset_id
+            |  to(str) : output file format
+        
+        |  For example:
+        |  omixatlas.format_converter("cbioportal", "ACC_2019_Mutation_ACYC-FMI-19", "maf")
         """
         if not (repo_key and isinstance(repo_key, str)):
             raise InvalidParameterException("repo_id/repo_name")

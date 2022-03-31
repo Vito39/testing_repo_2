@@ -9,14 +9,44 @@ class UnauthorizedException(Exception):
 
 
 class Polly:
+    """
+    This is a class for authorization for polly.
+    There are function classmethods
+    auth(token,env)
+    get_session(token,env)
+    """
     default_session = None
 
     @classmethod
     def auth(cls, token, env="polly"):
+        """
+        function for auth to connect on polly
+
+        Args:
+            token (str): token copy from polly.
+            env (str): polly or testpolly or devpolly.
+
+        To use auth function import class Polly
+        Polly.auth(token,'env')
+        if token is not satisfied it will throw a error.  
+
+        """
         cls.default_session = PollySession(token, env=env)
 
     @classmethod
     def get_session(cls, token=None, env="polly"):
+        """
+        function to get session for polly
+
+        Args:
+            token (str): token copy from polly.
+            env (str): polly or testpolly or devpolly.
+
+        To use auth function import class Polly
+        Polly.auth(token,'env')
+        if token is not satisfied it will throw UnauthorizedException.
+        else it will return a polly.session object   
+        """
         if not token:
             if not cls.default_session:
                 raise UnauthorizedException

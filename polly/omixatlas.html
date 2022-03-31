@@ -35,10 +35,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul class="simple">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../polly.html">polly package</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -96,8 +97,28 @@ from polly.index_schema_level_conversion_const import indexes_schema_level_map</
 <p>QUERY_API_V1 = “v1”
 QUERY_API_V2 = “v2”</p>
 <dl>
-<dt>class OmixAtlas:</dt><dd><dl>
-<dt>def __init__(self, token=None, env=”polly”) -&gt; None:</dt><dd><p>self.session = Polly.get_session(token, env=env)
+<dt>class OmixAtlas:</dt><dd><p>“””
+OmixAtlas class interact with omixatlases datalakes
+that contain datasets to query</p>
+<div class="line-block">
+<div class="line">we can init a OmixAtlas class object using</div>
+<div class="line">obj = Omixatlas(token,env)</div>
+</div>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">token (str): token copy from polly.</div>
+<div class="line">env (str): polly or testpolly or devpolly.</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">to use OmixAtlas class functions</div>
+<div class="line">obj.get_all_omixatlas()</div>
+</div>
+<p>“””
+def __init__(self, token=None, env=”polly”) -&gt; None:</p>
+<blockquote>
+<div><p>self.session = Polly.get_session(token, env=env)
 self.base_url = f”<a class="reference external" href="https://v2.api">https://v2.api</a>.{self.session.env}.elucidata.io”
 self.discover_url = f”<a class="reference external" href="https://api.discover">https://api.discover</a>.{self.session.env}.elucidata.io”
 self.elastic_url = (</p>
@@ -106,14 +127,109 @@ self.elastic_url = (</p>
 </div></blockquote>
 <p>)
 self.resource_url = f”{self.base_url}/v1/omixatlases”</p>
+</div></blockquote>
+<dl>
+<dt>def get_all_omixatlas(self):</dt><dd><p>“””
+This function will return a list of datalakes that are
+available to query.</p>
+<div class="line-block">
+<div class="line">to use this function import Omixatlas class</div>
+<div class="line">and make a object</div>
+<div class="line">obj = Omixatlas(token,env)</div>
+<div class="line">obj.get_all_omixatlas()</div>
+</div>
+<dl>
+<dt>Args:</dt><dd><p>None</p>
 </dd>
-<dt>def get_all_omixatlas(self):</dt><dd><p>url = self.resource_url
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">It will return a list of objects like this</div>
+<div class="line">{</div>
+<div class="line">‘repo_name’: ‘repo’,</div>
+<div class="line">‘repo_id’: ‘1646’,</div>
+<div class="line">‘indexes’: {</div>
+<div class="line-block">
+<div class="line">‘gct_metadata’: ‘repo_gct_metadata’,</div>
+<div class="line-block">
+<div class="line">‘h5ad_metadata’: ‘repo_h5ad_metadata’,</div>
+<div class="line">‘csv’: ‘repo_csv’,</div>
+<div class="line">‘files’: ‘repo_files’,</div>
+<div class="line">‘json’: ‘repo_json’,</div>
+<div class="line">‘ipynb’: ‘repo_ipynb’,</div>
+<div class="line">‘gct_data’: ‘repo_gct_data’,</div>
+<div class="line">‘h5ad_data’: ‘repo_h5ad_data’</div>
+<div class="line">},</div>
+</div>
+</div>
+<div class="line">‘diseases’: [],</div>
+<div class="line">‘organisms’: [],</div>
+<div class="line">‘sources’: [],</div>
+<div class="line">‘datatypes’: [],</div>
+<div class="line">‘dataset_count’: 0,</div>
+<div class="line">‘disease_count’: 0,</div>
+<div class="line">‘tissue_count’: 0,</div>
+<div class="line">‘organism_count’: 0,</div>
+<div class="line">‘cell_line_count’: 0,</div>
+<div class="line">‘cell_type_count’: 0,</div>
+<div class="line">‘drug_count’: 0,</div>
+<div class="line">‘data_type_count’: 0,</div>
+<div class="line">‘data_source_count’: 0,</div>
+<div class="line">‘sample_count’: 0,</div>
+<div class="line">‘normal_sample_count’: 0</div>
+<div class="line">}</div>
+</div>
+</dd>
+</dl>
+<p>“””</p>
+<p>url = self.resource_url
 params = {“summarize”: “true”}
 response = self.session.get(url, params=params)
 error_handler(response)
 return response.json()</p>
 </dd>
-<dt>def omixatlas_summary(self, key: str):</dt><dd><p>url = f”{self.resource_url}/{key}”
+<dt>def omixatlas_summary(self, key: str):</dt><dd><p>“””
+This function will return you a object that contain information
+about that repo.</p>
+<dl>
+<dt>Args:</dt><dd><p>key (str) : repo_id</p>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">It will return a object like this</div>
+<div class="line">{</div>
+<div class="line">‘repo_name’: ‘repo’,</div>
+<div class="line">‘repo_id’: ‘1646’,</div>
+<div class="line">‘indexes’: {</div>
+<div class="line-block">
+<div class="line">‘gct_metadata’: ‘repo_gct_metadata’,</div>
+<div class="line">‘h5ad_metadata’: ‘repo_h5ad_metadata’,</div>
+<div class="line">‘csv’: ‘repo_csv’,</div>
+<div class="line">‘files’: ‘repo_files’,</div>
+<div class="line">‘json’: ‘repo_json’,</div>
+<div class="line">‘ipynb’: ‘repo_ipynb’,</div>
+<div class="line">‘gct_data’: ‘repo_gct_data’,</div>
+<div class="line">‘h5ad_data’: ‘repo_h5ad_data’</div>
+<div class="line">},</div>
+</div>
+<div class="line">‘diseases’: [],</div>
+<div class="line">‘organisms’: [],</div>
+<div class="line">‘sources’: [],</div>
+<div class="line">‘datatypes’: [],</div>
+<div class="line">‘dataset_count’: 0,</div>
+<div class="line">‘disease_count’: 0,</div>
+<div class="line">‘tissue_count’: 0,</div>
+<div class="line">‘organism_count’: 0,</div>
+<div class="line">‘cell_line_count’: 0,</div>
+<div class="line">‘cell_type_count’: 0,</div>
+<div class="line">‘drug_count’: 0,</div>
+<div class="line">‘data_type_count’: 0,</div>
+<div class="line">‘data_source_count’: 0,</div>
+<div class="line">‘sample_count’: 0,</div>
+<div class="line">‘normal_sample_count’: 0</div>
+<div class="line">}</div>
+</div>
+</dd>
+</dl>
+<p>“””
+url = f”{self.resource_url}/{key}”
 params = {“summarize”: “true”}
 response = self.session.get(url, params=params)
 error_handler(response)
@@ -125,7 +241,25 @@ experimental_features=None,
 query_api_version=QUERY_API_V1,
 page_size=None,  # Note: do not increase page size more than 999</p>
 </dd>
-<dt>):</dt><dd><p>max_page_size = 999
+<dt>):</dt><dd><p>“””
+This function will returns a table containing the datasets that satisfied
+the sql query</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">query (str) : sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
+<div class="line">experimental_features :</div>
+<div class="line">query_api_version (str) : v1 or v2</div>
+<div class="line">page_size (int): page size for query</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">it will return a table that will contain metadata (for example- disease,</div>
+<div class="line">total_num_cells) and datasets that satisfied the sql query</div>
+</div>
+</dd>
+</dl>
+<p>“””
+max_page_size = 999
 if page_size is not None and page_size &gt; max_page_size:</p>
 <blockquote>
 <div><dl class="simple">
@@ -314,34 +448,38 @@ print(f”Fetched {len(data_df.index)} rows”)</p>
 </dd>
 <dt>) -&gt; dict:</dt><dd><p>“””
 Gets the schema of a repo id for the given repo_key and
-schema_type definition at the top level
-params:
-repo_key =&gt; str
-schema_type_dict =&gt; dictionary {schema_level:schema_type}
-example {‘dataset’: ‘files’, ‘sample’: ‘gct_metadata’}
-Ouput:</p>
-<blockquote>
-<div><dl>
-<dt>{</dt><dd><dl>
-<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_ID&gt;”,
-“type”: “schema”,
-“attributes”: {</p>
-<blockquote>
-<div><p>“schema_type”: “files | gct_metadata | h5ad_metadata”,
-“schema”: {</p>
-<blockquote>
-<div><p>… field definitions</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
+schema_type definition at the top level</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_key (str) : repo id or repo name</div>
+<div class="line">schema_type_dict (dictionary) : {schema_level:schema_type}</div>
+<div class="line">example {‘dataset’: ‘files’, ‘sample’: ‘gct_metadata’}</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">“data”: {</div>
+<div class="line-block">
+<div class="line">“id”: “&lt;REPO_ID&gt;”,</div>
+<div class="line">“type”: “schema”,</div>
+<div class="line">“attributes”: {</div>
+<div class="line-block">
+<div class="line">“schema_type”: “files | gct_metadata | h5ad_metadata”,</div>
+<div class="line">“schema”: {</div>
+<div class="line-block">
+<div class="line">… field definitions</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
 <p>“””
 resp_dict = {}
 schema_base_url = f”{self.discover_url}/repositories”
@@ -432,70 +570,85 @@ detail=”repo_key and schema_type_dict are either empty or its datatype is not 
 <dt>def get_schema(</dt><dd><p>self, repo_key: str, schema_level=[“dataset”, “sample”], source=””, data_type=””</p>
 </dd>
 <dt>) -&gt; dict:</dt><dd><p>“””
-Input params:</p>
-<blockquote>
-<div><blockquote>
-<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;
-schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</p>
-</div></blockquote>
+Using this function to extract the schema of an OmixAtlas.</p>
 <dl>
-<dt>Output:</dt><dd><dl class="simple">
-<dt>{</dt><dd><p>‘dataset’:pd.DataFrame,
-‘sample’:pd.DataFrame</p>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_key (str) : repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line">schema_level (list) : The default value is [‘dataset’, ‘sample’]. The users can use [‘dataset’] OR [‘sample’] to fetch the schema of dataset OR sample level metadata respectively.</div>
+<div class="line">source (str) : is the source from where data is ingested into the Omixatlas.</div>
+<div class="line">data_type (str) : is the datatype for which user wants to get the schema for. The default value is ‘all’, which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use ‘single_cell’.</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">‘dataset’:pd.DataFrame,</div>
+<div class="line">‘sample’:pd.DataFrame</div>
+</div>
+<div class="line">}</div>
+<div class="line">DataFrame consists of schema metadata summary</div>
+<div class="line">i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)</div>
+<div class="line">metdata schema definition for sample:</div>
+<div class="line-block">
+<div class="line">schema:{</div>
+<div class="line-block">
+<div class="line">“&lt;SOURCE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;DATATYPE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
+<div class="line">“type”: “text | integer | object”,</div>
+<div class="line">“description”: “string”, (Min=1, Max=100)</div>
+<div class="line">},</div>
+<div class="line">… other fields</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Data types</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Sources</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">ii) schema_type : files i.e Global Fields (dataset)</div>
+<div class="line">PS :- ALL, ALL keys is not rigid for dataset level schema also</div>
+<div class="line">There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also</div>
+<div class="line">metadata schema definition for a dataset:</div>
+<div class="line-block">
+<div class="line">schema:{</div>
+<div class="line-block">
+<div class="line">“ALL”: {</div>
+<div class="line-block">
+<div class="line">“ALL”: {</div>
+<div class="line-block">
+<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
+<div class="line">“type”: “text | integer | object”,</div>
+<div class="line">“description”: “string”, (Min=1, Max=100)</div>
+<div class="line">},</div>
+<div class="line">… other fields</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+</div>
+<div class="line">iii) schema_type : gct_metadata i.e Row Fields (Feature)</div>
+<div class="line">Not there right now</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</dd>
-</dl>
-<p>DataFrame consists of schema metadata summary
-i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-metdata schema definition for sample:</p>
-<blockquote>
-<div><dl>
-<dt>schema:{</dt><dd><dl>
-<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
-<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
-“type”: “text | integer | object”,
-“description”: “string”, (Min=1, Max=100)
-},
-… other fields</p>
-</dd>
-</dl>
-<p>}
-… other Data types</p>
-</dd>
-</dl>
-<p>}
-… other Sources</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>ii) schema_type : files i.e Global Fields (dataset)
-PS :- ALL, ALL keys is not rigid for dataset level schema also
-There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also
-metadata schema definition for a dataset:</p>
-<blockquote>
-<div><dl>
-<dt>schema:{</dt><dd><dl>
-<dt>“ALL”: {</dt><dd><dl class="simple">
-<dt>“ALL”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
-“type”: “text | integer | object”,
-“description”: “string”, (Min=1, Max=100)
-},
-… other fields</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>iii) schema_type : gct_metadata i.e Row Fields (Feature)
-Not there right now</p>
-</div></blockquote>
+<div class="line-block">
+<div class="line">Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas</div>
+<div class="line">schema = omixatlas.get_schema(“geo”, [‘dataset’, ‘sample’], “all”, “all”)</div>
+</div>
+<div class="line-block">
+<div class="line">to fetch the dataframe with dataset level metadata,</div>
+<div class="line">schema.dataset</div>
+</div>
+<div class="line-block">
+<div class="line">to fetch the dataframe with sample level metadata,</div>
+<div class="line">schema.sample</div>
+</div>
 <p>“””</p>
 <p># get schema_type_dict
 schema_type_dict = self.get_schema_type(schema_level, data_type)
@@ -548,70 +701,71 @@ def visualize_schema(</p>
 </div></blockquote>
 <dl>
 <dt>) -&gt; dict:</dt><dd><p>“””
-Input params:</p>
-<blockquote>
-<div><blockquote>
-<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;
-schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</p>
-</div></blockquote>
+To visulize schema of a repository.</p>
 <dl>
-<dt>Output:</dt><dd><dl class="simple">
-<dt>{</dt><dd><p>‘dataset’:pd.DataFrame,
-‘sample’:pd.DataFrame</p>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;</div>
+<div class="line">schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">‘dataset’:pd.DataFrame,</div>
+<div class="line">‘sample’:pd.DataFrame</div>
+</div>
+<div class="line">}</div>
+<div class="line">DataFrame consists of schema metadata summary</div>
+<div class="line">i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)</div>
+<div class="line">metdata schema definition for sample:</div>
+<div class="line-block">
+<div class="line">schema:{</div>
+<div class="line-block">
+<div class="line">“&lt;SOURCE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;DATATYPE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
+<div class="line">“type”: “text | integer | object”,</div>
+<div class="line">“description”: “string”, (Min=1, Max=100)</div>
+<div class="line">},</div>
+<div class="line">… other fields</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Data types</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Sources</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">ii) schema_type : files i.e Global Fields (dataset)</div>
+<div class="line">PS :- ALL, ALL keys is not rigid for dataset level schema also</div>
+<div class="line">There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also</div>
+<div class="line">metadata schema definition for a dataset:</div>
+<div class="line-block">
+<div class="line">schema:{</div>
+<div class="line-block">
+<div class="line">“ALL”: {</div>
+<div class="line-block">
+<div class="line">“ALL”: {</div>
+<div class="line-block">
+<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
+<div class="line">“type”: “text | integer | object”,</div>
+<div class="line">“description”: “string”, (Min=1, Max=100)</div>
+<div class="line">},</div>
+<div class="line">… other fields</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+</div>
+<div class="line">iii) schema_type : gct_metadata i.e Row Fields (Feature)</div>
+<div class="line">Not there right now</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</dd>
-</dl>
-<p>DataFrame consists of schema metadata summary
-i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-metdata schema definition for sample:</p>
-<blockquote>
-<div><dl>
-<dt>schema:{</dt><dd><dl>
-<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
-<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
-“type”: “text | integer | object”,
-“description”: “string”, (Min=1, Max=100)
-},
-… other fields</p>
-</dd>
-</dl>
-<p>}
-… other Data types</p>
-</dd>
-</dl>
-<p>}
-… other Sources</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>ii) schema_type : files i.e Global Fields (dataset)
-PS :- ALL, ALL keys is not rigid for dataset level schema also
-There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also
-metadata schema definition for a dataset:</p>
-<blockquote>
-<div><dl>
-<dt>schema:{</dt><dd><dl>
-<dt>“ALL”: {</dt><dd><dl class="simple">
-<dt>“ALL”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
-“type”: “text | integer | object”,
-“description”: “string”, (Min=1, Max=100)
-},
-… other fields</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>iii) schema_type : gct_metadata i.e Row Fields (Feature)
-Not there right now</p>
-</div></blockquote>
 <p>“””</p>
 <p># get schema_type_dict
 schema_type_dict = self.get_schema_type(schema_level, data_type)</p>
@@ -643,16 +797,15 @@ df_map[key] = self.nested_dict_to_df(flatten_dict)</p>
 <p>return self.return_schema_data(df_map)</p>
 </dd>
 <dt>def get_schema_type(self, schema_level: list, data_type: str) -&gt; dict:</dt><dd><p>“””
-Compute schema_type based on data_type and schema_level
-schema_level         schema_type
-————————————
-dataset         ==   file
-———————————-
-sample          ==   gct_metadata
-———————————–
-sample and      ==    h5ad_metadata
-single cell
-“””
+Compute schema_type based on data_type and schema_level</p>
+<div class="line-block">
+<div class="line">schema_level   ——–    schema_type</div>
+<div class="line">dataset       ——–     file</div>
+<div class="line">sample    ——–      gct_metadata</div>
+<div class="line">sample and  ——       h5ad_metadata</div>
+<div class="line">single cell</div>
+</div>
+<p>“””
 if schema_level and isinstance(schema_level, list):</p>
 <blockquote>
 <div><dl>
@@ -711,42 +864,44 @@ detail=”schema_level is either empty or its datatype is not correct”,</p>
 </dd>
 <dt>def flatten_nested_schema_dict(self, nested_schema_dict: dict) -&gt; dict:</dt><dd><p>“””
 Flatten the nested dict</p>
-<blockquote>
-<div><p>Input:
-schema:{</p>
-<blockquote>
-<div><blockquote>
-<div><dl>
-<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
-<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
-“type”: “text | integer | object”,
-“description”: “string”, (Min=1, Max=100)
-},
-… other fields</p>
-</dd>
-</dl>
-<p>}
-… other Data types</p>
-</dd>
-</dl>
-<p>}
-… other Sources</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
 <dl>
-<dt>Output:</dt><dd><dl class="simple">
-<dt>{</dt><dd><p>‘Source’:source_list,
-‘Datatype’: datatype_list,
-‘Field Name’:field_name_list,
-‘Field Description’:field_desc_list,
-‘Field Type’: field_type_list</p>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">schema:{</div>
+<div class="line-block">
+<div class="line-block">
+<div class="line">“&lt;SOURCE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;DATATYPE&gt;”: {</div>
+<div class="line-block">
+<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
+<div class="line">“type”: “text | integer | object”,</div>
+<div class="line">“description”: “string”, (Min=1, Max=100)</div>
+<div class="line">},</div>
+<div class="line">… other fields</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Data types</div>
+</div>
+<div class="line">}</div>
+<div class="line">… other Sources</div>
+</div>
+<div class="line">}</div>
+</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">‘Source’:source_list,</div>
+<div class="line">‘Datatype’: datatype_list,</div>
+<div class="line">‘Field Name’:field_name_list,</div>
+<div class="line">‘Field Description’:field_desc_list,</div>
+<div class="line">‘Field Type’: field_type_list</div>
+</div>
+<div class="line">}</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</dd>
-</dl>
-</div></blockquote>
 <p>“””
 reformed_dict = {}
 source_list = []
@@ -783,21 +938,21 @@ reformed_dict[“Field Type”] = field_type_list
 return reformed_dict</p>
 </dd>
 <dt>def nested_dict_to_df(self, schema_dict: dict) -&gt; pd.DataFrame:</dt><dd><p>“””
-Convert flatten dict into df and print it
-Input:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>{</dt><dd><p>‘Source’:source_list,
-‘Datatype’: datatype_list,
-‘Field Name’:field_name_list,
-‘Field Description’:field_desc_list,
-‘Field Type’: field_type_list</p>
+Convert flatten dict into df and print it</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">‘Source’:source_list,</div>
+<div class="line">‘Datatype’: datatype_list,</div>
+<div class="line">‘Field Name’:field_name_list,</div>
+<div class="line">‘Field Description’:field_desc_list,</div>
+<div class="line">‘Field Type’: field_type_list</div>
+</div>
+<div class="line">}</div>
+</div>
 </dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Output:</dt><dd><p>DataFrame</p>
+<dt>Returns:</dt><dd><p>DataFrame</p>
 </dd>
 </dl>
 <p>“””
@@ -807,35 +962,51 @@ multiIndex_df = pd.DataFrame.from_dict(schema_dict, orient=”columns”)
 return multiIndex_df</p>
 </dd>
 <dt>def format_type(self, data: dict) -&gt; dict:</dt><dd><p>“””
-Format the dict data
-“””
+Format the dict data</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">data (dict)</div>
+</div>
+</dd>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">It will return Equivalent json string of dictionary.</div>
+</div>
+</dd>
+</dl>
+<p>“””
 if data and isinstance(data, Dict):</p>
 <blockquote>
 <div><p>return json.dumps(data, indent=4)</p>
 </div></blockquote>
 </dd>
 <dt>def insert_schema(self, repo_key: str, body: dict) -&gt; dict:</dt><dd><p>“””
-Params:</p>
-<blockquote>
-<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt; / &lt;repo_id&gt;
-body =&gt; dict
-{</p>
-<blockquote>
-<div><dl>
-<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_KEY&gt;”,
-“type”: “schema”,
-“attributes”: {
-“schema_type”: “files | gct_metadata | h5ad_metadata”,
-“schema”: {</p>
-<blockquote>
-<div><p>… field definitions</p>
-</div></blockquote>
+Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
+|  omixatlas.insert_schema(repo_key, payload)</p>
+<dl>
+<dt>Args :</dt><dd><div class="line-block">
+<div class="line">repo_key: (str) repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line">payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">“data”: {</div>
+<div class="line-block">
+<div class="line">“id”: “&lt;REPO_KEY&gt;”,</div>
+<div class="line">“type”: “schema”,</div>
+<div class="line">“attributes”: {</div>
+<div class="line">“schema_type”: “files | gct_metadata | h5ad_metadata”,</div>
+<div class="line">“schema”: {</div>
+<div class="line-block">
+<div class="line">… field definitions</div>
+</div>
+<div class="line">}</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
 <p>“””
 if repo_key and body and isinstance(body, dict):</p>
 <blockquote>
@@ -864,27 +1035,45 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 </dl>
 </dd>
 <dt>def update_schema(self, repo_key: str, body: dict) -&gt; dict:</dt><dd><p>“””
-Params:</p>
-<blockquote>
-<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt; / &lt;repo_id&gt;
-body =&gt; dict
-{</p>
-<blockquote>
-<div><dl>
-<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_KEY&gt;”,
-“type”: “schema”,
-“attributes”: {
-“schema_type”: “files | gct_metadata | h5ad_metadata”,
-“schema”: {</p>
-<blockquote>
-<div><p>… field definitions</p>
-</div></blockquote>
+Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
+|  omixatlas.update_schema(repo_key, payload)</p>
+<dl>
+<dt>Args :</dt><dd><div class="line-block">
+<div class="line">repo_key: (str) repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line">payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
+<div class="line">{</div>
+<div class="line-block">
+<div class="line">“data”: {</div>
+<div class="line-block">
+<div class="line">“id”: “&lt;REPO_KEY&gt;”,</div>
+<div class="line">“type”: “schema”,</div>
+<div class="line">“attributes”: {</div>
+<div class="line">“schema_type”: “files | gct_metadata | h5ad_metadata”,</div>
+<div class="line">“schema”: {</div>
+<div class="line-block">
+<div class="line">… field definitions</div>
+</div>
+<div class="line">}</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
+<div class="line">}</div>
+</div>
 </dd>
 </dl>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
+<p>payload can be loaded from the JSON file in which schema is defined in the following manner:</p>
+<div class="line-block">
+<div class="line">import json</div>
+</div>
+<div class="line-block">
+<div class="line"># Opening JSON file</div>
+<div class="line">schema = open(‘schema_file.json’)</div>
+</div>
+<div class="line-block">
+<div class="line"># returns JSON object as a dictionary</div>
+<div class="line">payload = json.load(schema)</div>
+</div>
 <p>“””
 schema_type = body[“data”][“attributes”][“schema_type”]
 schema_base_url = f”{self.discover_url}/repositories”
@@ -917,14 +1106,43 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 <p># ? DEPRECATED
 def search_metadata(self, query: dict):</p>
 <blockquote>
-<div><p>url = f”{self.resource_url}/_search”
+<div><p>“””</p>
+<p>“””
+url = f”{self.resource_url}/_search”
 payload = query
 response = self.session.get(url, json=payload)
 error_handler(response)
 return response.json()</p>
 </div></blockquote>
 <dl>
-<dt>def download_data(self, repo_name, _id: str):</dt><dd><p>url = f”{self.resource_url}/{repo_name}/download”
+<dt>def download_data(self, repo_name, _id: str):</dt><dd><p>“””
+To download any dataset, the following function can be used to get the signed URL of the dataset.</p>
+<div class="line-block">
+<div class="line">omixatlas.download_data(“repo_key”, “[dataset_id]”)</div>
+</div>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_key: (str) repo_id OR repo_name from where the data needs to be downloaded.</div>
+<div class="line">dataset_id: (str) dataset_id which the user wants to download.</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function.</div>
+<div class="line">The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata(“[query written in SQL]”).</div>
+</div>
+<dl>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">The output of this function is a signed URL. The data can be downloaded by clicking on this URL.</div>
+<div class="line">NOTE: This signed URL expires after 60 minutes from when it is generated.</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:</div>
+</div>
+<p>“””
+url = f”{self.resource_url}/{repo_name}/download”
 params = {“_id”: _id}
 response = self.session.get(url, params=params)
 error_handler(response)
@@ -934,8 +1152,21 @@ return response.json()</p>
 </dd>
 <dt>) -&gt; json:</dt><dd><p>“””
 Function for saving data from omixatlas to workspaces.
-Makes a call to v1/omixatlas/workspace_jobs
-“””
+Makes a call to v1/omixatlas/workspace_jobs</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_id (str) : repo id</div>
+<div class="line">dataset_id (str) : dataset id</div>
+<div class="line">workspace_id (str) : workspace id of polly</div>
+<div class="line">workspace_path (str) : path in workspace where you want to save file</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">Example to save the dataset_id ‘GSE101127_GPL1355’ from repo_id 1615965444377 to a workspace_id 8025 in a folder named ‘data’</div>
+<div class="line">omixatlas.save_to_workspace(‘1615965444377’, ‘GSE101127_GPL1355’, 8025, ‘data’)</div>
+</div>
+<p>“””
 url = f”{self.resource_url}/workspace_jobs”
 params = {“action”: “copy”}
 payload = {</p>
@@ -965,8 +1196,20 @@ logging.info(f”Data Saved to workspace={workspace_id}”)</p>
 <p>return response.json()</p>
 </dd>
 <dt>def format_converter(self, repo_key: str, dataset_id: str, to: str) -&gt; None:</dt><dd><p>“””
-Function to convert a file to maf format.
-“””
+Function to convert a file to maf format.</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">repo_key (str) : repo_id</div>
+<div class="line">dataset_id (str) : dataset_id</div>
+<div class="line">to(str) : output file format</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">For example:</div>
+<div class="line">omixatlas.format_converter(“cbioportal”, “ACC_2019_Mutation_ACYC-FMI-19”, “maf”)</div>
+</div>
+<p>“””
 if not (repo_key and isinstance(repo_key, str)):</p>
 <blockquote>
 <div><p>raise InvalidParameterException(“repo_id/repo_name”)</p>

@@ -3,7 +3,22 @@ import os
 
 
 class PollySession(Session):
+    """
+    This class contain function to create session for 
+    polly.
+
+    Args:
+        |  token (str): token copy from polly.
+        |  env (str): polly or testpolly or devpolly.
+
+    |  To use auth function import class Polly
+    |  Polly(token,'env')
+
+    Returns:
+        |  None
+    """
     def __init__(self, REFRESH_TOKEN, env="polly"):
+    
         Session.__init__(self)
         try:
             # for python version >= python3.8

@@ -35,10 +35,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul class="simple">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../polly.html">polly package</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -66,8 +67,30 @@
   <p>from requests import Session
 import os</p>
 <dl>
-<dt>class PollySession(Session):</dt><dd><dl>
-<dt>def __init__(self, REFRESH_TOKEN, env=”polly”):</dt><dd><p>Session.__init__(self)
+<dt>class PollySession(Session):</dt><dd><p>“””
+This class contain function to create session for
+polly.</p>
+<dl>
+<dt>Args:</dt><dd><div class="line-block">
+<div class="line">token (str): token copy from polly.</div>
+<div class="line">env (str): polly or testpolly or devpolly.</div>
+</div>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">To use auth function import class Polly</div>
+<div class="line">Polly(token,’env’)</div>
+</div>
+<dl>
+<dt>Returns:</dt><dd><div class="line-block">
+<div class="line">None</div>
+</div>
+</dd>
+</dl>
+<p>“””
+def __init__(self, REFRESH_TOKEN, env=”polly”):</p>
+<blockquote>
+<div><p>Session.__init__(self)
 try:</p>
 <blockquote>
 <div><p># for python version &gt;= python3.8
@@ -95,8 +118,7 @@ if client is not None:</p>
 </dl>
 <p>}
 self.env = env</p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 </dl>
 
