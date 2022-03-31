@@ -1,4 +1,4 @@
-certifi==2021.5.30
+certifi==2021.10.8
 chardet==4.0.0
 idna==2.10
 pandas
@@ -16,3 +16,4 @@ elucidatacloudpathlib==0.6.6
 cmapPy
 Deprecated
 black
+joblib

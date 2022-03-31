@@ -22,3 +22,10 @@ DATA_TYPES = {
         }
     ]
 }
+VALID_REPO_NAMES = {"tcga": ["mutation", "transcriptomics"]}
+COHORT_REPO_INFO = {
+    "tcga": {
+        "file_structure": "single",
+    }
+}
+dot = "."
