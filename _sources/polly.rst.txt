@@ -1,0 +1,93 @@
+polly package
+=============
+
+Submodules
+----------
+
+polly.application\_error\_info module
+-------------------------------------
+
+.. automodule:: polly.application_error_info
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.auth module
+-----------------
+
+.. automodule:: polly.auth
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.constants module
+----------------------
+
+.. automodule:: polly.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.errors module
+-------------------
+
+.. automodule:: polly.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.helpers module
+--------------------
+
+.. automodule:: polly.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.index\_schema\_level\_conversion\_const module
+----------------------------------------------------
+
+.. automodule:: polly.index_schema_level_conversion_const
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.omixatlas module
+----------------------
+
+.. automodule:: polly.omixatlas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.session module
+--------------------
+
+.. automodule:: polly.session
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.upload\_files module
+--------------------------
+
+.. automodule:: polly.upload_files
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polly.workspaces module
+-----------------------
+
+.. automodule:: polly.workspaces
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: polly
+   :members:
+   :undoc-members:
+   :show-inheritance:

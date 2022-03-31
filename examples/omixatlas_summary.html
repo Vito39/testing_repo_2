@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/omixatlas_summary.py.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>from polly.omixatlas import OmixAtlas
+from json import dumps</p>
+<p>LOG_FILE = “output.log”
+open(LOG_FILE, “w”).close()
+REFRESH_TOKEN = “refresh_token”</p>
+<p>repo_client = OmixAtlas(REFRESH_TOKEN)</p>
+<dl>
+<dt>def get_omix_details(identifier):</dt><dd><p>response = repo_client.get_omixatlas_details(identifier)
+attributes = response[“data”][“attributes”]
+try:</p>
+<blockquote>
+<div><p>indexes = attributes[“indexes”]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>except KeyError:</dt><dd><p>raise KeyError</p>
+</dd>
+<dt>omix_details = {</dt><dd><p>“repo_name”: attributes[“repo_name”],
+“repo_id”: attributes[“repo_id”],
+“indexes”: indexes,</p>
+</dd>
+</dl>
+<p>}</p>
+<p>return omix_details</p>
+</dd>
+<dt>def get_dataset_details(dataset_index, headers, limit=20):</dt><dd><dl>
+<dt>query = {</dt><dd><p>“size”: 0,
+“query”: {“term”: {“_index”: dataset_index}},
+“aggs”: {</p>
+<blockquote>
+<div><p>“diseases”: {“terms”: {“field”: “disease.keyword”, “size”: limit}},
+“disease-count”: {“cardinality”: {“field”: “disease.keyword”}},
+“organisms”: {“terms”: {“field”: “organism.keyword”, “size”: limit}},
+“organism-count”: {“cardinality”: {“field”: “organism.keyword”}},
+“sources”: {“terms”: {“field”: “dataset_source.keyword”}},
+“datatypes”: {“terms”: {“field”: “kw_data_type.keyword”}},</p>
+</div></blockquote>
+<p>},</p>
+</dd>
+</dl>
+<p>}
+response_data = repo_client.search_metadata(query)</p>
+<p>aggregations = response_data.get(“aggregations”)
+data = {}</p>
+<p>data[“dataset_count”] = response_data.get(“hits”).get(“total”).get(“value”)</p>
+<p>data[“disease_count”] = aggregations.get(“disease-count”).get(“value”)
+disease_buckets = aggregations.get(“diseases”).get(“buckets”)
+data[“diseases”] = [bucket.get(“key”) for bucket in disease_buckets]</p>
+<p>data[“organism_count”] = aggregations.get(“organism-count”).get(“value”)
+organism_buckets = aggregations.get(“organisms”).get(“buckets”)
+data[“organisms”] = [bucket.get(“key”) for bucket in organism_buckets]</p>
+<p>sources = aggregations.get(“sources”).get(“buckets”)
+data[“sources”] = [source.get(“key”) for source in sources]</p>
+<p>datatypes = aggregations.get(“datatypes”).get(“buckets”)
+data[“datatypes”] = [datatype.get(“key”) for datatype in datatypes]</p>
+<p>return data</p>
+</dd>
+<dt>def get_sample_details(sample_index, headers):</dt><dd><dl class="simple">
+<dt>query = {</dt><dd><p>“size”: 0,
+“query”: {“term”: {“_index”: sample_index}},
+“track_total_hits”: “true”,</p>
+</dd>
+</dl>
+<p>}
+response_data = repo_client.search_metadata(query)</p>
+<p>data = {“sample_count”: response_data.get(“hits”).get(“total”).get(“value”)}
+return data</p>
+</dd>
+<dt>def get_summary(identifier, headers):</dt><dd><p>omix_details = get_omix_details(identifier)
+indexes = omix_details[“indexes”]</p>
+<dl class="simple">
+<dt>try:</dt><dd><p>dataset_index = indexes[“files”]</p>
+</dd>
+<dt>except KeyError:</dt><dd><p>raise Exception</p>
+</dd>
+</dl>
+<p>dataset_details = get_dataset_details(dataset_index, headers, limit=20)</p>
+<dl class="simple">
+<dt>try:</dt><dd><p>sample_index = indexes[“gct_metadata”]</p>
+</dd>
+<dt>except KeyError:</dt><dd><p>raise Exception</p>
+</dd>
+</dl>
+<p>sample_details = get_sample_details(sample_index, headers)</p>
+<p>summary = {<a href="#id1"><span class="problematic" id="id2">**</span></a>omix_details, <a href="#id3"><span class="problematic" id="id4">**</span></a>dataset_details, <a href="#id5"><span class="problematic" id="id6">**</span></a>sample_details}
+response = {</p>
+<blockquote>
+<div><p>“status”: None,
+“errors”: None,
+“primary_data”: None,
+“included_data”: None,
+“meta”: None,</p>
+</div></blockquote>
+<p>}
+response[“status”] = 200
+response[“primary_data”] = summary</p>
+<p>omix_details = get_omix_details(identifier)
+indexes = omix_details[“indexes”]</p>
+<p>return response</p>
+</dd>
+</dl>
+<p>response = get_summary(“elucidata.liver_atlas”, None)</p>
+<p>print(dumps(response[“primary_data”], indent=4))</p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

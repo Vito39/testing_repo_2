@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/.eggs/wheel-0.37.1-py3.10.egg/wheel/metadata.py.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>“””
+Tools for converting old- to new-style metadata.
+“””</p>
+<p>import os.path
+import textwrap</p>
+<p>import pkg_resources</p>
+<p>from .pkginfo import read_pkg_info</p>
+<dl>
+<dt>def requires_to_requires_dist(requirement):</dt><dd><p>“””Return the version specifier for a requirement in PEP 345/566 fashion.”””
+if getattr(requirement, ‘url’, None):</p>
+<blockquote>
+<div><p>return ” &#64; ” + requirement.url</p>
+</div></blockquote>
+<p>requires_dist = []
+for op, ver in requirement.specs:</p>
+<blockquote>
+<div><p>requires_dist.append(op + ver)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not requires_dist:</dt><dd><p>return ‘’</p>
+</dd>
+</dl>
+<p>return ” (%s)” % ‘,’.join(sorted(requires_dist))</p>
+</dd>
+<dt>def convert_requirements(requirements):</dt><dd><p>“””Yield Requires-Dist: strings for parsed requirements strings.”””
+for req in requirements:</p>
+<blockquote>
+<div><p>parsed_requirement = pkg_resources.Requirement.parse(req)
+spec = requires_to_requires_dist(parsed_requirement)
+extras = “,”.join(sorted(parsed_requirement.extras))
+if extras:</p>
+<blockquote>
+<div><p>extras = “[%s]” % extras</p>
+</div></blockquote>
+<p>yield (parsed_requirement.project_name + extras + spec)</p>
+</div></blockquote>
+</dd>
+<dt>def generate_requirements(extras_require):</dt><dd><p>“””
+Convert requirements from a setup()-style dictionary to (‘Requires-Dist’, ‘requirement’)
+and (‘Provides-Extra’, ‘extra’) tuples.</p>
+<p>extras_require is a dictionary of {extra: [requirements]} as passed to setup(),
+using the empty extra {‘’: [requirements]} to hold install_requires.
+“””
+for extra, depends in extras_require.items():</p>
+<blockquote>
+<div><p>condition = ‘’
+extra = extra or ‘’
+if ‘:’ in extra:  # setuptools extra:condition syntax</p>
+<blockquote>
+<div><p>extra, condition = extra.split(‘:’, 1)</p>
+</div></blockquote>
+<p>extra = pkg_resources.safe_extra(extra)
+if extra:</p>
+<blockquote>
+<div><p>yield ‘Provides-Extra’, extra
+if condition:</p>
+<blockquote>
+<div><p>condition = “(” + condition + “) and “</p>
+</div></blockquote>
+<p>condition += “extra == ‘%s’” % extra</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if condition:</dt><dd><p>condition = ‘ ; ‘ + condition</p>
+</dd>
+<dt>for new_req in convert_requirements(depends):</dt><dd><p>yield ‘Requires-Dist’, new_req + condition</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>def pkginfo_to_metadata(egg_info_path, pkginfo_path):</dt><dd><p>“””
+Convert .egg-info directory with PKG-INFO to the Metadata 2.1 format
+“””
+pkg_info = read_pkg_info(pkginfo_path)
+pkg_info.replace_header(‘Metadata-Version’, ‘2.1’)
+# Those will be regenerated from <cite>requires.txt</cite>.
+del pkg_info[‘Provides-Extra’]
+del pkg_info[‘Requires-Dist’]
+requires_path = os.path.join(egg_info_path, ‘requires.txt’)
+if os.path.exists(requires_path):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>with open(requires_path) as requires_file:</dt><dd><p>requires = requires_file.read()</p>
+</dd>
+<dt>parsed_requirements = sorted(pkg_resources.split_sections(requires),</dt><dd><p>key=lambda x: x[0] or ‘’)</p>
+</dd>
+<dt>for extra, reqs in parsed_requirements:</dt><dd><dl class="simple">
+<dt>for key, value in generate_requirements({extra: reqs}):</dt><dd><dl class="simple">
+<dt>if (key, value) not in pkg_info.items():</dt><dd><p>pkg_info[key] = value</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>description = pkg_info[‘Description’]
+if description:</p>
+<blockquote>
+<div><p>pkg_info.set_payload(dedent_description(pkg_info))
+del pkg_info[‘Description’]</p>
+</div></blockquote>
+<p>return pkg_info</p>
+</dd>
+<dt>def pkginfo_unicode(pkg_info, field):</dt><dd><p>“””Hack to coax Unicode out of an email Message() - Python 3.3+”””
+text = pkg_info[field]
+field = field.lower()
+if not isinstance(text, str):</p>
+<blockquote>
+<div><dl>
+<dt>for item in pkg_info.raw_items():</dt><dd><dl>
+<dt>if item[0].lower() == field:</dt><dd><dl class="simple">
+<dt>text = item[1].encode(‘ascii’, ‘surrogateescape’) </dt><dd><p>.decode(‘utf-8’)</p>
+</dd>
+</dl>
+<p>break</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>return text</p>
+</dd>
+<dt>def dedent_description(pkg_info):</dt><dd><p>“””
+Dedent and convert pkg_info[‘Description’] to Unicode.
+“””
+description = pkg_info[‘Description’]</p>
+<p># Python 3 Unicode handling, sorta.
+surrogates = False
+if not isinstance(description, str):</p>
+<blockquote>
+<div><p>surrogates = True
+description = pkginfo_unicode(pkg_info, ‘Description’)</p>
+</div></blockquote>
+<p>description_lines = description.splitlines()
+description_dedent = ‘n’.join(</p>
+<blockquote>
+<div><p># if the first line of long_description is blank,
+# the first line here will be indented.
+(description_lines[0].lstrip(),</p>
+<blockquote>
+<div><p>textwrap.dedent(’n’.join(description_lines[1:])),
+‘n’))</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>if surrogates:</dt><dd><dl class="simple">
+<dt>description_dedent = description_dedent </dt><dd><p>.encode(“utf8”) .decode(“ascii”, “surrogateescape”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>return description_dedent</p>
+</dd>
+</dl>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+About Polly Library
+*********************
+Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and bash which can be used over a Terminal.
+
+About Polly Python
+------------------
+Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.
+
+Installation
+------------
+Install Polly Python using pip
+
+
+.. code::
+
+
+        pip install polly-python
+
+Getting started
+Import from libraries
+The following libraries need to be imported over the development environment to access the data.
+
+.. code::
+
+
+        from polly.auth import Polly
+        from polly.omixatlas import OmixAtlas
+        from polly.workspaces import Workspaces
+
+Authentication
+--------------
+Authentication of the account is required to be able to access the capabilities of the Polly Python library.
+
+Copying authentication token
+============================
+To get this token, follow the steps below:
+
+Go to Polly
+
+Click the User Options icon from the left-most panel
+
+Click on Authentication on the panel that appears
+
+Click on Copy to copy the authentication token
+
+Using the token
+===============
+The following code is required to add the authentication function in the Polly Python library
+
+.. code::
+
+
+        AUTH_TOKEN = "[authentication_token_copied]"
+        Polly.auth(AUTH_TOKEN)
+
+Calling a function
+------------------
+
+In order to call a functions from a particular class, corresponding object should be defined.
+
+E.g. for functions related to OmixAtlas,
+
+.. code::
+
+
+        omixatlas = OmixAtlas()
+        output = omixatlas.[function()]
+Similarly, for functions related to Workspaces,
+
+.. code::
+
+
+        workspaces = Workspaces()
+        output = workspaces.[function()]
+
+The output of the functions is in JSON and/or data frame formats. You can print/download this output.
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/polly/workspaces.py.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>from polly.auth import Polly
+from polly.errors import InvalidParameterException, error_handler, InvalidPathException
+from polly import helpers
+import logging
+import pandas as pd
+import json
+import os</p>
+<dl>
+<dt>class Workspaces:</dt><dd><dl>
+<dt>def __init__(self, token=None, env=”polly”) -&gt; None:</dt><dd><p>self.session = Polly.get_session(token, env=env)
+self.base_url = f”<a class="reference external" href="https://v2.api">https://v2.api</a>.{self.session.env}.elucidata.io”
+self.resource_url = f”{self.base_url}/workspaces”
+if self.session.env == “polly”:</p>
+<blockquote>
+<div><p>self.env_string = “prod”</p>
+</div></blockquote>
+<dl class="simple">
+<dt>elif self.session.env == “testpolly”:</dt><dd><p>self.env_string = “test”</p>
+</dd>
+<dt>else:</dt><dd><p>self.env_string = “devenv”</p>
+</dd>
+</dl>
+</dd>
+<dt>def create_workspace(self, name: str, description=None):</dt><dd><p>url = self.resource_url
+payload = {</p>
+<blockquote>
+<div><dl>
+<dt>“data”: {</dt><dd><p>“type”: “workspaces”,
+“attributes”: {</p>
+<blockquote>
+<div><p>“name”: name,
+“description”: description,
+“project_property”: {“type”: “workspaces”, “labels”: “”},</p>
+</div></blockquote>
+<p>},</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>}
+response = self.session.post(url, data=json.dumps(payload))
+error_handler(response)
+attributes = response.json()[“data”][“attributes”]
+logging.basicConfig(level=logging.INFO)
+logging.info(“Workspace Created !”)
+return attributes</p>
+</dd>
+<dt>def fetch_my_workspaces(self):</dt><dd><p>url = self.resource_url
+response = self.session.get(url)
+error_handler(response)
+pd.set_option(“display.max_columns”, 20)
+dataframe = pd.DataFrame.from_dict(</p>
+<blockquote>
+<div><p>pd.json_normalize(response.json()[“data”]), orient=”columns”</p>
+</div></blockquote>
+<p>)
+return dataframe</p>
+</dd>
+<dt>def upload_to_workspaces(</dt><dd><p>self, workspace_id: int, workspace_path: str, local_path: str</p>
+</dd>
+<dt>) -&gt; None:</dt><dd><p>“””
+Function to upload files/folders to workspaces
+“””
+if not (workspace_id and isinstance(workspace_id, int)):</p>
+<blockquote>
+<div><p>raise InvalidParameterException(“workspace_id”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not (local_path and isinstance(local_path, str)):</dt><dd><p>raise InvalidParameterException(“local_path”)</p>
+</dd>
+<dt>if not (workspace_path and isinstance(workspace_path, str)):</dt><dd><p>raise InvalidParameterException(“workspace_path”)</p>
+</dd>
+</dl>
+<p>isExists = os.path.exists(local_path)
+if not isExists:</p>
+<blockquote>
+<div><p>raise InvalidPathException</p>
+</div></blockquote>
+<p>sts_url = f”{self.base_url}/projects/{workspace_id}/credentials/files”
+creds = self.session.get(sts_url)
+error_handler(creds)
+credentials = helpers.get_sts_creds(creds.json())
+bucket = f”mithoo-{self.env_string}-project-data-v1”
+s3_path = f”{bucket}/{workspace_id}/”
+s3_path = f”s3://{helpers.make_path(s3_path, workspace_path)}”
+helpers.upload_to_S3(s3_path, local_path, credentials)
+logging.basicConfig(level=logging.INFO)
+logging.info(f”Upload successful on workspace-id={workspace_id}.”)</p>
+</dd>
+<dt>def download_from_workspaces(self, workspace_id: int, workspace_path: str) -&gt; None:</dt><dd><p>“””
+Function to download files/folders from workspaces
+“””
+if not (workspace_id and isinstance(workspace_id, int)):</p>
+<blockquote>
+<div><p>raise InvalidParameterException(“workspace_id”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not (workspace_path and isinstance(workspace_path, str)):</dt><dd><p>raise InvalidParameterException(“workspace_path”)</p>
+</dd>
+</dl>
+<p>sts_url = f”{self.base_url}/projects/{workspace_id}/credentials/files”
+creds = self.session.get(sts_url)
+error_handler(creds)
+credentials = helpers.get_sts_creds(creds.json())
+bucket = f”mithoo-{self.env_string}-project-data-v1”
+s3_path = f”{bucket}/{workspace_id}/”
+s3_path = f”s3://{helpers.make_path(s3_path, workspace_path)}”
+helpers.download_from_S3(s3_path, workspace_path, credentials)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

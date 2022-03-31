@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/.eggs/wheel-0.37.1-py3.10.egg/wheel/bdist_wheel.py.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>“””
+Create a wheel (.whl) distribution.</p>
+<p>A wheel is a built archive format.
+“””</p>
+<p>import distutils
+import os
+import shutil
+import stat
+import sys
+import re
+import warnings
+from collections import OrderedDict
+from distutils.core import Command
+from distutils import log as logger
+from io import BytesIO
+from glob import iglob
+from shutil import rmtree
+from sysconfig import get_config_var
+from zipfile import ZIP_DEFLATED, ZIP_STORED</p>
+<p>import pkg_resources</p>
+<p>from .pkginfo import write_pkg_info
+from .macosx_libfile import calculate_macosx_platform_tag
+from .metadata import pkginfo_to_metadata
+from .vendored.packaging import tags
+from .wheelfile import WheelFile
+from . import __version__ as wheel_version</p>
+<dl class="simple">
+<dt>if sys.version_info &lt; (3,):</dt><dd><p>from email.generator import Generator as BytesGenerator</p>
+</dd>
+<dt>else:</dt><dd><p>from email.generator import BytesGenerator</p>
+</dd>
+</dl>
+<p>safe_name = pkg_resources.safe_name
+safe_version = pkg_resources.safe_version</p>
+<p>PY_LIMITED_API_PATTERN = r’cp3d’</p>
+<dl>
+<dt>def python_tag():</dt><dd><p>return ‘py{}’.format(sys.version_info[0])</p>
+</dd>
+<dt>def get_platform(archive_root):</dt><dd><p>“””Return our platform name ‘win32’, ‘linux_x86_64’”””
+# XXX remove distutils dependency
+result = distutils.util.get_platform()
+if result.startswith(“macosx”) and archive_root is not None:</p>
+<blockquote>
+<div><p>result = calculate_macosx_platform_tag(archive_root, result)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if result == “linux_x86_64” and sys.maxsize == 2147483647:</dt><dd><p># pip pull request #3497
+result = “linux_i686”</p>
+</dd>
+</dl>
+<p>return result</p>
+</dd>
+<dt>def get_flag(var, fallback, expected=True, warn=True):</dt><dd><p>“””Use a fallback value for determining SOABI flags if the needed config
+var is unset or unavailable.”””
+val = get_config_var(var)
+if val is None:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if warn:</dt><dd><dl class="simple">
+<dt>warnings.warn(“Config variable ‘{0}’ is unset, Python ABI tag may “</dt><dd><p>“be incorrect”.format(var), RuntimeWarning, 2)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>return fallback</p>
+</div></blockquote>
+<p>return val == expected</p>
+</dd>
+<dt>def get_abi_tag():</dt><dd><p>“””Return the ABI tag based on SOABI (if available) or emulate SOABI
+(CPython 2, PyPy).”””
+soabi = get_config_var(‘SOABI’)
+impl = tags.interpreter_name()
+if not soabi and impl in (‘cp’, ‘pp’) and hasattr(sys, ‘maxunicode’):</p>
+<blockquote>
+<div><p>d = ‘’
+m = ‘’
+u = ‘’
+if get_flag(‘Py_DEBUG’,</p>
+<blockquote>
+<div><blockquote>
+<div><p>hasattr(sys, ‘gettotalrefcount’),
+warn=(impl == ‘cp’)):</p>
+</div></blockquote>
+<p>d = ‘d’</p>
+</div></blockquote>
+<dl>
+<dt>if get_flag(‘WITH_PYMALLOC’,</dt><dd><blockquote>
+<div><blockquote>
+<div><p>impl == ‘cp’,
+warn=(impl == ‘cp’ and</p>
+<blockquote>
+<div><p>sys.version_info &lt; (3, 8))) </p>
+</div></blockquote>
+</div></blockquote>
+<p>and sys.version_info &lt; (3, 8):</p>
+</div></blockquote>
+<p>m = ‘m’</p>
+</dd>
+<dt>if get_flag(‘Py_UNICODE_SIZE’,</dt><dd><blockquote>
+<div><blockquote>
+<div><p>sys.maxunicode == 0x10ffff,
+expected=4,
+warn=(impl == ‘cp’ and</p>
+<blockquote>
+<div><p>sys.version_info &lt; (3, 3))) </p>
+</div></blockquote>
+</div></blockquote>
+<p>and sys.version_info &lt; (3, 3):</p>
+</div></blockquote>
+<p>u = ‘u’</p>
+</dd>
+</dl>
+<p>abi = ‘%s%s%s%s%s’ % (impl, tags.interpreter_version(), d, m, u)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>elif soabi and soabi.startswith(‘cpython-‘):</dt><dd><p>abi = ‘cp’ + soabi.split(‘-‘)[1]</p>
+</dd>
+<dt>elif soabi and soabi.startswith(‘pypy-‘):</dt><dd><p># we want something like pypy36-pp73
+abi = ‘-‘.join(soabi.split(‘-‘)[:2])
+abi = abi.replace(‘.’, ‘_’).replace(‘-’, ‘_’)</p>
+</dd>
+<dt>elif soabi:</dt><dd><p>abi = soabi.replace(‘.’, ‘_’).replace(‘-’, ‘_’)</p>
+</dd>
+<dt>else:</dt><dd><p>abi = None</p>
+</dd>
+</dl>
+<p>return abi</p>
+</dd>
+<dt>def safer_name(name):</dt><dd><p>return safe_name(name).replace(‘-’, ‘_’)</p>
+</dd>
+<dt>def safer_version(version):</dt><dd><p>return safe_version(version).replace(‘-’, ‘_’)</p>
+</dd>
+<dt>def remove_readonly(func, path, excinfo):</dt><dd><p>print(str(excinfo[1]))
+os.chmod(path, stat.S_IWRITE)
+func(path)</p>
+</dd>
+</dl>
+<p>class bdist_wheel(Command):</p>
+<blockquote>
+<div><p>description = ‘create a wheel distribution’</p>
+<dl class="simple">
+<dt>supported_compressions = OrderedDict([</dt><dd><p>(‘stored’, ZIP_STORED),
+(‘deflated’, ZIP_DEFLATED)</p>
+</dd>
+</dl>
+<p>])</p>
+<dl>
+<dt>user_options = [(‘bdist-dir=’, ‘b’,</dt><dd><blockquote>
+<div><p>“temporary directory for creating the distribution”),</p>
+</div></blockquote>
+<dl class="simple">
+<dt>(‘plat-name=’, ‘p’,</dt><dd><p>“platform name to embed in generated filenames ”
+“(default: %s)” % get_platform(None)),</p>
+</dd>
+<dt>(‘keep-temp’, ‘k’,</dt><dd><p>“keep the pseudo-installation tree around after ” +
+“creating the distribution archive”),</p>
+</dd>
+<dt>(‘dist-dir=’, ‘d’,</dt><dd><p>“directory to put final built distributions in”),</p>
+</dd>
+<dt>(‘skip-build’, None,</dt><dd><p>“skip rebuilding everything (for testing/debugging)”),</p>
+</dd>
+<dt>(‘relative’, None,</dt><dd><p>“build the archive using relative paths ”
+“(default: false)”),</p>
+</dd>
+<dt>(‘owner=’, ‘u’,</dt><dd><p>“Owner name used when creating a tar file”
+” [default: current user]”),</p>
+</dd>
+<dt>(‘group=’, ‘g’,</dt><dd><p>“Group name used when creating a tar file”
+” [default: current group]”),</p>
+</dd>
+<dt>(‘universal’, None,</dt><dd><p>“make a universal wheel”
+” (default: false)”),</p>
+</dd>
+<dt>(‘compression=’, None,</dt><dd><p>“zipfile compression (one of: {})”
+” (default: ‘deflated’)”
+.format(’, ‘.join(supported_compressions))),</p>
+</dd>
+<dt>(‘python-tag=’, None,</dt><dd><p>“Python implementation compatibility tag”
+” (default: ‘%s’)” % (python_tag())),</p>
+</dd>
+<dt>(‘build-number=’, None,</dt><dd><p>“Build number for this particular version. ”
+“As specified in PEP-0427, this must start with a digit. ”
+“[default: None]”),</p>
+</dd>
+<dt>(‘py-limited-api=’, None,</dt><dd><p>“Python tag (cp32|cp33|cpNN) for abi3 wheel tag”
+” (default: false)”),</p>
+</dd>
+</dl>
+<p>]</p>
+</dd>
+</dl>
+<p>boolean_options = [‘keep-temp’, ‘skip-build’, ‘relative’, ‘universal’]</p>
+<dl>
+<dt>def initialize_options(self):</dt><dd><p>self.bdist_dir = None
+self.data_dir = None
+self.plat_name = None
+self.plat_tag = None
+self.format = ‘zip’
+self.keep_temp = False
+self.dist_dir = None
+self.egginfo_dir = None
+self.root_is_pure = None
+self.skip_build = None
+self.relative = False
+self.owner = None
+self.group = None
+self.universal = False
+self.compression = ‘deflated’
+self.python_tag = python_tag()
+self.build_number = None
+self.py_limited_api = False
+self.plat_name_supplied = False</p>
+</dd>
+<dt>def finalize_options(self):</dt><dd><dl class="simple">
+<dt>if self.bdist_dir is None:</dt><dd><p>bdist_base = self.get_finalized_command(‘bdist’).bdist_base
+self.bdist_dir = os.path.join(bdist_base, ‘wheel’)</p>
+</dd>
+</dl>
+<p>self.data_dir = self.wheel_dist_name + ‘.data’
+self.plat_name_supplied = self.plat_name is not None</p>
+<dl class="simple">
+<dt>try:</dt><dd><p>self.compression = self.supported_compressions[self.compression]</p>
+</dd>
+<dt>except KeyError:</dt><dd><p>raise ValueError(‘Unsupported compression: {}’.format(self.compression))</p>
+</dd>
+</dl>
+<p>need_options = (‘dist_dir’, ‘plat_name’, ‘skip_build’)</p>
+<dl class="simple">
+<dt>self.set_undefined_options(‘bdist’,</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>zip(need_options, need_options))</p>
+</dd>
+<dt>self.root_is_pure = not (self.distribution.has_ext_modules()</dt><dd><p>or self.distribution.has_c_libraries())</p>
+</dd>
+<dt>if self.py_limited_api and not re.match(PY_LIMITED_API_PATTERN, self.py_limited_api):</dt><dd><p>raise ValueError(“py-limited-api must match ‘%s’” % PY_LIMITED_API_PATTERN)</p>
+</dd>
+</dl>
+<p># Support legacy [wheel] section for setting universal
+wheel = self.distribution.get_option_dict(‘wheel’)
+if ‘universal’ in wheel:</p>
+<blockquote>
+<div><p># please don’t define this in your global configs
+logger.warn(‘The [wheel] section is deprecated. Use [bdist_wheel] instead.’)
+val = wheel[‘universal’][1].strip()
+if val.lower() in (‘1’, ‘true’, ‘yes’):</p>
+<blockquote>
+<div><p>self.universal = True</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>if self.build_number is not None and not self.build_number[:1].isdigit():</dt><dd><p>raise ValueError(“Build tag (build-number) must start with a digit.”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>&#64;property
+def wheel_dist_name(self):</p>
+<blockquote>
+<div><p>“””Return distribution full name with - replaced with _”””
+components = (safer_name(self.distribution.get_name()),</p>
+<blockquote>
+<div><p>safer_version(self.distribution.get_version()))</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if self.build_number:</dt><dd><p>components += (self.build_number,)</p>
+</dd>
+</dl>
+<p>return ‘-‘.join(components)</p>
+</div></blockquote>
+<dl>
+<dt>def get_tag(self):</dt><dd><p># bdist sets self.plat_name if unset, we should only use it for purepy
+# wheels if the user supplied it.
+if self.plat_name_supplied:</p>
+<blockquote>
+<div><p>plat_name = self.plat_name</p>
+</div></blockquote>
+<dl>
+<dt>elif self.root_is_pure:</dt><dd><p>plat_name = ‘any’</p>
+</dd>
+<dt>else:</dt><dd><p># macosx contains system version in platform name so need special handle
+if self.plat_name and not self.plat_name.startswith(“macosx”):</p>
+<blockquote>
+<div><p>plat_name = self.plat_name</p>
+</div></blockquote>
+<dl>
+<dt>else:</dt><dd><p># on macosx always limit the platform name to comply with any
+# c-extension modules in bdist_dir, since the user can specify
+# a higher MACOSX_DEPLOYMENT_TARGET via tools like CMake</p>
+<p># on other platforms, and on macosx if there are no c-extension
+# modules, use the default platform name.
+plat_name = get_platform(self.bdist_dir)</p>
+</dd>
+<dt>if plat_name in (‘linux-x86_64’, ‘linux_x86_64’) and sys.maxsize == 2147483647:</dt><dd><p>plat_name = ‘linux_i686’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>plat_name = plat_name.lower().replace(‘-’, ‘_’).replace(‘.’, ‘_’)</p>
+<dl>
+<dt>if self.root_is_pure:</dt><dd><dl class="simple">
+<dt>if self.universal:</dt><dd><p>impl = ‘py2.py3’</p>
+</dd>
+<dt>else:</dt><dd><p>impl = self.python_tag</p>
+</dd>
+</dl>
+<p>tag = (impl, ‘none’, plat_name)</p>
+</dd>
+<dt>else:</dt><dd><p>impl_name = tags.interpreter_name()
+impl_ver = tags.interpreter_version()
+impl = impl_name + impl_ver
+# We don’t work on CPython 3.1, 3.0.
+if self.py_limited_api and (impl_name + impl_ver).startswith(‘cp3’):</p>
+<blockquote>
+<div><p>impl = self.py_limited_api
+abi_tag = ‘abi3’</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>abi_tag = str(get_abi_tag()).lower()</p>
+</dd>
+</dl>
+<p>tag = (impl, abi_tag, plat_name)
+# issue gh-374: allow overriding plat_name
+supported_tags = [(t.interpreter, t.abi, plat_name)</p>
+<blockquote>
+<div><p>for t in tags.sys_tags()]</p>
+</div></blockquote>
+<p>assert tag in supported_tags, “would build wheel with unsupported tag {}”.format(tag)</p>
+</dd>
+</dl>
+<p>return tag</p>
+</dd>
+<dt>def run(self):</dt><dd><p>build_scripts = self.reinitialize_command(‘build_scripts’)
+build_scripts.executable = ‘python’
+build_scripts.force = True</p>
+<p>build_ext = self.reinitialize_command(‘build_ext’)
+build_ext.inplace = False</p>
+<dl class="simple">
+<dt>if not self.skip_build:</dt><dd><p>self.run_command(‘build’)</p>
+</dd>
+<dt>install = self.reinitialize_command(‘install’,</dt><dd><p>reinit_subcommands=True)</p>
+</dd>
+</dl>
+<p>install.root = self.bdist_dir
+install.compile = False
+install.skip_build = self.skip_build
+install.warn_dir = False</p>
+<p># A wheel without setuptools scripts is more cross-platform.
+# Use the (undocumented) <cite>no_ep</cite> option to setuptools’
+# install_scripts command to avoid creating entry point scripts.
+install_scripts = self.reinitialize_command(‘install_scripts’)
+install_scripts.no_ep = True</p>
+<p># Use a custom scheme for the archive, because we have to decide
+# at installation time which scheme to use.
+for key in (‘headers’, ‘scripts’, ‘data’, ‘purelib’, ‘platlib’):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>setattr(install,</dt><dd><p>‘<a href="#id7"><span class="problematic" id="id8">install_</span></a>’ + key,
+os.path.join(self.data_dir, key))</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>basedir_observed = ‘’</p>
+<dl class="simple">
+<dt>if os.name == ‘nt’:</dt><dd><p># win32 barfs if any of these are ‘’; could be ‘.’?
+# (distutils.command.install:change_roots bug)
+basedir_observed = os.path.normpath(os.path.join(self.data_dir, ‘..’))
+self.install_libbase = self.install_lib = basedir_observed</p>
+</dd>
+<dt>setattr(install,</dt><dd><p>‘install_purelib’ if self.root_is_pure else ‘install_platlib’,
+basedir_observed)</p>
+</dd>
+</dl>
+<p>logger.info(“installing to %s”, self.bdist_dir)</p>
+<p>self.run_command(‘install’)</p>
+<p>impl_tag, abi_tag, plat_tag = self.get_tag()
+archive_basename = “{}-{}-{}-{}”.format(self.wheel_dist_name, impl_tag, abi_tag, plat_tag)
+if not self.relative:</p>
+<blockquote>
+<div><p>archive_root = self.bdist_dir</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><dl class="simple">
+<dt>archive_root = os.path.join(</dt><dd><p>self.bdist_dir,
+self._ensure_relative(install.install_base))</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>self.set_undefined_options(‘install_egg_info’, (‘target’, ‘egginfo_dir’))
+distinfo_dirname = ‘{}-{}.dist-info’.format(</p>
+<blockquote>
+<div><p>safer_name(self.distribution.get_name()),
+safer_version(self.distribution.get_version()))</p>
+</div></blockquote>
+<p>distinfo_dir = os.path.join(self.bdist_dir, distinfo_dirname)
+self.egg2dist(self.egginfo_dir, distinfo_dir)</p>
+<p>self.write_wheelfile(distinfo_dir)</p>
+<p># Make the archive
+if not os.path.exists(self.dist_dir):</p>
+<blockquote>
+<div><p>os.makedirs(self.dist_dir)</p>
+</div></blockquote>
+<p>wheel_path = os.path.join(self.dist_dir, archive_basename + ‘.whl’)
+with WheelFile(wheel_path, ‘w’, self.compression) as wf:</p>
+<blockquote>
+<div><p>wf.write_files(archive_root)</p>
+</div></blockquote>
+<p># Add to ‘Distribution.dist_files’ so that the “upload” command works
+getattr(self.distribution, ‘dist_files’, []).append(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(‘bdist_wheel’,</dt><dd><p>‘{}.{}’.format(<a href="#id3"><span class="problematic" id="id4">*</span></a>sys.version_info[:2]),  # like 3.7
+wheel_path))</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>if not self.keep_temp:</dt><dd><p>logger.info(‘removing %s’, self.bdist_dir)
+if not self.dry_run:</p>
+<blockquote>
+<div><p>rmtree(self.bdist_dir, onerror=remove_readonly)</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>def write_wheelfile(self, wheelfile_base, generator=’bdist_wheel (’ + wheel_version + ‘)’):</dt><dd><p>from email.message import Message</p>
+<p># Workaround for Python 2.7 for when “generator” is unicode
+if sys.version_info &lt; (3,) and not isinstance(generator, str):</p>
+<blockquote>
+<div><p>generator = generator.encode(‘utf-8’)</p>
+</div></blockquote>
+<p>msg = Message()
+msg[‘Wheel-Version’] = ‘1.0’  # of the spec
+msg[‘Generator’] = generator
+msg[‘Root-Is-Purelib’] = str(self.root_is_pure).lower()
+if self.build_number is not None:</p>
+<blockquote>
+<div><p>msg[‘Build’] = self.build_number</p>
+</div></blockquote>
+<p># Doesn’t work for bdist_wininst
+impl_tag, abi_tag, plat_tag = self.get_tag()
+for impl in impl_tag.split(‘.’):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>for abi in abi_tag.split(‘.’):</dt><dd><dl class="simple">
+<dt>for plat in plat_tag.split(‘.’):</dt><dd><p>msg[‘Tag’] = ‘-‘.join((impl, abi, plat))</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>wheelfile_path = os.path.join(wheelfile_base, ‘WHEEL’)
+logger.info(‘creating %s’, wheelfile_path)
+buffer = BytesIO()
+BytesGenerator(buffer, maxheaderlen=0).flatten(msg)
+with open(wheelfile_path, ‘wb’) as f:</p>
+<blockquote>
+<div><p>f.write(buffer.getvalue().replace(b’rn’, b’r’))</p>
+</div></blockquote>
+</dd>
+<dt>def _ensure_relative(self, path):</dt><dd><p># copied from dir_util, deleted
+drive, path = os.path.splitdrive(path)
+if path[0:1] == os.sep:</p>
+<blockquote>
+<div><p>path = drive + path[1:]</p>
+</div></blockquote>
+<p>return path</p>
+</dd>
+</dl>
+<p>&#64;property
+def license_paths(self):</p>
+<blockquote>
+<div><p>metadata = self.distribution.get_option_dict(‘metadata’)
+files = set()
+patterns = sorted({</p>
+<blockquote>
+<div><p>option for option in metadata.get(‘license_files’, (‘’, ‘’))[1].split()</p>
+</div></blockquote>
+<p>})</p>
+<dl>
+<dt>if ‘license_file’ in metadata:</dt><dd><dl class="simple">
+<dt>warnings.warn(‘The “license_file” option is deprecated. Use ‘</dt><dd><p>‘“license_files” instead.’, DeprecationWarning)</p>
+</dd>
+</dl>
+<p>files.add(metadata[‘license_file’][1])</p>
+</dd>
+<dt>if ‘license_file’ not in metadata and ‘license_files’ not in metadata:</dt><dd><p>patterns = (‘LICEN[CS]E*’, ‘COPYING*’, ‘NOTICE*’, ‘AUTHORS*’)</p>
+</dd>
+<dt>for pattern in patterns:</dt><dd><dl class="simple">
+<dt>for path in iglob(pattern):</dt><dd><dl class="simple">
+<dt>if path.endswith(‘~’):</dt><dd><p>logger.debug(‘ignoring license file “%s” as it looks like a backup’, path)
+continue</p>
+</dd>
+<dt>if path not in files and os.path.isfile(path):</dt><dd><p>logger.info(‘adding license file “%s” (matched pattern “%s”)’, path, pattern)
+files.add(path)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>return files</p>
+</div></blockquote>
+<dl>
+<dt>def egg2dist(self, egginfo_path, distinfo_path):</dt><dd><p>“””Convert an .egg-info directory into a .dist-info directory”””
+def adios(p):</p>
+<blockquote>
+<div><p>“””Appropriately delete directory, file or link.”””
+if os.path.exists(p) and not os.path.islink(p) and os.path.isdir(p):</p>
+<blockquote>
+<div><p>shutil.rmtree(p)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>elif os.path.exists(p):</dt><dd><p>os.unlink(p)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>adios(distinfo_path)</p>
+<dl>
+<dt>if not os.path.exists(egginfo_path):</dt><dd><p># There is no egg-info. This is probably because the egg-info
+# file/directory is not named matching the distribution name used
+# to name the archive file. Check for this case and report
+# accordingly.
+import glob
+pat = os.path.join(os.path.dirname(egginfo_path), ‘<a href="#id5"><span class="problematic" id="id6">*</span></a>.egg-info’)
+possible = glob.glob(pat)
+err = “Egg metadata expected at %s but not found” % (egginfo_path,)
+if possible:</p>
+<blockquote>
+<div><p>alt = os.path.basename(possible[0])
+err += ” (%s found - possible misnamed archive file?)” % (alt,)</p>
+</div></blockquote>
+<p>raise ValueError(err)</p>
+</dd>
+<dt>if os.path.isfile(egginfo_path):</dt><dd><p># .egg-info is a single file
+pkginfo_path = egginfo_path
+pkg_info = pkginfo_to_metadata(egginfo_path, egginfo_path)
+os.mkdir(distinfo_path)</p>
+</dd>
+<dt>else:</dt><dd><p># .egg-info is a directory
+pkginfo_path = os.path.join(egginfo_path, ‘PKG-INFO’)
+pkg_info = pkginfo_to_metadata(egginfo_path, pkginfo_path)</p>
+<p># ignore common egg metadata that is useless to wheel
+shutil.copytree(egginfo_path, distinfo_path,</p>
+<blockquote>
+<div><dl class="simple">
+<dt>ignore=lambda x, y: {‘PKG-INFO’, ‘requires.txt’, ‘SOURCES.txt’,</dt><dd><p>‘not-zip-safe’}</p>
+</dd>
+</dl>
+<p>)</p>
+</div></blockquote>
+<p># delete dependency_links if it is only whitespace
+dependency_links_path = os.path.join(distinfo_path, ‘dependency_links.txt’)
+with open(dependency_links_path, ‘r’) as dependency_links_file:</p>
+<blockquote>
+<div><p>dependency_links = dependency_links_file.read().strip()</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not dependency_links:</dt><dd><p>adios(dependency_links_path)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>write_pkg_info(os.path.join(distinfo_path, ‘METADATA’), pkg_info)</p>
+<dl class="simple">
+<dt>for license_path in self.license_paths:</dt><dd><p>filename = os.path.basename(license_path)
+shutil.copy(license_path, os.path.join(distinfo_path, filename))</p>
+</dd>
+</dl>
+<p>adios(egginfo_path)</p>
+</dd>
+</dl>
+</div></blockquote>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

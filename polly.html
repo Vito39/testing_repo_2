@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>polly package &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">polly package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-polly.application_error_info">polly.application_error_info module</a></li>
+<li><a class="reference internal" href="#module-polly.auth">polly.auth module</a></li>
+<li><a class="reference internal" href="#module-polly.constants">polly.constants module</a></li>
+<li><a class="reference internal" href="#module-polly.errors">polly.errors module</a></li>
+<li><a class="reference internal" href="#module-polly.helpers">polly.helpers module</a></li>
+<li><a class="reference internal" href="#module-polly.index_schema_level_conversion_const">polly.index_schema_level_conversion_const module</a></li>
+<li><a class="reference internal" href="#module-polly.omixatlas">polly.omixatlas module</a></li>
+<li><a class="reference internal" href="#module-polly.session">polly.session module</a></li>
+<li><a class="reference internal" href="#polly-upload-files-module">polly.upload_files module</a></li>
+<li><a class="reference internal" href="#module-polly.workspaces">polly.workspaces module</a></li>
+<li><a class="reference internal" href="#module-polly">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>polly package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/polly.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="polly-package">
+<h1>polly package<a class="headerlink" href="#polly-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-polly.application_error_info">
+<span id="polly-application-error-info-module"></span><h2>polly.application_error_info module<a class="headerlink" href="#module-polly.application_error_info" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-polly.auth">
+<span id="polly-auth-module"></span><h2>polly.auth module<a class="headerlink" href="#module-polly.auth" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="polly.auth.Polly">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.auth.</span></span><span class="sig-name descname"><span class="pre">Polly</span></span><a class="headerlink" href="#polly.auth.Polly" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.auth.Polly.auth">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.auth.Polly.auth" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="polly.auth.Polly.default_session">
+<span class="sig-name descname"><span class="pre">default_session</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#polly.auth.Polly.default_session" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.auth.Polly.get_session">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.auth.Polly.get_session" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.auth.UnauthorizedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.auth.</span></span><span class="sig-name descname"><span class="pre">UnauthorizedException</span></span><a class="headerlink" href="#polly.auth.UnauthorizedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-polly.constants">
+<span id="polly-constants-module"></span><h2>polly.constants module<a class="headerlink" href="#module-polly.constants" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-polly.errors">
+<span id="polly-errors-module"></span><h2>polly.errors module<a class="headerlink" href="#module-polly.errors" title="Permalink to this headline"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.BaseExceptionError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">BaseExceptionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.BaseExceptionError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base Exception class for v2 APIs.
+All custom exceptions are created by extending this class.
+Exception has 4 attributes corresponding to details sent in ‘error’ object
+in response JSON -</p>
+<blockquote>
+<div><p>status - http status code
+code - application specific error code
+title - title of error
+detail - details of error</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.errors.BaseExceptionError.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.BaseExceptionError.as_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.errors.BaseExceptionError.as_str">
+<span class="sig-name descname"><span class="pre">as_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.BaseExceptionError.as_str" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.ElasticException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">ElasticException</span></span><a class="headerlink" href="#polly.errors.ElasticException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.InvalidFormatException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">InvalidFormatException</span></span><a class="headerlink" href="#polly.errors.InvalidFormatException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.InvalidParameterException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">InvalidParameterException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.InvalidParameterException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.InvalidPathException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">InvalidPathException</span></span><a class="headerlink" href="#polly.errors.InvalidPathException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.MissingKeyException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">MissingKeyException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.MissingKeyException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.OperationFailedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">OperationFailedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.OperationFailedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.QueryFailedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">QueryFailedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.QueryFailedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.RequestException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">RequestException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.RequestException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.UnauthorizedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">UnauthorizedException</span></span><a class="headerlink" href="#polly.errors.UnauthorizedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.UnfinishedQueryException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">UnfinishedQueryException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.UnfinishedQueryException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.apiErrorException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">apiErrorException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.apiErrorException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polly.errors.BaseExceptionError" title="polly.errors.BaseExceptionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">polly.errors.BaseExceptionError</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="polly.errors.apiErrorException.detail">
+<span class="sig-name descname"><span class="pre">detail</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#polly.errors.apiErrorException.detail" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.errors.error_handler">
+<span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">error_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.error_handler" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.errors.extract_error_message_details">
+<span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">extract_error_message_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.extract_error_message_details" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.errors.extract_json_api_error">
+<span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">extract_json_api_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.extract_json_api_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.errors.has_error_message">
+<span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">has_error_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.has_error_message" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.invalidApiResponseException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">invalidApiResponseException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.invalidApiResponseException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polly.errors.BaseExceptionError" title="polly.errors.BaseExceptionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">polly.errors.BaseExceptionError</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.errors.is_unfinished_query_error">
+<span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">is_unfinished_query_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.is_unfinished_query_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.paramException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">paramException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.paramException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polly.errors.BaseExceptionError" title="polly.errors.BaseExceptionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">polly.errors.BaseExceptionError</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="polly.errors.paramException.detail">
+<span class="sig-name descname"><span class="pre">detail</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'parameter</span> <span class="pre">passed</span> <span class="pre">is</span> <span class="pre">either</span> <span class="pre">empty</span> <span class="pre">or</span> <span class="pre">wrong</span> <span class="pre">datatype'</span></em><a class="headerlink" href="#polly.errors.paramException.detail" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="polly.errors.wrongParamException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.errors.</span></span><span class="sig-name descname"><span class="pre">wrongParamException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.errors.wrongParamException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polly.errors.BaseExceptionError" title="polly.errors.BaseExceptionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">polly.errors.BaseExceptionError</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="polly.errors.wrongParamException.detail">
+<span class="sig-name descname"><span class="pre">detail</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Incorrect</span> <span class="pre">value</span> <span class="pre">of</span> <span class="pre">param</span> <span class="pre">passed'</span></em><a class="headerlink" href="#polly.errors.wrongParamException.detail" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-polly.helpers">
+<span id="polly-helpers-module"></span><h2>polly.helpers module<a class="headerlink" href="#module-polly.helpers" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.download_from_S3">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">download_from_S3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloud_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.helpers.download_from_S3" title="Permalink to this definition"></a></dt>
+<dd><p>Function to download file/folder from workspaces</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.file_conversion">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">file_conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.helpers.file_conversion" title="Permalink to this definition"></a></dt>
+<dd><p>Function that converts file to mentioned format</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.get_data_type">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">get_data_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#polly.helpers.get_data_type" title="Permalink to this definition"></a></dt>
+<dd><p>Function to return the data-type of the required dataset</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.get_sts_creds">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">get_sts_creds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sts_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.helpers.get_sts_creds" title="Permalink to this definition"></a></dt>
+<dd><p>Function to check and return temporary sts creds</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.make_path">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">make_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postfix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#polly.helpers.make_path" title="Permalink to this definition"></a></dt>
+<dd><p>Function to make and return a valid path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polly.helpers.upload_to_S3">
+<span class="sig-prename descclassname"><span class="pre">polly.helpers.</span></span><span class="sig-name descname"><span class="pre">upload_to_S3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloud_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.helpers.upload_to_S3" title="Permalink to this definition"></a></dt>
+<dd><p>Function to upload file/folder to S3 cloud path</p>
+</dd></dl>
+
+</section>
+<section id="module-polly.index_schema_level_conversion_const">
+<span id="polly-index-schema-level-conversion-const-module"></span><h2>polly.index_schema_level_conversion_const module<a class="headerlink" href="#module-polly.index_schema_level_conversion_const" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-polly.omixatlas">
+<span id="polly-omixatlas-module"></span><h2>polly.omixatlas module<a class="headerlink" href="#module-polly.omixatlas" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.omixatlas.</span></span><span class="sig-name descname"><span class="pre">OmixAtlas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.download_data">
+<span class="sig-name descname"><span class="pre">download_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.download_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.flatten_nested_schema_dict">
+<span class="sig-name descname"><span class="pre">flatten_nested_schema_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nested_schema_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.flatten_nested_schema_dict" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Flatten the nested dict</dt><dd><p>Input:
+schema:{</p>
+<blockquote>
+<div><blockquote>
+<div><dl>
+<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
+<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
+“type”: “text | integer | object”,
+“description”: “string”, (Min=1, Max=100)
+},
+… other fields</p>
+</dd>
+</dl>
+<p>}
+… other Data types</p>
+</dd>
+</dl>
+<p>}
+… other Sources</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<dl>
+<dt>Output:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>‘Source’:source_list,
+‘Datatype’: datatype_list,
+‘Field Name’:field_name_list,
+‘Field Description’:field_desc_list,
+‘Field Type’: field_type_list</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.format_converter">
+<span class="sig-name descname"><span class="pre">format_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.format_converter" title="Permalink to this definition"></a></dt>
+<dd><p>Function to convert a file to maf format.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.format_type">
+<span class="sig-name descname"><span class="pre">format_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.format_type" title="Permalink to this definition"></a></dt>
+<dd><p>Format the dict data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.get_all_omixatlas">
+<span class="sig-name descname"><span class="pre">get_all_omixatlas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.get_all_omixatlas" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.get_schema">
+<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['dataset',</span> <span class="pre">'sample']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.get_schema" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Input params:</dt><dd><blockquote>
+<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;
+schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</p>
+</div></blockquote>
+<dl>
+<dt>Output:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>‘dataset’:pd.DataFrame,
+‘sample’:pd.DataFrame</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>DataFrame consists of schema metadata summary
+i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+metdata schema definition for sample:</p>
+<blockquote>
+<div><dl>
+<dt>schema:{</dt><dd><dl>
+<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
+<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
+“type”: “text | integer | object”,
+“description”: “string”, (Min=1, Max=100)
+},
+… other fields</p>
+</dd>
+</dl>
+<p>}
+… other Data types</p>
+</dd>
+</dl>
+<p>}
+… other Sources</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>ii) schema_type : files i.e Global Fields (dataset)
+PS :- ALL, ALL keys is not rigid for dataset level schema also
+There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also
+metadata schema definition for a dataset:</p>
+<blockquote>
+<div><dl>
+<dt>schema:{</dt><dd><dl>
+<dt>“ALL”: {</dt><dd><dl class="simple">
+<dt>“ALL”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
+“type”: “text | integer | object”,
+“description”: “string”, (Min=1, Max=100)
+},
+… other fields</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>iii) schema_type : gct_metadata i.e Row Fields (Feature)
+Not there right now</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.get_schema_from_api">
+<span class="sig-name descname"><span class="pre">get_schema_from_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_type_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.get_schema_from_api" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the schema of a repo id for the given repo_key and
+schema_type definition at the top level
+params:
+repo_key =&gt; str
+schema_type_dict =&gt; dictionary {schema_level:schema_type}
+example {‘dataset’: ‘files’, ‘sample’: ‘gct_metadata’}
+Ouput:</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><dl>
+<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_ID&gt;”,
+“type”: “schema”,
+“attributes”: {</p>
+<blockquote>
+<div><p>“schema_type”: “files | gct_metadata | h5ad_metadata”,
+“schema”: {</p>
+<blockquote>
+<div><p>… field definitions</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.get_schema_type">
+<span class="sig-name descname"><span class="pre">get_schema_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.get_schema_type" title="Permalink to this definition"></a></dt>
+<dd><p>Compute schema_type based on data_type and schema_level
+schema_level         schema_type
+————————————
+dataset         ==   file
+———————————-
+sample          ==   gct_metadata
+———————————–
+sample and      ==    h5ad_metadata
+single cell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.insert_schema">
+<span class="sig-name descname"><span class="pre">insert_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.insert_schema" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Params:</dt><dd><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt; / &lt;repo_id&gt;
+body =&gt; dict
+{</p>
+<blockquote>
+<div><dl>
+<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_KEY&gt;”,
+“type”: “schema”,
+“attributes”: {
+“schema_type”: “files | gct_metadata | h5ad_metadata”,
+“schema”: {</p>
+<blockquote>
+<div><p>… field definitions</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.nested_dict_to_df">
+<span class="sig-name descname"><span class="pre">nested_dict_to_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.nested_dict_to_df" title="Permalink to this definition"></a></dt>
+<dd><p>Convert flatten dict into df and print it
+Input:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>‘Source’:source_list,
+‘Datatype’: datatype_list,
+‘Field Name’:field_name_list,
+‘Field Description’:field_desc_list,
+‘Field Type’: field_type_list</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Output:</dt><dd><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.omixatlas_summary">
+<span class="sig-name descname"><span class="pre">omixatlas_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.omixatlas_summary" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.query_metadata">
+<span class="sig-name descname"><span class="pre">query_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_api_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.query_metadata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.return_schema_data">
+<span class="sig-name descname"><span class="pre">return_schema_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.return_schema_data" title="Permalink to this definition"></a></dt>
+<dd><p>Return schema data as named tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.save_to_workspace">
+<span class="sig-name descname"><span class="pre">save_to_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;module</span> <span class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/opt/hostedtoolcache/Python/3.10.2/x64/lib/python3.10/json/__init__.py'&gt;</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.save_to_workspace" title="Permalink to this definition"></a></dt>
+<dd><p>Function for saving data from omixatlas to workspaces.
+Makes a call to v1/omixatlas/workspace_jobs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.search_metadata">
+<span class="sig-name descname"><span class="pre">search_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.search_metadata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.update_schema">
+<span class="sig-name descname"><span class="pre">update_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.update_schema" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Params:</dt><dd><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt; / &lt;repo_id&gt;
+body =&gt; dict
+{</p>
+<blockquote>
+<div><dl>
+<dt>“data”: {</dt><dd><p>“id”: “&lt;REPO_KEY&gt;”,
+“type”: “schema”,
+“attributes”: {
+“schema_type”: “files | gct_metadata | h5ad_metadata”,
+“schema”: {</p>
+<blockquote>
+<div><p>… field definitions</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.visualize_schema">
+<span class="sig-name descname"><span class="pre">visualize_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['dataset',</span> <span class="pre">'sample']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.visualize_schema" title="Permalink to this definition"></a></dt>
+<dd><dl>
+<dt>Input params:</dt><dd><blockquote>
+<div><p>repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;
+schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</p>
+</div></blockquote>
+<dl>
+<dt>Output:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>‘dataset’:pd.DataFrame,
+‘sample’:pd.DataFrame</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>DataFrame consists of schema metadata summary
+i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
+metdata schema definition for sample:</p>
+<blockquote>
+<div><dl>
+<dt>schema:{</dt><dd><dl>
+<dt>“&lt;SOURCE&gt;”: {</dt><dd><dl class="simple">
+<dt>“&lt;DATATYPE&gt;”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
+“type”: “text | integer | object”,
+“description”: “string”, (Min=1, Max=100)
+},
+… other fields</p>
+</dd>
+</dl>
+<p>}
+… other Data types</p>
+</dd>
+</dl>
+<p>}
+… other Sources</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>ii) schema_type : files i.e Global Fields (dataset)
+PS :- ALL, ALL keys is not rigid for dataset level schema also
+There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also
+metadata schema definition for a dataset:</p>
+<blockquote>
+<div><dl>
+<dt>schema:{</dt><dd><dl>
+<dt>“ALL”: {</dt><dd><dl class="simple">
+<dt>“ALL”: {</dt><dd><p>“&lt;FIELD_NAME&gt;”: {
+“type”: “text | integer | object”,
+“description”: “string”, (Min=1, Max=100)
+},
+… other fields</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>iii) schema_type : gct_metadata i.e Row Fields (Feature)
+Not there right now</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-polly.session">
+<span id="polly-session-module"></span><h2>polly.session module<a class="headerlink" href="#module-polly.session" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="polly.session.PollySession">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.session.</span></span><span class="sig-name descname"><span class="pre">PollySession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">REFRESH_TOKEN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.session.PollySession" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.sessions.Session</span></code></p>
+</dd></dl>
+
+</section>
+<section id="polly-upload-files-module">
+<h2>polly.upload_files module<a class="headerlink" href="#polly-upload-files-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-polly.workspaces">
+<span id="polly-workspaces-module"></span><h2>polly.workspaces module<a class="headerlink" href="#module-polly.workspaces" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="polly.workspaces.Workspaces">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polly.workspaces.</span></span><span class="sig-name descname"><span class="pre">Workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.workspaces.Workspaces.create_workspace">
+<span class="sig-name descname"><span class="pre">create_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces.create_workspace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.workspaces.Workspaces.download_from_workspaces">
+<span class="sig-name descname"><span class="pre">download_from_workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.workspaces.Workspaces.download_from_workspaces" title="Permalink to this definition"></a></dt>
+<dd><p>Function to download files/folders from workspaces</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.workspaces.Workspaces.fetch_my_workspaces">
+<span class="sig-name descname"><span class="pre">fetch_my_workspaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces.fetch_my_workspaces" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.workspaces.Workspaces.upload_to_workspaces">
+<span class="sig-name descname"><span class="pre">upload_to_workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.workspaces.Workspaces.upload_to_workspaces" title="Permalink to this definition"></a></dt>
+<dd><p>Function to upload files/folders to workspaces</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-polly">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polly" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

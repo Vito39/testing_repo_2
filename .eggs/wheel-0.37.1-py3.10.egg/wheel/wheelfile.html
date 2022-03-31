@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/.eggs/wheel-0.37.1-py3.10.egg/wheel/wheelfile.py.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>from __future__ import print_function</p>
+<p>import csv
+import hashlib
+import os.path
+import re
+import stat
+import sys
+import time
+from collections import OrderedDict
+from distutils import log as logger
+from zipfile import ZIP_DEFLATED, ZipInfo, ZipFile</p>
+<p>from wheel.cli import WheelError
+from wheel.util import urlsafe_b64decode, as_unicode, native, urlsafe_b64encode, as_bytes, StringIO</p>
+<dl>
+<dt>if sys.version_info &gt;= (3,):</dt><dd><p>from io import TextIOWrapper</p>
+<dl class="simple">
+<dt>def read_csv(fp):</dt><dd><p>return csv.reader(TextIOWrapper(fp, newline=’’, encoding=’utf-8’))</p>
+</dd>
+</dl>
+</dd>
+<dt>else:</dt><dd><dl class="simple">
+<dt>def read_csv(fp):</dt><dd><dl class="simple">
+<dt>for line in csv.reader(fp):</dt><dd><p>yield [column.decode(‘utf-8’) for column in line]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p># Non-greedy matching of an optional build number may be too clever (more
+# invalid wheel filenames will match). Separate regex for .dist-info?
+WHEEL_INFO_RE = re.compile(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>r”””^(?P&lt;namever&gt;(?P&lt;name&gt;.+?)-(?P&lt;ver&gt;.+?))(-(?P&lt;build&gt;d[^-]*))?</dt><dd><p>-(?P&lt;pyver&gt;.+?)-(?P&lt;abi&gt;.+?)-(?P&lt;plat&gt;.+?).whl$”””,</p>
+</dd>
+</dl>
+<p>re.VERBOSE)</p>
+</div></blockquote>
+<dl>
+<dt>def get_zipinfo_datetime(timestamp=None):</dt><dd><p># Some applications need reproducible .whl files, but they can’t do this without forcing
+# the timestamp of the individual ZipInfo objects. See issue #143.
+timestamp = int(os.environ.get(‘SOURCE_DATE_EPOCH’, timestamp or time.time()))
+return time.gmtime(timestamp)[0:6]</p>
+</dd>
+<dt>class WheelFile(ZipFile):</dt><dd><p>“””A ZipFile derivative class that also reads SHA-256 hashes from
+.dist-info/RECORD and checks any read files against those.
+“””</p>
+<p>_default_algorithm = hashlib.sha256</p>
+<dl>
+<dt>def __init__(self, file, mode=’r’, compression=ZIP_DEFLATED):</dt><dd><p>basename = os.path.basename(file)
+self.parsed_filename = WHEEL_INFO_RE.match(basename)
+if not basename.endswith(‘.whl’) or self.parsed_filename is None:</p>
+<blockquote>
+<div><p>raise WheelError(“Bad wheel filename {!r}”.format(basename))</p>
+</div></blockquote>
+<p>ZipFile.__init__(self, file, mode, compression=compression, allowZip64=True)</p>
+<p>self.dist_info_path = ‘{}.dist-info’.format(self.parsed_filename.group(‘namever’))
+self.record_path = self.dist_info_path + ‘/RECORD’
+self._file_hashes = OrderedDict()
+self._file_sizes = {}
+if mode == ‘r’:</p>
+<blockquote>
+<div><p># Ignore RECORD and any embedded wheel signatures
+self._file_hashes[self.record_path] = None, None
+self._file_hashes[self.record_path + ‘.jws’] = None, None
+self._file_hashes[self.record_path + ‘.p7s’] = None, None</p>
+<p># Fill in the expected hashes by reading them from RECORD
+try:</p>
+<blockquote>
+<div><p>record = self.open(self.record_path)</p>
+</div></blockquote>
+<dl>
+<dt>except KeyError:</dt><dd><p>raise WheelError(‘Missing {} file’.format(self.record_path))</p>
+</dd>
+<dt>with record:</dt><dd><dl>
+<dt>for line in read_csv(record):</dt><dd><p>path, hash_sum, size = line
+if not hash_sum:</p>
+<blockquote>
+<div><p>continue</p>
+</div></blockquote>
+<p>algorithm, hash_sum = hash_sum.split(u’=’)
+try:</p>
+<blockquote>
+<div><p>hashlib.new(algorithm)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>except ValueError:</dt><dd><p>raise WheelError(‘Unsupported hash algorithm: {}’.format(algorithm))</p>
+</dd>
+<dt>if algorithm.lower() in {‘md5’, ‘sha1’}:</dt><dd><dl class="simple">
+<dt>raise WheelError(</dt><dd><p>‘Weak hash algorithm ({}) is not permitted by PEP 427’
+.format(algorithm))</p>
+</dd>
+</dl>
+</dd>
+<dt>self._file_hashes[path] = (</dt><dd><p>algorithm, urlsafe_b64decode(hash_sum.encode(‘ascii’)))</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>def open(self, name_or_info, mode=”r”, pwd=None):</dt><dd><dl>
+<dt>def _update_crc(newdata, eof=None):</dt><dd><dl class="simple">
+<dt>if eof is None:</dt><dd><p>eof = ef._eof
+update_crc_orig(newdata)</p>
+</dd>
+<dt>else:  # Python 2</dt><dd><p>update_crc_orig(newdata, eof)</p>
+</dd>
+</dl>
+<p>running_hash.update(newdata)
+if eof and running_hash.digest() != expected_hash:</p>
+<blockquote>
+<div><p>raise WheelError(“Hash mismatch for file ‘{}’”.format(native(ef_name)))</p>
+</div></blockquote>
+</dd>
+<dt>ef_name = as_unicode(name_or_info.filename if isinstance(name_or_info, ZipInfo)</dt><dd><p>else name_or_info)</p>
+</dd>
+<dt>if mode == ‘r’ and not ef_name.endswith(‘/’) and ef_name not in self._file_hashes:</dt><dd><p>raise WheelError(“No hash found for file ‘{}’”.format(native(ef_name)))</p>
+</dd>
+</dl>
+<p>ef = ZipFile.open(self, name_or_info, mode, pwd)
+if mode == ‘r’ and not ef_name.endswith(‘/’):</p>
+<blockquote>
+<div><p>algorithm, expected_hash = self._file_hashes[ef_name]
+if expected_hash is not None:</p>
+<blockquote>
+<div><p># Monkey patch the _update_crc method to also check for the hash from RECORD
+running_hash = hashlib.new(algorithm)
+update_crc_orig, ef._update_crc = ef._update_crc, _update_crc</p>
+</div></blockquote>
+</div></blockquote>
+<p>return ef</p>
+</dd>
+<dt>def write_files(self, base_dir):</dt><dd><p>logger.info(“creating ‘%s’ and adding ‘%s’ to it”, self.filename, base_dir)
+deferred = []
+for root, dirnames, filenames in os.walk(base_dir):</p>
+<blockquote>
+<div><p># Sort the directory names so that <cite>os.walk</cite> will walk them in a
+# defined order on the next iteration.
+dirnames.sort()
+for name in sorted(filenames):</p>
+<blockquote>
+<div><p>path = os.path.normpath(os.path.join(root, name))
+if os.path.isfile(path):</p>
+<blockquote>
+<div><p>arcname = os.path.relpath(path, base_dir).replace(os.path.sep, ‘/’)
+if arcname == self.record_path:</p>
+<blockquote>
+<div><p>pass</p>
+</div></blockquote>
+<dl class="simple">
+<dt>elif root.endswith(‘.dist-info’):</dt><dd><p>deferred.append((path, arcname))</p>
+</dd>
+<dt>else:</dt><dd><p>self.write(path, arcname)</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p>deferred.sort()
+for path, arcname in deferred:</p>
+<blockquote>
+<div><p>self.write(path, arcname)</p>
+</div></blockquote>
+</dd>
+<dt>def write(self, filename, arcname=None, compress_type=None):</dt><dd><dl class="simple">
+<dt>with open(filename, ‘rb’) as f:</dt><dd><p>st = os.fstat(f.fileno())
+data = f.read()</p>
+</dd>
+</dl>
+<p>zinfo = ZipInfo(arcname or filename, date_time=get_zipinfo_datetime(st.st_mtime))
+zinfo.external_attr = (stat.S_IMODE(st.st_mode) | stat.S_IFMT(st.st_mode)) &lt;&lt; 16
+zinfo.compress_type = compress_type or self.compression
+self.writestr(zinfo, data, compress_type)</p>
+</dd>
+<dt>def writestr(self, zinfo_or_arcname, bytes, compress_type=None):</dt><dd><p>ZipFile.writestr(self, zinfo_or_arcname, bytes, compress_type)
+fname = (zinfo_or_arcname.filename if isinstance(zinfo_or_arcname, ZipInfo)</p>
+<blockquote>
+<div><p>else zinfo_or_arcname)</p>
+</div></blockquote>
+<p>logger.info(“adding ‘%s’”, fname)
+if fname != self.record_path:</p>
+<blockquote>
+<div><p><a href="#id1"><span class="problematic" id="id2">hash_</span></a> = self._default_algorithm(bytes)
+self._file_hashes[fname] = <a href="#id3"><span class="problematic" id="id4">hash_</span></a>.name, native(urlsafe_b64encode(<a href="#id5"><span class="problematic" id="id6">hash_</span></a>.digest()))
+self._file_sizes[fname] = len(bytes)</p>
+</div></blockquote>
+</dd>
+<dt>def close(self):</dt><dd><p># Write RECORD
+if self.fp is not None and self.mode == ‘w’ and self._file_hashes:</p>
+<blockquote>
+<div><p>data = StringIO()
+writer = csv.writer(data, delimiter=’,’, quotechar=’”’, lineterminator=’n’)
+writer.writerows((</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(</dt><dd><p>fname,
+algorithm + “=” + <a href="#id7"><span class="problematic" id="id8">hash_</span></a>,
+self._file_sizes[fname]</p>
+</dd>
+</dl>
+<p>)
+for fname, (algorithm, <a href="#id9"><span class="problematic" id="id10">hash_</span></a>) in self._file_hashes.items()</p>
+</div></blockquote>
+<p>))
+writer.writerow((format(self.record_path), “”, “”))
+zinfo = ZipInfo(native(self.record_path), date_time=get_zipinfo_datetime())
+zinfo.compress_type = self.compression
+zinfo.external_attr = 0o664 &lt;&lt; 16
+self.writestr(zinfo, as_bytes(data.getvalue()))</p>
+</div></blockquote>
+<p>ZipFile.close(self)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

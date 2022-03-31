@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Polly Library &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">About Polly Library</a><ul>
+<li><a class="reference internal" href="#about-polly-python">About Polly Python</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#copying-authentication-token">Copying authentication token</a></li>
+<li><a class="reference internal" href="#using-the-token">Using the token</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calling-a-function">Calling a function</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>About Polly Library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/make_doc/Polly.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about-polly-library">
+<h1>About Polly Library<a class="headerlink" href="#about-polly-library" title="Permalink to this headline"></a></h1>
+<p>Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and bash which can be used over a Terminal.</p>
+<section id="about-polly-python">
+<h2>About Polly Python<a class="headerlink" href="#about-polly-python" title="Permalink to this headline"></a></h2>
+<p>Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>Install Polly Python using pip</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">polly</span><span class="o">-</span><span class="n">python</span>
+</pre></div>
+</div>
+<p>Getting started
+Import from libraries
+The following libraries need to be imported over the development environment to access the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
+<span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="kn">from</span> <span class="nn">polly.workspaces</span> <span class="kn">import</span> <span class="n">Workspaces</span>
+</pre></div>
+</div>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline"></a></h2>
+<p>Authentication of the account is required to be able to access the capabilities of the Polly Python library.</p>
+<section id="copying-authentication-token">
+<h3>Copying authentication token<a class="headerlink" href="#copying-authentication-token" title="Permalink to this headline"></a></h3>
+<p>To get this token, follow the steps below:</p>
+<p>Go to Polly</p>
+<p>Click the User Options icon from the left-most panel</p>
+<p>Click on Authentication on the panel that appears</p>
+<p>Click on Copy to copy the authentication token</p>
+</section>
+<section id="using-the-token">
+<h3>Using the token<a class="headerlink" href="#using-the-token" title="Permalink to this headline"></a></h3>
+<p>The following code is required to add the authentication function in the Polly Python library</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTH_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;[authentication_token_copied]&quot;</span>
+<span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">AUTH_TOKEN</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="calling-a-function">
+<h2>Calling a function<a class="headerlink" href="#calling-a-function" title="Permalink to this headline"></a></h2>
+<p>In order to call a functions from a particular class, corresponding object should be defined.</p>
+<p>E.g. for functions related to OmixAtlas,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="p">[</span><span class="n">function</span><span class="p">()]</span>
+</pre></div>
+</div>
+<p>Similarly, for functions related to Workspaces,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">workspaces</span><span class="o">.</span><span class="p">[</span><span class="n">function</span><span class="p">()]</span>
+</pre></div>
+</div>
+<p>The output of the functions is in JSON and/or data frame formats. You can print/download this output.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

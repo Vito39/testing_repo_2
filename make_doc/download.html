@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloading any dataset &mdash; Polly_Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Polly_Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Downloading any dataset</a><ul>
+<li><a class="reference internal" href="#downloading-gct-and-opening-it-in-a-data-frame">Downloading .gct and opening it in a data frame</a></li>
+<li><a class="reference internal" href="#downloading-h5ad-file-and-opening-it-in-a-data-frame">Downloading .h5ad file and opening it in a data frame</a></li>
+<li><a class="reference internal" href="#downloading-vcf-files">Downloading vcf files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polly_Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Downloading any dataset</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/make_doc/download.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="downloading-any-dataset">
+<h1>Downloading any dataset<a class="headerlink" href="#downloading-any-dataset" title="Permalink to this headline"></a></h1>
+<p>To download any dataset, the following function can be used to get the signed URL of the dataset.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="s2">&quot;repo_key&quot;</span><span class="p">,</span> <span class="s2">&quot;[dataset_id]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">repo_key: (str) repo_id OR repo_name from where the data needs to be downloaded.</div>
+<div class="line">dataset_id: (str) dataset_id which the user wants to download.</div>
+<div class="line">The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function. The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata(“[query written in SQL]”).</div>
+<div class="line">The output of this function is a signed URL. The data can be downloaded by clicking on this URL.</div>
+<div class="line">NOTE: This signed URL expires after 60 minutes from when it is generated.</div>
+<div class="line">The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:</div>
+</div>
+<section id="downloading-gct-and-opening-it-in-a-data-frame">
+<h2>Downloading .gct and opening it in a data frame<a class="headerlink" href="#downloading-gct-and-opening-it-in-a-data-frame" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">&quot;GSE100003_GPL15207&quot;</span> <span class="c1">#dataset which user wants to download.</span>
+<span class="n">repo_key</span> <span class="o">=</span> <span class="mi">9</span> <span class="n">OR</span> <span class="s2">&quot;geo&quot;</span> <span class="c1">#repo_id OR repo_name from which dataset should be downloaded from.</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_id</span><span class="si">}</span><span class="s2">.gct&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="n">repo_key</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;download_url&#39;</span><span class="p">)</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget -O &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39; &#39;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloaded data successfully&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Download not successful&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to parse the .gct data, a python package called cmapPy can be used in the following manner.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">cmapPy</span>
+<span class="kn">from</span> <span class="nn">cmapPy.pandasGEXpress.parse_gct</span> <span class="kn">import</span> <span class="n">parse</span>
+
+<span class="n">gct_obj</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="c1"># Parse the file to create a gct object</span>
+<span class="n">df_real</span> <span class="o">=</span> <span class="n">gct_obj</span><span class="o">.</span><span class="n">data_df</span> <span class="c1"># Extract the dataframe from the gct object</span>
+<span class="n">col_metadata</span> <span class="o">=</span> <span class="n">gct_obj</span><span class="o">.</span><span class="n">col_metadata_df</span> <span class="c1"># Extract the column metadata from the gct object</span>
+<span class="n">row_metadata</span> <span class="o">=</span> <span class="n">gct_obj</span><span class="o">.</span><span class="n">row_metadata_df</span> <span class="c1"># Extract the row metadata from the gct object</span>
+</pre></div>
+</div>
+</section>
+<section id="downloading-h5ad-file-and-opening-it-in-a-data-frame">
+<h2>Downloading .h5ad file and opening it in a data frame<a class="headerlink" href="#downloading-h5ad-file-and-opening-it-in-a-data-frame" title="Permalink to this headline"></a></h2>
+<p>In order to parse the .h5ad data, a python package called scanpy can be used in the following manner.</p>
+<p>In order to get started with analysis of single cell data on Polly, users can refer to this notebook hosted on our github.</p>
+</section>
+<section id="downloading-vcf-files">
+<h2>Downloading vcf files<a class="headerlink" href="#downloading-vcf-files" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">&quot;gnomad_v2.1.1_genome_TP53&quot;</span> <span class="c1">#dataset which user wants to download.</span>
+<span class="n">repo_key</span> <span class="o">=</span> <span class="mi">1628836648493</span> <span class="n">OR</span> <span class="s2">&quot;gnomad&quot;</span> <span class="c1">#repo_id OR repo_name from which dataset should be downloaded from.</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_id</span><span class="si">}</span><span class="s2">.vcf&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="n">repo_key</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;download_url&#39;</span><span class="p">)</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget -O &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39; &#39;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloaded data successfully&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Download not successful&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The downloaded vcf file can be further analysed using the docker environment containing Hail package on Polly.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, hrishabh kamal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
