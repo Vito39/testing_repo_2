@@ -35,7 +35,7 @@ IMAGE_URL_ENDPOINT = (
 OK = 200
 CREATED = 201
 
-# cohort constants 
+# cohort constants
 VALID_REPO_NAMES = {"tcga": ["mutation", "transcriptomics"]}
 COHORT_REPO_INFO = {
     "tcga": {
