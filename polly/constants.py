@@ -34,3 +34,12 @@ IMAGE_URL_ENDPOINT = (
 # statuscodes
 OK = 200
 CREATED = 201
+
+# cohort constants 
+VALID_REPO_NAMES = {"tcga": ["mutation", "transcriptomics"]}
+COHORT_REPO_INFO = {
+    "tcga": {
+        "file_structure": "single",
+    }
+}
+dot = "."
