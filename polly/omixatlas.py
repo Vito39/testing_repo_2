@@ -1,4 +1,3 @@
-import re
 import json
 import ssl
 import logging
@@ -12,7 +11,6 @@ import pandas as pd
 import requests
 from retrying import retry
 
-from polly import repository_validators as validator
 from polly import constants as const
 
 from polly import helpers
@@ -781,12 +779,10 @@ class OmixAtlas:
             initials if initials else self._construct_initials(display_name)
         )
 
-        validator.validate_frontend_info(frontend_info)
-
         if not repo_name:
             repo_name = self._create_repo_name(display_name)
         else:
-            self._check_for_valid_repo_name(repo_name)
+            repo_name = repo_name
 
         payload["data"]["attributes"]["repo_name"] = repo_name
         payload["data"]["attributes"]["frontend_info"] = frontend_info
@@ -796,8 +792,6 @@ class OmixAtlas:
 
         for key in indexes.keys():
             indexes[key] = f"{repo_name}_{key}"
-
-        validator.validate_repository_schema(payload["data"]["attributes"])
 
         repository_url = f"{self.resource_url}"
         resp = self.session.post(repository_url, json=payload)
@@ -867,27 +861,6 @@ class OmixAtlas:
         """
         repo_name = display_name.lower().replace(" ", "_")
         return repo_name
-
-    def _check_for_valid_repo_name(self, repo_name):
-        """
-        This function is checks if the repo_name is valid
-        according to the constraints of
-        1. max length is 20
-        2. all lowercase alphabets and words seperated by "_"
-
-        Args:
-            | repo_name(str): repo_name which is used to create index in db
-        Returns:
-            | Error in case of failed constraints
-        """
-        if len(repo_name) > 20:
-            raise ValueError("Max length of repo_name can be 20")
-
-        pattern = re.compile(r"[a-z]|[a-z]*_*[a-z]*_*[a-z]*")
-        if not re.fullmatch(pattern, repo_name):
-            raise ValueError(
-                f"{repo_name} is in incorrect format, Refer to the documentation"
-            )
 
     def _get_repository_payload(self):
         """ """
