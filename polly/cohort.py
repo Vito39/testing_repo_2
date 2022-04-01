@@ -51,7 +51,7 @@ class Cohort:
 
     def merge_metadata(self):
         """
-        Function to merge the gct files in a cohort.
+        Function to merge the sample level metadata from all the gct files in a cohort.
         Returns:
             | A pandas dataframe containing the merged metadata for analysis.
         """
@@ -74,7 +74,7 @@ class Cohort:
 
     def merge_data_matrix(self) -> pd.DataFrame:
         """
-        This function is used to merge the gct files in a cohort.
+        Function to merge the data-matrix level metadata from all the gct files in a cohort.
         Returns:
             | A pandas dataframe containing the merged data for analysis.
         """
@@ -171,7 +171,7 @@ class Cohort:
         """
         This function is used to delete a cohort.
         Returns:
-            | A confirmation message on updation of cohort
+            | A confirmation message on deletion of cohort
         """
         shutil.rmtree(self.folder_path, ignore_errors=True)
         logging.basicConfig(level=logging.INFO)
@@ -181,11 +181,11 @@ class Cohort:
 
     def remove_from_cohort(self, entity_id: list) -> None:
         """
-        This function is used for removing entity_ids from a cohort
+        This function is used for removing dataset_id or sample_id from a cohort
         Args:
-            | entity_id(list): list of entity_ids to be removed from the cohort.
+            | entity_id(list): list of dataset_id or sample_id to be removed from the cohort.
         Returns:
-            | A confirmation message on removal of entity_ids from cohort.
+            | A confirmation message on removal of dataset_id or sample_id from cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -236,12 +236,12 @@ class Cohort:
 
     def add_to_cohort(self, repo_key: str, entity_id: list) -> None:
         """
-        This function is used to add dataset/s to a cohort
+        This function is used to add dataset(s) or sample(s) to a cohort
         Args:
-            | repo_key(str): repo_name/repo_id for the omixatlas to be added
+            | repo_key(str): repo_key(repo_name/repo_id) for the omixatlas to be added
             | entity_id(list): list of entity_ids to be added to the cohort
         Returns:
-            | A confirmation message on addition to cohort
+            | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -341,8 +341,8 @@ class Cohort:
             | local_path(str): local path to instantiate the cohort
             | cohort_name(str): identifier name for the cohort
             | description(str): description about the cohort
-            | repo_key(str): Optional argument: repo_name/repo_id for the omixatlas to be added
-            | entity_id(list): Optional argument: list of entity_ids to be added to the cohort
+            | repo_key(str): Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added
+            | entity_id(list): Optional argument: list of sample_id or dataset_id to be added to the cohort
         Returns:
             | A confirmation message on creation of cohort
         """
@@ -394,7 +394,9 @@ class Cohort:
         """
         Function to return metadata and summary of a cohort
         Returns:
-            | A tuple with the first value as cohort metadata information and the second value as dataframe with cohort summary
+            | A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
+              or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
+              and data type available in the cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -404,7 +406,8 @@ class Cohort:
 
     def load_cohort(self, local_path: str):
         """
-        Function to load an existing cohort into an object
+        Function to load an existing cohort into an object.
+        Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
         Args:
             | local_path(str): local path of the cohort
         Returns:
