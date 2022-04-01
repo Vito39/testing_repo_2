@@ -67,14 +67,61 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p>import base64
-import os</p>
-<p>def upload_files():</p>
+  <p>from distutils.command.upload import upload
+import requests
+import os
+import base64
+import json
+from os import walk
+def file_upload(repo,owner,token,file_path,git_path,commit,branch):</p>
 <blockquote>
-<div><p>if</p>
-</div></blockquote>
+<div><p>text_file = open(file_path, “rb”)
+content = text_file.read()
+content = base64.b64encode(content).decode(‘ascii’)
+text_file.close()</p>
 <dl class="simple">
-<dt>if __name__ == “__main__”:</dt><dd><p>client = upload_files()</p>
+<dt>headers =  {</dt><dd><p>‘Authorization’: f’Token {token}’,
+‘Content-Type’: ‘application/vnd.github.v3+json’</p>
+</dd>
+</dl>
+<p>}
+print(f’Token {token}’)</p>
+<p>print(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’)</p>
+<p>r = requests.get(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers)</p>
+<p>print(r.status_code)</p>
+<dl class="simple">
+<dt>if r.status_code == 404:</dt><dd><p>print(‘file created’)
+data = {‘message’: commit, ‘content’: content, ‘branch’: branch}
+res = requests.put(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers ,data=json.dumps(data))
+print(res.json())</p>
+</dd>
+<dt>elif r.status_code == 200:</dt><dd><p>print(‘file updated’)
+file_inf = r.json()
+sha = file_inf[‘sha’]
+data = {‘message’: commit, ‘content’: content, ‘branch’: branch,’sha’:sha}
+res = requests.put(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers ,data=json.dumps(data))
+print(res.json())</p>
+</dd>
+<dt>else:</dt><dd><p>print(‘could not upload file’)
+print(r.json())</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>def dir_to_upload(dir):</dt><dd><p>print(os.getcwd())
+for path, subdirs, files in walk(dir):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>for name in files:</dt><dd><p>file_path = path+’/’+name
+git_path = file_path.replace(‘_build/’,’’)
+print(file_path)
+print(git_path)
+file_upload(‘for_testing’, ‘Vito39’, ‘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’, file_path, git_path, ‘to test’,’main’)</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>if __name__ == “__main__”:</dt><dd><p>dir_to_upload(‘_build/markdown’)</p>
 </dd>
 </dl>
 
