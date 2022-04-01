@@ -48,7 +48,7 @@ def dir_to_upload(dir):
             git_path = file_path.replace('_build/','')
             print(file_path)
             print(git_path)
-            file_upload('for_testing', 'Vito39', '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', file_path, git_path, 'to test','main')
+            file_upload('for_testing', 'Vito39', os.environ['TOKEN'], file_path, git_path, 'to test','main')
 
 if __name__ == "__main__":
     dir_to_upload('_build/markdown')
