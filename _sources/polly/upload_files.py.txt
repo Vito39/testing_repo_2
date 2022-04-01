@@ -15,7 +15,7 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
             'Authorization': f'Token {token}',
             'Content-Type': 'application/vnd.github.v3+json'
         }
-        print(f'Token {token}')
+        print(token)
 
         print(f'https://api.github.com/repos/{owner}/{repo}/contents/{git_path}')
 
