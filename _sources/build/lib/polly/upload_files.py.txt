@@ -12,7 +12,7 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
 
 
         headers =  {
-            'Authorization': f'Token {token}',
+            'Authorization': 'Token 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',
             'Content-Type': 'application/vnd.github.v3+json'
         }
         print(token)
