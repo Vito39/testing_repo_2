@@ -51,7 +51,9 @@ class Cohort:
 
     def merge_metadata(self):
         """
-        Function to merge the gct files in a cohort and return merged meta data
+        Function to merge the sample level metadata from all the gct files in a cohort.
+        Returns:
+            | A pandas dataframe containing the merged metadata for analysis.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -72,7 +74,9 @@ class Cohort:
 
     def merge_data_matrix(self) -> pd.DataFrame:
         """
-        Function to merge the gct files in a cohort and return merged data matrix
+        Function to merge the data-matrix level metadata from all the gct files in a cohort.
+        Returns:
+            | A pandas dataframe containing the merged data for analysis.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -88,7 +92,12 @@ class Cohort:
 
     def edit_cohort(self, new_cohort_name=None, new_description=None):
         """
-        Function to edit a cohort name and description
+        This function is used to edit a cohort name and description
+        Args:
+            | new_cohort_name(str): Optional Argument: new identifier name for the cohort
+            | new_description(str): Optional Argument: new description about the cohort
+        Returns:
+            | A confirmation message on updation of cohort
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -102,13 +111,9 @@ class Cohort:
     def _edit_cohort_name(self, new_cohort_name: str):
         if not (new_cohort_name and isinstance(new_cohort_name, str)):
             return
-        if len(new_cohort_name) > 50:
-            logging.error(
-                "Length of Cohort Name greater than 50 characters. Please try again."
-            )
-            return
         if dot in new_cohort_name:
             logging.error("The cohort name is not valid. Please try again.")
+            return
         p = Path(self.folder_path)
         parent = p.parent
         str_parent = str(parent.resolve())
@@ -121,12 +126,6 @@ class Cohort:
 
     def _edit_cohort_description(self, new_description: str):
         if not (new_description and isinstance(new_description, str)):
-            return
-        if len(new_description) > 50:
-            logging.basicConfig()
-            logging.warning(
-                "Description length more than 50 characters. Please try again"
-            )
             return
         existing_path = self.folder_path
         meta_path = f"{existing_path}/.meta"
@@ -146,7 +145,9 @@ class Cohort:
 
     def is_valid(self) -> bool:
         """
-        Function to check if a cohort is valid or not
+        This function is used to check if a cohort is valid or not.
+        Returns:
+            | A boolean result based on the validity of the cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -168,7 +169,9 @@ class Cohort:
 
     def delete_cohort(self) -> None:
         """
-        Function to delete a cohort
+        This function is used to delete a cohort.
+        Returns:
+            | A confirmation message on deletion of cohort
         """
         shutil.rmtree(self.folder_path, ignore_errors=True)
         logging.basicConfig(level=logging.INFO)
@@ -176,13 +179,17 @@ class Cohort:
         self.folder_path = None
         self._cohort_details = None
 
-    def remove_from_cohort(self, dataset_ids: list) -> None:
+    def remove_from_cohort(self, entity_id: list) -> None:
         """
-        Function for removing dataset/s from a cohort
+        This function is used for removing dataset_id or sample_id from a cohort
+        Args:
+            | entity_id(list): list of dataset_id or sample_id to be removed from the cohort.
+        Returns:
+            | A confirmation message on removal of dataset_id or sample_id from cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
-        if not (dataset_ids and isinstance(dataset_ids, list)):
+        if not (entity_id and isinstance(entity_id, list)):
             raise InvalidParameterException("entity_id")
         dataset_count = 0
         verified_dataset = []
@@ -192,7 +199,7 @@ class Cohort:
             data = base64.b64decode((byte))
             json_data = json.loads(data.decode("utf-8"))
             dataset_id = list(json_data["entity_id"].keys())
-            for dataset in dataset_ids:
+            for dataset in entity_id:
                 if dataset not in dataset_id:
                     logging.basicConfig(level=logging.INFO)
                     logging.info(f"Dataset Id - {dataset} not present in the Cohort.")
@@ -227,22 +234,27 @@ class Cohort:
         logging.basicConfig(level=logging.INFO)
         logging.info(f"'{dataset_count}' dataset/s removed from Cohort!")
 
-    def add_to_cohort(self, repo_key: str, dataset_id: list) -> None:
+    def add_to_cohort(self, repo_key: str, entity_id: list) -> None:
         """
-        Function to add dataset/s to a cohort
+        This function is used to add dataset(s) or sample(s) to a cohort
+        Args:
+            | repo_key(str): repo_key(repo_name/repo_id) for the omixatlas to be added
+            | entity_id(list): list of entity_ids to be added to the cohort
+        Returns:
+            | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
         if not (repo_key and isinstance(repo_key, str)):
             raise InvalidParameterException("repo_key")
-        if not (dataset_id and isinstance(dataset_id, list)):
+        if not (entity_id and isinstance(entity_id, list)):
             raise InvalidParameterException("entity_id")
         obj = OmixAtlas()
         local_path = self.folder_path
         response_omixatlas = obj.omixatlas_summary(repo_key)
         data = response_omixatlas.get("data")
         repo_name = data.get("repo_name")
-        dataset_id = self._validate_repo(repo_name, dataset_id)
+        dataset_id = self._validate_repo(repo_name, entity_id)
         entity_type = self._get_entity(repo_name)
         Parallel(n_jobs=20, require="sharedmem")(
             delayed(self._gctfile)(repo_name, i, local_path) for i in dataset_id
@@ -321,17 +333,25 @@ class Cohort:
         cohort_name: str,
         description: str,
         repo_key=None,
-        dataset_id=None,
+        entity_id=None,
     ) -> None:
         """
-        Function to create a cohort
+        This function is used to create a cohort
+        Args:
+            | local_path(str): local path to instantiate the cohort
+            | cohort_name(str): identifier name for the cohort
+            | description(str): description about the cohort
+            | repo_key(str): Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added
+            | entity_id(list): Optional argument: list of sample_id or dataset_id to be added to the cohort
+        Returns:
+            | A confirmation message on creation of cohort
         """
         if not (local_path and isinstance(local_path, str)):
-            raise InvalidParameterException("repo_id/repo_name")
+            raise InvalidParameterException("local_path")
         if not (cohort_name and isinstance(cohort_name, str)):
-            raise InvalidParameterException("dataset_id")
+            raise InvalidParameterException("cohort_name")
         if not (description and isinstance(description, str)):
-            raise InvalidParameterException("dataset_id")
+            raise InvalidParameterException("description")
         if not os.path.exists(local_path):
             raise InvalidPathException
         if dot in cohort_name:
@@ -355,8 +375,8 @@ class Cohort:
             outfile.write(encoded_data)
         self.folder_path = str(file_path)
         self._cohort_details = metadata
-        if dataset_id is not None and repo_key is not None:
-            self.add_to_cohort(repo_key, dataset_id)
+        if entity_id is not None and repo_key is not None:
+            self.add_to_cohort(repo_key, entity_id)
         logging.basicConfig(level=logging.INFO)
         logging.info("Cohort Created !")
 
@@ -373,6 +393,10 @@ class Cohort:
     def summarize_cohort(self):
         """
         Function to return metadata and summary of a cohort
+        Returns:
+            | A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
+              or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
+              and data type available in the cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -382,7 +406,12 @@ class Cohort:
 
     def load_cohort(self, local_path: str):
         """
-        Function to load an existing cohort into an object
+        Function to load an existing cohort into an object.
+        Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
+        Args:
+            | local_path(str): local path of the cohort
+        Returns:
+            | A confirmation message on instantiation of the cohort
         """
         if not os.path.exists(local_path):
             raise InvalidPathException(local_path)
