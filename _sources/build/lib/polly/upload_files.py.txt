@@ -12,10 +12,9 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
 
 
         headers =  {
-            'Authorization': 'Token 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',
+            'Authorization': 'Token {token}',
             'Content-Type': 'application/vnd.github.v3+json'
         }
-        print(token)
 
         print(f'https://api.github.com/repos/{owner}/{repo}/contents/{git_path}')
 
