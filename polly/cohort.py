@@ -71,8 +71,8 @@ class Cohort:
             error_report_file="errors",
         )
         return All_Metadata
-    
-    def merge_feature_metadata(self):
+
+    def merge_feature_metadata(self) -> pd.DataFrame:
         """
         Function to merge the feature level metadata from all the gct files in a cohort.
         Returns:
@@ -94,7 +94,7 @@ class Cohort:
             error_report_file="errors",
         )
         return All_Metadata
-    
+
     def merge_data_matrix(self) -> pd.DataFrame:
         """
         Function to merge the data-matrix level metadata from all the gct files in a cohort.
