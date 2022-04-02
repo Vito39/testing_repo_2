@@ -49,11 +49,11 @@ class Cohort:
         )
         return results_gct
 
-    def merge_metadata(self):
+    def merge_sample_metadata(self):
         """
         Function to merge the sample level metadata from all the gct files in a cohort.
         Returns:
-            | A pandas dataframe containing the merged metadata for analysis.
+            | A pandas dataframe containing the merged sample level metadata for analysis.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -65,6 +65,29 @@ class Cohort:
         gct_files = [dataset_id + ".gct" for dataset_id in sample_list]
         All_Metadata = assemble_common_meta(
             [i.col_metadata_df for i in results_gct],
+            fields_to_remove=[],
+            sources=gct_files,
+            remove_all_metadata_fields=False,
+            error_report_file="errors",
+        )
+        return All_Metadata
+
+    def merge_feature_metadata(self) -> pd.DataFrame:
+        """
+        Function to merge the feature level metadata from all the gct files in a cohort.
+        Returns:
+            | A pandas dataframe containing the merged feture level metadata for analysis.
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        file_path = self.folder_path
+        sample_list = list(self._cohort_details["entity_id"].keys())
+        if len(sample_list) == 0:
+            raise EmptyCohortException
+        results_gct = self._read_gcts(sample_list, file_path)
+        gct_files = [dataset_id + ".gct" for dataset_id in sample_list]
+        All_Metadata = assemble_common_meta(
+            [i.row_metadata_df for i in results_gct],
             fields_to_remove=[],
             sources=gct_files,
             remove_all_metadata_fields=False,
