@@ -151,7 +151,7 @@ class Cohort:
         if not (new_description and isinstance(new_description, str)):
             return
         existing_path = self.folder_path
-        meta_path = f"{existing_path}/.meta"
+        meta_path = helpers.make_path(existing_path, "cohort.meta")
         with open(meta_path, "r+b") as openfile:
             byte = openfile.read()
             data = base64.b64decode((byte))
@@ -176,7 +176,7 @@ class Cohort:
             raise InvalidCohortOperationException
         if not os.path.exists(self.folder_path):
             raise InvalidPathException
-        meta_path = f"{self.folder_path}/.meta"
+        meta_path = helpers.make_path(self.folder_path, "cohort.meta")
         if not os.path.exists(meta_path):
             return False
         sample_list = list(self._cohort_details["entity_id"].keys())
@@ -216,7 +216,7 @@ class Cohort:
             raise InvalidParameterException("entity_id")
         dataset_count = 0
         verified_dataset = []
-        file_meta = helpers.make_path(self.folder_path, ".meta")
+        file_meta = helpers.make_path(self.folder_path, "cohort.meta")
         with open(file_meta, "r+b") as openfile:
             byte = openfile.read()
             data = base64.b64decode((byte))
@@ -285,9 +285,8 @@ class Cohort:
         Parallel(n_jobs=20, require="sharedmem")(
             delayed(self._add_metadata)(repo_name, i, local_path) for i in dataset_id
         )
-        file_meta = helpers.make_path(local_path, ".meta")
+        file_meta = helpers.make_path(local_path, "cohort.meta")
         with open(file_meta, "r+b") as openfile:
-            # data = json.load(openfile)
             byte = openfile.read()
             data = base64.b64decode((byte))
             json_data = json.loads(data.decode("utf-8"))
@@ -391,7 +390,7 @@ class Cohort:
             "date_created": str(datetime.datetime.now()),
             "version": "0.1",
         }
-        file_name = os.path.join(file_path, ".meta")
+        file_name = os.path.join(file_path, "cohort.meta")
         input = json.dumps(metadata)
         with open(file_name, "wb") as outfile:
             encoded_data = base64.b64encode(input.encode("utf-8"))
@@ -438,7 +437,7 @@ class Cohort:
         """
         if not os.path.exists(local_path):
             raise InvalidPathException(local_path)
-        file_meta = helpers.make_path(local_path, ".meta")
+        file_meta = helpers.make_path(local_path, "cohort.meta")
         if not os.path.exists(file_meta):
             raise InvalidCohortPathException
         file = open(file_meta, "r")
