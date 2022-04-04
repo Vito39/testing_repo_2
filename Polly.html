@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Downloading any dataset" href="download.html" />
+    <link rel="next" title="Downloading Dataset" href="download.html" />
     <link rel="prev" title="Welcome to polly’s documentation!" href="index.html" /> 
 </head>
 
@@ -41,16 +41,17 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About Polly Library</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#about-polly-python">About Polly Python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#copying-authentication-token">Copying authentication token</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#using-the-token">Using the token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">2. Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">3. Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#copying-authentication-token">3.1. Copying authentication token</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-token">3.2 Using the token</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#calling-a-function">Calling a function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calling-a-function">4. Calling a function</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading any dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="polly.html">polly package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="query.html">Querying metadata</a></li>
 </ul>
@@ -81,19 +82,21 @@
              
   <section id="about-polly-library">
 <h1>About Polly Library<a class="headerlink" href="#about-polly-library" title="Permalink to this headline"></a></h1>
-<p>Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and bash which can be used over a Terminal.</p>
+<p>Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and <a class="reference external" href="https://docs.elucidata.io/Scaling%20compute/Polly%20CLI%201.html">bash</a> which can be used over a Terminal.</p>
 <section id="about-polly-python">
 <h2>About Polly Python<a class="headerlink" href="#about-polly-python" title="Permalink to this headline"></a></h2>
 <p>Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.</p>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
 <p>Install Polly Python using pip</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">polly</span><span class="o">-</span><span class="n">python</span>
 </pre></div>
 </div>
-<p>Getting started
-Import from libraries
+</section>
+<section id="getting-started">
+<h2>2. Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline"></a></h2>
+<p>Import from libraries
 The following libraries need to be imported over the development environment to access the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
 <span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
@@ -102,18 +105,20 @@ The following libraries need to be imported over the development environment to 
 </div>
 </section>
 <section id="authentication">
-<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline"></a></h2>
+<h2>3. Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline"></a></h2>
 <p>Authentication of the account is required to be able to access the capabilities of the Polly Python library.</p>
 <section id="copying-authentication-token">
-<h3>Copying authentication token<a class="headerlink" href="#copying-authentication-token" title="Permalink to this headline"></a></h3>
+<h3>3.1. Copying authentication token<a class="headerlink" href="#copying-authentication-token" title="Permalink to this headline"></a></h3>
 <p>To get this token, follow the steps below:</p>
-<p>Go to Polly</p>
-<p>Click the User Options icon from the left-most panel</p>
-<p>Click on Authentication on the panel that appears</p>
-<p>Click on Copy to copy the authentication token</p>
+<ol class="arabic simple">
+<li><p>Go to <a class="reference external" href="https://polly.elucidata.io/">Polly</a></p></li>
+<li><p>Click the User Options icon from the left-most panel</p></li>
+<li><p>Click on Authentication on the panel that appears</p></li>
+<li><p>Click on Copy to copy the authentication token</p></li>
+</ol>
 </section>
 <section id="using-the-token">
-<h3>Using the token<a class="headerlink" href="#using-the-token" title="Permalink to this headline"></a></h3>
+<h3>3.2 Using the token<a class="headerlink" href="#using-the-token" title="Permalink to this headline"></a></h3>
 <p>The following code is required to add the authentication function in the Polly Python library</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTH_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;[authentication_token_copied]&quot;</span>
 <span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">AUTH_TOKEN</span><span class="p">)</span>
@@ -122,9 +127,9 @@ The following libraries need to be imported over the development environment to 
 </section>
 </section>
 <section id="calling-a-function">
-<h2>Calling a function<a class="headerlink" href="#calling-a-function" title="Permalink to this headline"></a></h2>
-<p>In order to call a functions from a particular class, corresponding object should be defined.</p>
-<p>E.g. for functions related to OmixAtlas,</p>
+<h2>4. Calling a function<a class="headerlink" href="#calling-a-function" title="Permalink to this headline"></a></h2>
+<p>In order to call a functions from a particular class, corresponding object should be defined.
+E.g. for functions related to OmixAtlas,</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">()</span>
 <span class="n">output</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="p">[</span><span class="n">function</span><span class="p">()]</span>
 </pre></div>
@@ -143,7 +148,7 @@ The following libraries need to be imported over the development environment to 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to polly’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="download.html" class="btn btn-neutral float-right" title="Downloading any dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="download.html" class="btn btn-neutral float-right" title="Downloading Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

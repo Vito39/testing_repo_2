@@ -11,26 +11,30 @@ class Workspaces:
     """
     This class contain
 
-    | [1]. constructure to init workspaces class object
-    | [2]. to create workspace function
-    | [3]. to fetch workspaces
-    | [4]. upload files to workspaces
-    | [5]. download files from workspaces
+    #.  constructure to init workspaces class object
+    #.  to create workspace function
+    #.  to fetch workspaces
+    #.  upload files to workspaces
+    #.  download files from workspaces
+    
+    This is a constructure which init a obj that
+    can use all function and methods of Workspaces class
+    
+    ``Args:``
+        |  ``token (str):`` token copy from polly.
+        |  ``env (str):`` polly or testpolly or devpolly.
+    
+
+    .. code::
+
+
+            to init a obj
+            obj = Workspaces(token,env)
+            from there you can other methods
+            obj.fetch_my_workspaces()
+
     """
     def __init__(self, token=None, env="polly") -> None:
-        """
-        This is a constructure which init a obj that
-        can use all function and methods of Workspaces class
-        
-        |  Args:
-        |      token (str): token copy from polly.
-        |      env (str): polly or testpolly or devpolly.
-        
-        |  to init a obj
-        |  obj = Workspaces(token,env)
-        |  from there you can other methods
-        |  obj.fetch_my_workspaces()
-        """
 
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
@@ -46,16 +50,20 @@ class Workspaces:
         """
         this function create workspace on polly
         
-        Args:
-            |  name (str): name of the workspace
-            |  description (str): general information about workspace
+        ``Args:``
+            |  ``name (str):`` name of the workspace
+            |  ``description (str):`` general information about workspace
         
-        |  to create a obj
-        |  obj = Workspaces(token,env)
-        |  from there you can other methods
-        |  obj.create_workspace()
+        
+        .. code::
 
-        Returns:
+
+                to create a obj
+                obj = Workspaces(token,env)
+                from there you can other methods
+                obj.create_workspace()
+
+        ``Returns:``
             it will return a dict like this
                 |  {
                 |  'id': 9999, 
@@ -94,15 +102,19 @@ class Workspaces:
         """
         this function fetch workspace from polly
         
-        Args:
+        ``Args:``
             |  None
 
-        |  create a obj
-        |  obj = Workspaces(token,env)
-        |  from there you can other methods
-        |  obj.fetch_my_workspaces()
 
-        Returns:
+        .. code::
+
+
+                create a obj
+                obj = Workspaces(token,env)
+                from there you can other methods
+                obj.fetch_my_workspaces()
+
+        ``Returns:``
             |  it will return a table with following attributes 
             |  type id attributes.id attributes.name attributes.active attributes.description attributes.created_time attributes.last_modified attributes.creator attributes.project_property.type attributes.project_property.labels attributes.organisation links.self
         """
@@ -121,12 +133,12 @@ class Workspaces:
         """
         Function to upload files/folders to workspaces
 
-        Args:
-            |  workspace_id : id of the where file need to uploaded
-            |  workspace_path : file path on workspace if folder does not exist it will create
-            |  local_path : uploaded file path
+        ``Args:``
+            |  ``workspace_id :`` id of the where file need to uploaded
+            |  ``workspace_path :`` file path on workspace if folder does not exist it will create
+            |  ``local_path :`` uploaded file path
         
-        Returns: 
+        ``Returns:`` 
             |  None
         """
         if not (workspace_id and isinstance(workspace_id, int)):
@@ -153,16 +165,16 @@ class Workspaces:
         """
         Function to download files/folders from workspaces
 
-        Args:
-            |  workspace_id : id of the where file need to uploaded
-            |  workspace_path : downloaded file on workspace
+        ``Args:``
+            |  ``workspace_id :`` id of the where file need to uploaded
+            |  ``workspace_path :`` downloaded file on workspace
         
-        Returns:
+        ``Returns:``
             |  None
         
-        Error:
-            |  InvalidPathException : for invalid path 
-            |  OperationFailedException : when downloading fails
+        ``Error:``
+            |  ``InvalidPathException :`` for invalid path 
+            |  ``OperationFailedException :`` when downloading fails
 
         """
         if not (workspace_id and isinstance(workspace_id, int)):

@@ -1,13 +1,13 @@
 About Polly Library
 *********************
-Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and bash which can be used over a Terminal.
+Polly Libraries give access to the various capabilities on Polly like querying, filtering and accessing the data on Polly OmixAtlas. It allows access to data in OmixAtlas over any computational platform (like DataBricks, SageMaker, Polly, etc.) of your choice. These functionalities can be accessed through functions in python and `bash <https://docs.elucidata.io/Scaling%20compute/Polly%20CLI%201.html>`_ which can be used over a Terminal.
 
 About Polly Python
 ------------------
 Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.
 
-Installation
-------------
+1. Installation
+---------------
 Install Polly Python using pip
 
 
@@ -16,7 +16,8 @@ Install Polly Python using pip
 
         pip install polly-python
 
-Getting started
+2. Getting started
+------------------
 Import from libraries
 The following libraries need to be imported over the development environment to access the data.
 
@@ -27,24 +28,21 @@ The following libraries need to be imported over the development environment to 
         from polly.omixatlas import OmixAtlas
         from polly.workspaces import Workspaces
 
-Authentication
---------------
+3. Authentication
+------------------
 Authentication of the account is required to be able to access the capabilities of the Polly Python library.
 
-Copying authentication token
-============================
+3.1. Copying authentication token
+==================================
 To get this token, follow the steps below:
 
-Go to Polly
+#. Go to `Polly <https://polly.elucidata.io/>`_
+#. Click the User Options icon from the left-most panel
+#. Click on Authentication on the panel that appears
+#. Click on Copy to copy the authentication token
 
-Click the User Options icon from the left-most panel
-
-Click on Authentication on the panel that appears
-
-Click on Copy to copy the authentication token
-
-Using the token
-===============
+3.2 Using the token
+====================
 The following code is required to add the authentication function in the Polly Python library
 
 .. code::
@@ -53,11 +51,10 @@ The following code is required to add the authentication function in the Polly P
         AUTH_TOKEN = "[authentication_token_copied]"
         Polly.auth(AUTH_TOKEN)
 
-Calling a function
-------------------
+4. Calling a function
+----------------------
 
 In order to call a functions from a particular class, corresponding object should be defined.
-
 E.g. for functions related to OmixAtlas,
 
 .. code::

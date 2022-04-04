@@ -38,7 +38,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Polly.html">About Polly Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading any dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../polly.html">polly package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../query.html">Querying metadata</a></li>
 </ul>
@@ -103,20 +103,19 @@ QUERY_API_V2 = “v2”</p>
 <dt>class OmixAtlas:</dt><dd><p>“””
 OmixAtlas class interact with omixatlases datalakes
 that contain datasets to query</p>
-<div class="line-block">
-<div class="line">we can init a OmixAtlas class object using</div>
-<div class="line">obj = Omixatlas(token,env)</div>
-</div>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">token (str): token copy from polly.</div>
-<div class="line">env (str): polly or testpolly or devpolly.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
 </div>
 </dd>
 </dl>
-<div class="line-block">
-<div class="line">to use OmixAtlas class functions</div>
-<div class="line">obj.get_all_omixatlas()</div>
+<p>we can init a OmixAtlas class object using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">get_all_omixatlas</span><span class="p">()</span>
+</pre></div>
 </div>
 <p>“””
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
@@ -135,16 +134,19 @@ self.resource_url = f”{self.base_url}/v1/omixatlases”</p>
 <dt>def get_all_omixatlas(self):</dt><dd><p>“””
 This function will return a list of datalakes that are
 available to query.</p>
-<div class="line-block">
-<div class="line">to use this function import Omixatlas class</div>
-<div class="line">and make a object</div>
-<div class="line">obj = Omixatlas(token,env)</div>
-<div class="line">obj.get_all_omixatlas()</div>
+<p>to use this function import Omixatlas class and make a object</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">get_all_omixatlas</span><span class="p">()</span>
+</pre></div>
 </div>
 <dl>
-<dt>Args:</dt><dd><p>None</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line">None</div>
+</div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">It will return a list of objects like this</div>
 <div class="line">{</div>
 <div class="line">‘repo_name’: ‘repo’,</div>
@@ -193,9 +195,19 @@ return response.json()</p>
 This function will return you a object that contain information
 about that repo.</p>
 <dl>
-<dt>Args:</dt><dd><p>key (str) : repo_id</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id</div>
+</div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">omixatlas_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">It will return a object like this</div>
 <div class="line">{</div>
 <div class="line">‘repo_name’: ‘repo’,</div>
@@ -248,19 +260,22 @@ page_size=None,  # Note: do not increase page size more than 999</p>
 This function will returns a table containing the datasets that satisfied
 the sql query</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">query (str) : sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
-<div class="line">experimental_features :</div>
-<div class="line">query_api_version (str) : v1 or v2</div>
-<div class="line">page_size (int): page size for query</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">(str)</span> <span class="pre">:</span></code> sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">experimental_features</span> <span class="pre">:</span></code> <a class="reference internal" href="../../../query.html#target"><span class="std std-ref">this section includes in querying metadata</span></a></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">query_api_version</span> <span class="pre">(str)</span> <span class="pre">:</span></code> v1 or v2</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">(int):</span></code> page size for query</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">it will return a table that will contain metadata (for example- disease,</div>
 <div class="line">total_num_cells) and datasets that satisfied the sql query</div>
 </div>
 </dd>
 </dl>
+<div class="line-block">
+<div class="line">To know about quering metadata <a class="reference internal" href="../../../query.html#targetq"><span class="std std-ref">Querying metadata</span></a></div>
+</div>
 <p>“””
 max_page_size = 999
 if page_size is not None and page_size &gt; max_page_size:</p>
@@ -453,13 +468,13 @@ print(f”Fetched {len(data_df.index)} rows”)</p>
 Gets the schema of a repo id for the given repo_key and
 schema_type definition at the top level</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_key (str) : repo id or repo name</div>
-<div class="line">schema_type_dict (dictionary) : {schema_level:schema_type}</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo id or repo name</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema_type_dict</span> <span class="pre">(dictionary)</span> <span class="pre">:</span></code> {schema_level:schema_type}</div>
 <div class="line">example {‘dataset’: ‘files’, ‘sample’: ‘gct_metadata’}</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">“data”: {</div>
@@ -575,14 +590,14 @@ detail=”repo_key and schema_type_dict are either empty or its datatype is not 
 <dt>) -&gt; dict:</dt><dd><p>“””
 Using this function to extract the schema of an OmixAtlas.</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_key (str) : repo_id OR repo_name. This is a mandatory field.</div>
-<div class="line">schema_level (list) : The default value is [‘dataset’, ‘sample’]. The users can use [‘dataset’] OR [‘sample’] to fetch the schema of dataset OR sample level metadata respectively.</div>
-<div class="line">source (str) : is the source from where data is ingested into the Omixatlas.</div>
-<div class="line">data_type (str) : is the datatype for which user wants to get the schema for. The default value is ‘all’, which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use ‘single_cell’.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema_level</span> <span class="pre">(list)</span> <span class="pre">:</span></code> The default value is [‘dataset’, ‘sample’]. The users can use [‘dataset’] OR [‘sample’] to fetch the schema of dataset OR sample level metadata respectively.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">(str)</span> <span class="pre">:</span></code> is the source from where data is ingested into the Omixatlas.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data_type</span> <span class="pre">(str)</span> <span class="pre">:</span></code> is the datatype for which user wants to get the schema for. The default value is ‘all’, which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use ‘single_cell’.</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">‘dataset’:pd.DataFrame,</div>
@@ -642,15 +657,15 @@ Using this function to extract the schema of an OmixAtlas.</p>
 </dl>
 <div class="line-block">
 <div class="line">Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas</div>
-<div class="line">schema = omixatlas.get_schema(“geo”, [‘dataset’, ‘sample’], “all”, “all”)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">omixatlas.get_schema(&quot;geo&quot;,</span> <span class="pre">['dataset',</span> <span class="pre">'sample'],</span> <span class="pre">&quot;all&quot;,</span> <span class="pre">&quot;all&quot;)</span></code></div>
 </div>
 <div class="line-block">
 <div class="line">to fetch the dataframe with dataset level metadata,</div>
-<div class="line">schema.dataset</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.dataset</span></code></div>
 </div>
 <div class="line-block">
 <div class="line">to fetch the dataframe with sample level metadata,</div>
-<div class="line">schema.sample</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.sample</span></code></div>
 </div>
 <p>“””</p>
 <p># get schema_type_dict
@@ -706,12 +721,12 @@ def visualize_schema(</p>
 <dt>) -&gt; dict:</dt><dd><p>“””
 To visulize schema of a repository.</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_key =&gt; str =&gt; &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;</div>
-<div class="line">schema_level =&gt; list =&gt; Default value =&gt; [‘dataset’, ‘sample’]</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">=&gt;</span> <span class="pre">str</span> <span class="pre">=&gt;</span></code> &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema_level</span> <span class="pre">=&gt;</span> <span class="pre">list</span></code> =&gt; Default value =&gt; [‘dataset’, ‘sample’]</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">‘dataset’:pd.DataFrame,</div>
@@ -868,7 +883,7 @@ detail=”schema_level is either empty or its datatype is not correct”,</p>
 <dt>def flatten_nested_schema_dict(self, nested_schema_dict: dict) -&gt; dict:</dt><dd><p>“””
 Flatten the nested dict</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">schema:{</div>
 <div class="line-block">
 <div class="line-block">
@@ -892,7 +907,7 @@ Flatten the nested dict</p>
 </div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">‘Source’:source_list,</div>
@@ -943,7 +958,7 @@ return reformed_dict</p>
 <dt>def nested_dict_to_df(self, schema_dict: dict) -&gt; pd.DataFrame:</dt><dd><p>“””
 Convert flatten dict into df and print it</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">‘Source’:source_list,</div>
@@ -955,7 +970,7 @@ Convert flatten dict into df and print it</p>
 <div class="line">}</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><p>DataFrame</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>DataFrame</p>
 </dd>
 </dl>
 <p>“””
@@ -967,11 +982,11 @@ return multiIndex_df</p>
 <dt>def format_type(self, data: dict) -&gt; dict:</dt><dd><p>“””
 Format the dict data</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">data (dict)</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">(dict)</span></code></div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">It will return Equivalent json string of dictionary.</div>
 </div>
 </dd>
@@ -983,12 +998,14 @@ if data and isinstance(data, Dict):</p>
 </div></blockquote>
 </dd>
 <dt>def insert_schema(self, repo_key: str, body: dict) -&gt; dict:</dt><dd><p>“””
-Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
-|  omixatlas.insert_schema(repo_key, payload)</p>
+Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtlas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">insert_schema</span><span class="p">(</span><span class="n">repo_key</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl>
-<dt>Args :</dt><dd><div class="line-block">
-<div class="line">repo_key: (str) repo_id OR repo_name. This is a mandatory field.</div>
-<div class="line">payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args</span> <span class="pre">:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key:</span></code> (str) repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">payload:</span></code> (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">“data”: {</div>
@@ -1041,9 +1058,9 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
 |  omixatlas.update_schema(repo_key, payload)</p>
 <dl>
-<dt>Args :</dt><dd><div class="line-block">
-<div class="line">repo_key: (str) repo_id OR repo_name. This is a mandatory field.</div>
-<div class="line">payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args</span> <span class="pre">:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str):</span></code> repo_id OR repo_name. This is a mandatory field.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">payload</span> <span class="pre">(dict):</span></code> The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
 <div class="line">{</div>
 <div class="line-block">
 <div class="line">“data”: {</div>
@@ -1066,17 +1083,6 @@ Use update_schema(repo_key, payload) to update the existing schema of an OmixAtl
 </dd>
 </dl>
 <p>payload can be loaded from the JSON file in which schema is defined in the following manner:</p>
-<div class="line-block">
-<div class="line">import json</div>
-</div>
-<div class="line-block">
-<div class="line"># Opening JSON file</div>
-<div class="line">schema = open(‘schema_file.json’)</div>
-</div>
-<div class="line-block">
-<div class="line"># returns JSON object as a dictionary</div>
-<div class="line">payload = json.load(schema)</div>
-</div>
 <p>“””
 schema_type = body[“data”][“attributes”][“schema_type”]
 schema_base_url = f”{self.discover_url}/repositories”
@@ -1120,24 +1126,23 @@ return response.json()</p>
 <dl>
 <dt>def download_data(self, repo_name, _id: str):</dt><dd><p>“””
 To download any dataset, the following function can be used to get the signed URL of the dataset.</p>
-<div class="line-block">
-<div class="line">omixatlas.download_data(“repo_key”, “[dataset_id]”)</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="s2">&quot;repo_key&quot;</span><span class="p">,</span> <span class="s2">&quot;[dataset_id]&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_key: (str) repo_id OR repo_name from where the data needs to be downloaded.</div>
-<div class="line">dataset_id: (str) dataset_id which the user wants to download.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str):</span></code> repo_id OR repo_name from where the data needs to be downloaded.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str):</span></code> dataset_id which the user wants to download.</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function.</div>
-<div class="line">The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata(“[query written in SQL]”).</div>
+<div class="line">The <code class="docutils literal notranslate"><span class="pre">[repo_name</span> <span class="pre">OR</span> <span class="pre">repo_id]</span></code> of an OmixAtlas can be identified by calling the <code class="docutils literal notranslate"><span class="pre">get_all_omixatlas()</span></code> function.</div>
+<div class="line">The <code class="docutils literal notranslate"><span class="pre">[dataset_id]</span></code> can be obtained by querying the metadata at the dataset level using <code class="docutils literal notranslate"><span class="pre">query_metadata(&quot;[query</span> <span class="pre">written</span> <span class="pre">in</span> <span class="pre">SQL]&quot;)</span></code>.</div>
 </div>
 <dl>
-<dt>Returns:</dt><dd><div class="line-block">
-<div class="line">The output of this function is a signed URL. The data can be downloaded by clicking on this URL.</div>
-<div class="line">NOTE: This signed URL expires after 60 minutes from when it is generated.</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">This will download the dataset</div>
 </div>
 </dd>
 </dl>
@@ -1157,17 +1162,19 @@ return response.json()</p>
 Function for saving data from omixatlas to workspaces.
 Makes a call to v1/omixatlas/workspace_jobs</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_id (str) : repo id</div>
-<div class="line">dataset_id (str) : dataset id</div>
-<div class="line">workspace_id (str) : workspace id of polly</div>
-<div class="line">workspace_path (str) : path in workspace where you want to save file</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo id</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset id</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> workspace id of polly</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">(str)</span> <span class="pre">:</span></code> path in workspace where you want to save file</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">Example to save the dataset_id ‘GSE101127_GPL1355’ from repo_id 1615965444377 to a workspace_id 8025 in a folder named ‘data’</div>
-<div class="line">omixatlas.save_to_workspace(‘1615965444377’, ‘GSE101127_GPL1355’, 8025, ‘data’)</div>
+<div class="line">Example to save the dataset_id <code class="docutils literal notranslate"><span class="pre">'GSE101127_GPL1355'</span></code> from repo_id <code class="docutils literal notranslate"><span class="pre">1615965444377</span></code> to a workspace_id <code class="docutils literal notranslate"><span class="pre">8025</span></code> in a folder named <code class="docutils literal notranslate"><span class="pre">'data'</span></code></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">save_to_workspace</span><span class="p">(</span><span class="s1">&#39;1615965444377&#39;</span><span class="p">,</span> <span class="s1">&#39;GSE101127_GPL1355&#39;</span><span class="p">,</span> <span class="mi">8025</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
 <p>“””
 url = f”{self.resource_url}/workspace_jobs”
@@ -1201,16 +1208,18 @@ logging.info(f”Data Saved to workspace={workspace_id}”)</p>
 <dt>def format_converter(self, repo_key: str, dataset_id: str, to: str) -&gt; None:</dt><dd><p>“””
 Function to convert a file to maf format.</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">repo_key (str) : repo_id</div>
-<div class="line">dataset_id (str) : dataset_id</div>
-<div class="line">to(str) : output file format</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset_id</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">to(str)</span> <span class="pre">:</span></code> output file format</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
 <div class="line">For example:</div>
-<div class="line">omixatlas.format_converter(“cbioportal”, “ACC_2019_Mutation_ACYC-FMI-19”, “maf”)</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">format_converter</span><span class="p">(</span><span class="s2">&quot;cbioportal&quot;</span><span class="p">,</span> <span class="s2">&quot;ACC_2019_Mutation_ACYC-FMI-19&quot;</span><span class="p">,</span> <span class="s2">&quot;maf&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 <p>“””
 if not (repo_key and isinstance(repo_key, str)):</p>

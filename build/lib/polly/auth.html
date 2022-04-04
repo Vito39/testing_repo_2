@@ -38,7 +38,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Polly.html">About Polly Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading any dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../polly.html">polly package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../query.html">Querying metadata</a></li>
 </ul>
@@ -77,9 +77,11 @@
 </dd>
 <dt>class Polly:</dt><dd><p>“””
 This is a class for authorization for polly.
-There are function classmethods
-auth(token,env)
-get_session(token,env)
+There are function classmethods</p>
+<ol class="arabic simple">
+<li><p>auth(token,env)</p></li>
+</ol>
+<p>#. get_session(token,env)
 “””
 default_session = None</p>
 <p>&#64;classmethod
@@ -87,14 +89,25 @@ def auth(cls, token, env=”polly”):</p>
 <blockquote>
 <div><p>“””
 function for auth to connect on polly</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>token (str): token copy from polly.
-env (str): polly or testpolly or devpolly.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+</div>
 </dd>
 </dl>
-<p>To use auth function import class Polly
-Polly.auth(token,’env’)
-if token is not satisfied it will throw a error.</p>
+<p>To use auth function import class Polly</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="s1">&#39;env&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">if token is not satisfied it will throw a error.</div>
+<div class="line">else it will auth you</div>
+</div>
+</dd>
+</dl>
 <p>“””
 cls.default_session = PollySession(token, env=env)</p>
 </div></blockquote>
@@ -103,16 +116,26 @@ def get_session(cls, token=None, env=”polly”):</p>
 <blockquote>
 <div><p>“””
 function to get session for polly</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>token (str): token copy from polly.
-env (str): polly or testpolly or devpolly.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+</div>
 </dd>
 </dl>
-<p>To use auth function import class Polly
-Polly.auth(token,’env’)
-if token is not satisfied it will throw UnauthorizedException.
-else it will return a polly.session object
-“””
+<p>To use auth function import class Polly</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
+<span class="n">polly</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="s1">&#39;env&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">if token is not satisfied it will throw UnauthorizedException.</div>
+<div class="line">else it will return a polly.session object</div>
+</div>
+</dd>
+</dl>
+<p>“””
 if not token:</p>
 <blockquote>
 <div><dl class="simple">

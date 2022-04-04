@@ -37,15 +37,21 @@ class OmixAtlas:
     OmixAtlas class interact with omixatlases datalakes 
     that contain datasets to query
 
-    |  we can init a OmixAtlas class object using 
-    |  obj = Omixatlas(token,env)
 
-    Args:
-        |  token (str): token copy from polly.
-        |  env (str): polly or testpolly or devpolly.
+    ``Args:``
+        |  ``token (str):`` token copy from polly.
+        |  ``env (str):`` polly or testpolly or devpolly.
     
-    |  to use OmixAtlas class functions
-    |  obj.get_all_omixatlas()
+    we can init a OmixAtlas class object using 
+    
+    
+    .. code::
+    
+
+            from polly.omixatlas import OmixAtlas
+            obj = Omixatlas(token,env)    
+            # to use OmixAtlas class functions
+            obj.get_all_omixatlas()
     
     """
     def __init__(self, token=None, env="polly") -> None:
@@ -62,15 +68,22 @@ class OmixAtlas:
         This function will return a list of datalakes that are 
         available to query.
         
-        |  to use this function import Omixatlas class
-        |  and make a object 
-        |  obj = Omixatlas(token,env)
-        |  obj.get_all_omixatlas()
+        to use this function import Omixatlas class and make a object
 
-        Args:
-            None
 
-        Returns:
+        .. code::
+        
+
+                from polly.omixatlas import OmixAtlas
+                obj = Omixatlas(token,env)    
+                # to use OmixAtlas class functions
+                obj.get_all_omixatlas()
+
+
+        ``Args:``
+            |  None
+
+        ``Returns:``
             |  It will return a list of objects like this
             |  {
             |  'repo_name': 'repo', 
@@ -115,10 +128,20 @@ class OmixAtlas:
         This function will return you a object that contain information 
         about that repo.
 
-        Args:
-            key (str) : repo_id 
+        ``Args:``
+            |  ``key (str) :`` repo_id 
+        
 
-        Returns:
+        .. code::
+        
+
+                from polly.omixatlas import OmixAtlas
+                obj = Omixatlas(token,env)    
+                # to use OmixAtlas class functions
+                obj.omixatlas_summary()
+
+
+        ``Returns:``
             |  It will return a object like this  
             |  {
             |  'repo_name': 'repo', 
@@ -167,17 +190,18 @@ class OmixAtlas:
         This function will returns a table containing the datasets that satisfied
         the sql query
 
-        Args:
-            |  query (str) : sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets"
-            |  experimental_features :
-            |  query_api_version (str) : v1 or v2
-            |  page_size (int): page size for query
+        ``Args:``
+            |  ``query (str) :`` sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets"
+            |  ``experimental_features :`` :ref:`this section includes in querying metadata <target>`
+            |  ``query_api_version (str) :`` v1 or v2
+            |  ``page_size (int):`` page size for query
 
         
-        Returns:
+        ``Returns:``
             |  it will return a table that will contain metadata (for example- disease,
             |  total_num_cells) and datasets that satisfied the sql query
-
+        
+        |  To know about quering metadata :ref:`Querying metadata <targetq>` 
         """
         max_page_size = 999
         if page_size is not None and page_size > max_page_size:
@@ -342,12 +366,12 @@ class OmixAtlas:
         Gets the schema of a repo id for the given repo_key and
         schema_type definition at the top level
 
-        Args:
-            |  repo_key (str) : repo id or repo name
-            |  schema_type_dict (dictionary) : {schema_level:schema_type}
+        ``Args:``
+            |  ``repo_key (str) :`` repo id or repo name
+            |  ``schema_type_dict (dictionary) :`` {schema_level:schema_type}
             |  example {'dataset': 'files', 'sample': 'gct_metadata'}
         
-        Returns:
+        ``Returns:``
             |  {
             |      "data": {
             |          "id": "<REPO_ID>",
@@ -421,13 +445,13 @@ class OmixAtlas:
         """
         Using this function to extract the schema of an OmixAtlas.
         
-        Args:
-            |  repo_key (str) : repo_id OR repo_name. This is a mandatory field.
-            |  schema_level (list) : The default value is ['dataset', 'sample']. The users can use ['dataset'] OR ['sample'] to fetch the schema of dataset OR sample level metadata respectively.
-            |  source (str) : is the source from where data is ingested into the Omixatlas.
-            |  data_type (str) : is the datatype for which user wants to get the schema for. The default value is 'all', which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use 'single_cell'.
+        ``Args:``
+            |  ``repo_key (str) :`` repo_id OR repo_name. This is a mandatory field.
+            |  ``schema_level (list) :`` The default value is ['dataset', 'sample']. The users can use ['dataset'] OR ['sample'] to fetch the schema of dataset OR sample level metadata respectively.
+            |  ``source (str) :`` is the source from where data is ingested into the Omixatlas.
+            |  ``data_type (str) :`` is the datatype for which user wants to get the schema for. The default value is 'all', which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use 'single_cell'.
         
-        Returns:
+        ``Returns:``
             |  {
             |      'dataset':pd.DataFrame,
             |      'sample':pd.DataFrame
@@ -466,13 +490,13 @@ class OmixAtlas:
             |  Not there right now
 
         |  Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas
-        |  schema = omixatlas.get_schema("geo", ['dataset', 'sample'], "all", "all")
+        |  ``schema = omixatlas.get_schema("geo", ['dataset', 'sample'], "all", "all")``
 
         |  to fetch the dataframe with dataset level metadata,
-        |  schema.dataset
+        |  ``schema.dataset``
 
         |  to fetch the dataframe with sample level metadata,
-        |  schema.sample
+        |  ``schema.sample``
         """
 
         # get schema_type_dict
@@ -513,11 +537,11 @@ class OmixAtlas:
         """
         To visulize schema of a repository.
 
-        Args:
-            |  repo_key => str => <owner_name.repo_name>/<repo_id>
-            |  schema_level => list => Default value => ['dataset', 'sample']
+        ``Args:``
+            |  ``repo_key => str =>`` <owner_name.repo_name>/<repo_id>
+            |  ``schema_level => list`` => Default value => ['dataset', 'sample']
 
-        Returns:
+        ``Returns:``
             |  {
             |      'dataset':pd.DataFrame,
             |      'sample':pd.DataFrame
@@ -627,7 +651,7 @@ class OmixAtlas:
         """
         Flatten the nested dict
 
-        Args:
+        ``Args:``
             |  schema:{
             |         "<SOURCE>": {
             |             "<DATATYPE>": {
@@ -642,7 +666,7 @@ class OmixAtlas:
             |         ... other Sources
             |     }
 
-        Returns:
+        ``Returns:``
             |  {
             |      'Source':source_list,
             |      'Datatype': datatype_list,
@@ -681,7 +705,7 @@ class OmixAtlas:
         """
         Convert flatten dict into df and print it
         
-        Args:
+        ``Args:``
             |  {
             |      'Source':source_list,
             |      'Datatype': datatype_list,
@@ -690,7 +714,7 @@ class OmixAtlas:
             |      'Field Type': field_type_list
             |  }
 
-        Returns:
+        ``Returns:``
             DataFrame
         """
         pd.options.display.max_columns = None
@@ -702,10 +726,10 @@ class OmixAtlas:
         """
         Format the dict data
         
-        Args:
-            |  data (dict) 
+        ``Args:``
+            |  ``data (dict)`` 
         
-        Returns:
+        ``Returns:``
             |  It will return Equivalent json string of dictionary.
         """
         if data and isinstance(data, Dict):
@@ -714,11 +738,16 @@ class OmixAtlas:
     def insert_schema(self, repo_key: str, body: dict) -> dict:
         """
         Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
-        |  omixatlas.insert_schema(repo_key, payload)
 
-        Args :
-            |  repo_key: (str) repo_id OR repo_name. This is a mandatory field.
-            |  payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
+
+        .. code::
+
+
+                omixatlas.insert_schema(repo_key, payload)
+
+        ``Args :``
+            |  ``repo_key:`` (str) repo_id OR repo_name. This is a mandatory field.
+            |  ``payload:`` (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
             |  {
             |      "data": {
             |          "id": "<REPO_KEY>",
@@ -753,9 +782,9 @@ class OmixAtlas:
         Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
         |  omixatlas.update_schema(repo_key, payload)
 
-        Args :
-            |  repo_key: (str) repo_id OR repo_name. This is a mandatory field.
-            |  payload: (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
+        ``Args :``
+            |  ``repo_key (str):`` repo_id OR repo_name. This is a mandatory field.
+            |  ``payload (dict):`` The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.
             |  {
             |      "data": {
             |          "id": "<REPO_KEY>",
@@ -770,13 +799,15 @@ class OmixAtlas:
             |  }
         payload can be loaded from the JSON file in which schema is defined in the following manner:
 
-        |  import json
 
-        |  # Opening JSON file
-        |  schema = open('schema_file.json')
+        .. code::
+                import json
 
-        |  # returns JSON object as a dictionary
-        |  payload = json.load(schema)
+                # Opening JSON file
+                schema = open('schema_file.json')
+
+                # returns JSON object as a dictionary
+                payload = json.load(schema)
         """
         schema_type = body["data"]["attributes"]["schema_type"]
         schema_base_url = f"{self.discover_url}/repositories"
@@ -810,18 +841,21 @@ class OmixAtlas:
         """
         To download any dataset, the following function can be used to get the signed URL of the dataset.
 
-        |  omixatlas.download_data("repo_key", "[dataset_id]")
+        
+        .. code::
 
-        Args:
-            |  repo_key: (str) repo_id OR repo_name from where the data needs to be downloaded.
-            |  dataset_id: (str) dataset_id which the user wants to download.
 
-        |  The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function.
-        |  The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata("[query written in SQL]").
+                omixatlas.download_data("repo_key", "[dataset_id]")
 
-        Returns:
-            |  The output of this function is a signed URL. The data can be downloaded by clicking on this URL.
-            |  NOTE: This signed URL expires after 60 minutes from when it is generated.
+        ``Args:``
+            |  ``repo_key (str):`` repo_id OR repo_name from where the data needs to be downloaded.
+            |  ``dataset_id (str):`` dataset_id which the user wants to download.
+
+        |  The ``[repo_name OR repo_id]`` of an OmixAtlas can be identified by calling the ``get_all_omixatlas()`` function.
+        |  The ``[dataset_id]`` can be obtained by querying the metadata at the dataset level using ``query_metadata("[query written in SQL]")``.
+
+        ``Returns:``
+            |  This will download the dataset
         
         |  The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:        
         """
@@ -838,14 +872,19 @@ class OmixAtlas:
         Function for saving data from omixatlas to workspaces.
         Makes a call to v1/omixatlas/workspace_jobs
 
-        Args:
-            |  repo_id (str) : repo id
-            |  dataset_id (str) : dataset id
-            |  workspace_id (str) : workspace id of polly
-            |  workspace_path (str) : path in workspace where you want to save file
+        ``Args:``
+            |  ``repo_id (str) :`` repo id
+            |  ``dataset_id (str) :`` dataset id
+            |  ``workspace_id (str) :`` workspace id of polly
+            |  ``workspace_path (str) :`` path in workspace where you want to save file
         
-        | Example to save the dataset_id 'GSE101127_GPL1355' from repo_id 1615965444377 to a workspace_id 8025 in a folder named 'data'
-        | omixatlas.save_to_workspace('1615965444377', 'GSE101127_GPL1355', 8025, 'data')
+        | Example to save the dataset_id ``'GSE101127_GPL1355'`` from repo_id ``1615965444377`` to a workspace_id ``8025`` in a folder named ``'data'``
+        
+
+        .. code::
+
+
+                omixatlas.save_to_workspace('1615965444377', 'GSE101127_GPL1355', 8025, 'data')
         """
         url = f"{self.resource_url}/workspace_jobs"
         params = {"action": "copy"}
@@ -871,13 +910,18 @@ class OmixAtlas:
         """
         Function to convert a file to maf format.
         
-        Args:
-            |  repo_key (str) : repo_id
-            |  dataset_id (str) : dataset_id
-            |  to(str) : output file format
+        ``Args:``
+            |  ``repo_key (str) :`` repo_id
+            |  ``dataset_id (str) :`` dataset_id
+            |  ``to(str) :`` output file format
         
         |  For example:
-        |  omixatlas.format_converter("cbioportal", "ACC_2019_Mutation_ACYC-FMI-19", "maf")
+        
+        
+        .. code::
+
+
+                omixatlas.format_converter("cbioportal", "ACC_2019_Mutation_ACYC-FMI-19", "maf")
         """
         if not (repo_key and isinstance(repo_key, str)):
             raise InvalidParameterException("repo_id/repo_name")

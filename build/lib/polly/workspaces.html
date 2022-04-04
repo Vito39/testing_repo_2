@@ -38,7 +38,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Polly.html">About Polly Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading any dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../download.html">Downloading Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../polly.html">polly package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../query.html">Querying metadata</a></li>
 </ul>
@@ -77,34 +77,32 @@ import os</p>
 <dl>
 <dt>class Workspaces:</dt><dd><p>“””
 This class contain</p>
-<div class="line-block">
-<div class="line">[1]. constructure to init workspaces class object</div>
-<div class="line">[2]. to create workspace function</div>
-<div class="line">[3]. to fetch workspaces</div>
-<div class="line">[4]. upload files to workspaces</div>
-<div class="line">[5]. download files from workspaces</div>
+<ol class="arabic simple">
+<li><p>constructure to init workspaces class object</p></li>
+<li><p>to create workspace function</p></li>
+<li><p>to fetch workspaces</p></li>
+<li><p>upload files to workspaces</p></li>
+<li><p>download files from workspaces</p></li>
+</ol>
+<p>This is a constructure which init a obj that
+can use all function and methods of Workspaces class</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">init</span> <span class="n">a</span> <span class="n">obj</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
+</pre></div>
 </div>
 <p>“””
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
-<div><p>“””
-This is a constructure which init a obj that
-can use all function and methods of Workspaces class</p>
-<div class="line-block">
-<div class="line">Args:</div>
-<div class="line-block">
-<div class="line">token (str): token copy from polly.</div>
-<div class="line">env (str): polly or testpolly or devpolly.</div>
-</div>
-</div>
-<div class="line-block">
-<div class="line">to init a obj</div>
-<div class="line">obj = Workspaces(token,env)</div>
-<div class="line">from there you can other methods</div>
-<div class="line">obj.fetch_my_workspaces()</div>
-</div>
-<p>“””</p>
-<p>self.session = Polly.get_session(token, env=env)
+<div><p>self.session = Polly.get_session(token, env=env)
 self.base_url = f”<a class="reference external" href="https://v2.api">https://v2.api</a>.{self.session.env}.elucidata.io”
 self.resource_url = f”{self.base_url}/workspaces”
 if self.session.env == “polly”:</p>
@@ -122,20 +120,20 @@ if self.session.env == “polly”:</p>
 <dt>def create_workspace(self, name: str, description=None):</dt><dd><p>“””
 this function create workspace on polly</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">name (str): name of the workspace</div>
-<div class="line">description (str): general information about workspace</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(str):</span></code> name of the workspace</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">description</span> <span class="pre">(str):</span></code> general information about workspace</div>
 </div>
 </dd>
 </dl>
-<div class="line-block">
-<div class="line">to create a obj</div>
-<div class="line">obj = Workspaces(token,env)</div>
-<div class="line">from there you can other methods</div>
-<div class="line">obj.create_workspace()</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">create</span> <span class="n">a</span> <span class="n">obj</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">create_workspace</span><span class="p">()</span>
+</pre></div>
 </div>
 <dl>
-<dt>Returns:</dt><dd><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><dl>
 <dt>it will return a dict like this</dt><dd><div class="line-block">
 <div class="line">{</div>
 <div class="line">‘id’: 9999,</div>
@@ -186,19 +184,19 @@ return attributes</p>
 <dt>def fetch_my_workspaces(self):</dt><dd><p>“””
 this function fetch workspace from polly</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
 </div>
 </dd>
 </dl>
-<div class="line-block">
-<div class="line">create a obj</div>
-<div class="line">obj = Workspaces(token,env)</div>
-<div class="line">from there you can other methods</div>
-<div class="line">obj.fetch_my_workspaces()</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">a</span> <span class="n">obj</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
+</pre></div>
 </div>
 <dl>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">it will return a table with following attributes</div>
 <div class="line">type id attributes.id attributes.name attributes.active attributes.description attributes.created_time attributes.last_modified attributes.creator attributes.project_property.type attributes.project_property.labels attributes.organisation links.self</div>
 </div>
@@ -221,13 +219,13 @@ return dataframe</p>
 <dt>) -&gt; None:</dt><dd><p>“””
 Function to upload files/folders to workspaces</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">workspace_id : id of the where file need to uploaded</div>
-<div class="line">workspace_path : file path on workspace if folder does not exist it will create</div>
-<div class="line">local_path : uploaded file path</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> file path on workspace if folder does not exist it will create</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path</span> <span class="pre">:</span></code> uploaded file path</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
 </div>
 </dd>
@@ -262,18 +260,18 @@ logging.info(f”Upload successful on workspace-id={workspace_id}.”)</p>
 <dt>def download_from_workspaces(self, workspace_id: int, workspace_path: str) -&gt; None:</dt><dd><p>“””
 Function to download files/folders from workspaces</p>
 <dl>
-<dt>Args:</dt><dd><div class="line-block">
-<div class="line">workspace_id : id of the where file need to uploaded</div>
-<div class="line">workspace_path : downloaded file on workspace</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> downloaded file on workspace</div>
 </div>
 </dd>
-<dt>Returns:</dt><dd><div class="line-block">
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
 </div>
 </dd>
-<dt>Error:</dt><dd><div class="line-block">
-<div class="line">InvalidPathException : for invalid path</div>
-<div class="line">OperationFailedException : when downloading fails</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidPathException</span> <span class="pre">:</span></code> for invalid path</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OperationFailedException</span> <span class="pre">:</span></code> when downloading fails</div>
 </div>
 </dd>
 </dl>
