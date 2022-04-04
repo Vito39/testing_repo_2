@@ -160,3 +160,38 @@ def get_data_type(self, url: str, payload: dict) -> str:
     if not data_type:
         raise MissingKeyException("data_type")
     return data_type
+
+
+def get_metadata(self, url: str, payload: dict) -> str:
+    """
+    Function to return the data-type of the required dataset
+    """
+    if not (url and isinstance(url, str)):
+        raise InvalidParameterException("url")
+    if not (payload and isinstance(payload, dict)):
+        raise InvalidParameterException("payload")
+    response = self.session.post(url, data=json.dumps(payload))
+    error_handler(response)
+    response_data = response.json()
+    hits = response_data.get("hits", {}).get("hits")
+    if not (hits and isinstance(hits, list)):
+        raise paramException(
+            title="Param Error",
+            detail="No matches found with the given repo details. Please try again.",
+        )
+    dataset = hits[0]
+    return dataset
+
+
+def elastic_query(index_name: str, dataset_id: str) -> dict:
+    query = {
+        "query": {
+            "bool": {
+                "must": [
+                    {"term": {"_index": index_name}},
+                    {"term": {"dataset_id.keyword": dataset_id}},
+                ]
+            }
+        }
+    }
+    return query
