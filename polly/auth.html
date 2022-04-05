@@ -107,6 +107,10 @@ function for auth to connect on polly</p>
 <div class="line">else it will auth you</div>
 </div>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired</div>
+</div>
+</dd>
 </dl>
 <p>“””
 cls.default_session = PollySession(token, env=env)</p>
@@ -132,6 +136,10 @@ function to get session for polly</p>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">if token is not satisfied it will throw UnauthorizedException.</div>
 <div class="line">else it will return a polly.session object</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired</div>
 </div>
 </dd>
 </dl>

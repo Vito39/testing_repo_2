@@ -259,6 +259,14 @@ page_size=None,  # Note: do not increase page size more than 999</p>
 <dt>):</dt><dd><p>“””
 This function will returns a table containing the datasets that satisfied
 the sql query</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = &#39;brd4&#39;&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">query_metadata</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query_api_version</span><span class="o">=</span><span class="s2">&quot;v2&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">(str)</span> <span class="pre">:</span></code> sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
@@ -270,6 +278,11 @@ the sql query</p>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">it will return a table that will contain metadata (for example- disease,</div>
 <div class="line">total_num_cells) and datasets that satisfied the sql query</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnfinishedQueryException:</span></code> when query has not finised the execution</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">QueryFailedException:</span></code> when query failed to execute</div>
 </div>
 </dd>
 </dl>
@@ -654,18 +667,23 @@ Using this function to extract the schema of an OmixAtlas.</p>
 <div class="line">Not there right now</div>
 </div>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> repo_key and schema_type_dict are either empty or its datatype is not correct</div>
+</div>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line">Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">omixatlas.get_schema(&quot;geo&quot;,</span> <span class="pre">['dataset',</span> <span class="pre">'sample'],</span> <span class="pre">&quot;all&quot;,</span> <span class="pre">&quot;all&quot;)</span></code></div>
 </div>
-<div class="line-block">
-<div class="line">to fetch the dataframe with dataset level metadata,</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.dataset</span></code></div>
-</div>
-<div class="line-block">
-<div class="line">to fetch the dataframe with sample level metadata,</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.sample</span></code></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
+
+<span class="c1"># to fetch the dataframe with dataset level metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># to fetch the dataframe with sample level metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
 </div>
 <p>“””</p>
 <p># get schema_type_dict
@@ -1026,6 +1044,10 @@ Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtl
 <div class="line">}</div>
 </div>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail</div>
+</div>
+</dd>
 </dl>
 <p>“””
 if repo_key and body and isinstance(body, dict):</p>
@@ -1055,8 +1077,10 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 </dl>
 </dd>
 <dt>def update_schema(self, repo_key: str, body: dict) -&gt; dict:</dt><dd><p>“””
-Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
-|  omixatlas.update_schema(repo_key, payload)</p>
+Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">update_schema</span><span class="p">(</span><span class="n">repo_key</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args</span> <span class="pre">:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str):</span></code> repo_id OR repo_name. This is a mandatory field.</div>
@@ -1083,6 +1107,12 @@ Use update_schema(repo_key, payload) to update the existing schema of an OmixAtl
 </dd>
 </dl>
 <p>payload can be loaded from the JSON file in which schema is defined in the following manner:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail</div>
+</div>
+</dd>
+</dl>
 <p>“””
 schema_type = body[“data”][“attributes”][“schema_type”]
 schema_base_url = f”{self.discover_url}/repositories”
@@ -1221,6 +1251,13 @@ Function to convert a file to maf format.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">format_converter</span><span class="p">(</span><span class="s2">&quot;cbioportal&quot;</span><span class="p">,</span> <span class="s2">&quot;ACC_2019_Mutation_ACYC-FMI-19&quot;</span><span class="p">,</span> <span class="s2">&quot;maf&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> invalid value of any parameter for example like - repo_id or repo_name etc</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> Incompatible or empty value of any parameter</div>
+</div>
+</dd>
+</dl>
 <p>“””
 if not (repo_key and isinstance(repo_key, str)):</p>
 <blockquote>

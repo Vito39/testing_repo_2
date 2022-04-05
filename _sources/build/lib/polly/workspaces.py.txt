@@ -133,6 +133,16 @@ class Workspaces:
         """
         Function to upload files/folders to workspaces
 
+
+        .. code::
+
+
+                # create a obj
+                obj = Workspaces(token,env)
+                # from there you can other methods
+                obj.upload_to_workspaces(workspace_id, workspace_path, local_path)
+        
+
         ``Args:``
             |  ``workspace_id :`` id of the where file need to uploaded
             |  ``workspace_path :`` file path on workspace if folder does not exist it will create
@@ -140,6 +150,10 @@ class Workspaces:
         
         ``Returns:`` 
             |  None
+        
+        ``Errors:``
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
+            |  ``InvalidPathException:`` when the file to path is invalid
         """
         if not (workspace_id and isinstance(workspace_id, int)):
             raise InvalidParameterException("workspace_id")
@@ -165,6 +179,16 @@ class Workspaces:
         """
         Function to download files/folders from workspaces
 
+
+        .. code::
+
+
+                # create a obj
+                obj = Workspaces(token,env)
+                # from there you can other methods
+                obj.download_from_workspaces(workspace_id, workspace_path)
+        
+
         ``Args:``
             |  ``workspace_id :`` id of the where file need to uploaded
             |  ``workspace_path :`` downloaded file on workspace
@@ -175,6 +199,7 @@ class Workspaces:
         ``Error:``
             |  ``InvalidPathException :`` for invalid path 
             |  ``OperationFailedException :`` when downloading fails
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
 
         """
         if not (workspace_id and isinstance(workspace_id, int)):

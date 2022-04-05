@@ -189,6 +189,19 @@ class OmixAtlas:
         """
         This function will returns a table containing the datasets that satisfied
         the sql query
+        
+
+        .. code::
+        
+
+                from polly.omixatlas import OmixAtlas
+                obj = Omixatlas(token,env)    
+                # to use OmixAtlas class functions
+                query = "SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = 'brd4'"
+                results = obj.query_metadata(query, query_api_version="v2")
+                print(results)
+                
+
 
         ``Args:``
             |  ``query (str) :`` sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets"
@@ -200,6 +213,10 @@ class OmixAtlas:
         ``Returns:``
             |  it will return a table that will contain metadata (for example- disease,
             |  total_num_cells) and datasets that satisfied the sql query
+        
+        ``Errors:``
+            |  ``UnfinishedQueryException:`` when query has not finised the execution
+            |  ``QueryFailedException:`` when query failed to execute
         
         |  To know about quering metadata :ref:`Querying metadata <targetq>` 
         """
@@ -488,15 +505,25 @@ class OmixAtlas:
             |              }
             |  iii) schema_type : gct_metadata i.e Row Fields (Feature)
             |  Not there right now
+        
+        ``Errors:``
+            |  ``invalidApiResponseException:`` datakey, attributes, schema_type is missing in repository schema
+            |  ``paramException:`` repo_key and schema_type_dict are either empty or its datatype is not correct
+
 
         |  Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas
-        |  ``schema = omixatlas.get_schema("geo", ['dataset', 'sample'], "all", "all")``
+        
 
-        |  to fetch the dataframe with dataset level metadata,
-        |  ``schema.dataset``
+        .. code::
 
-        |  to fetch the dataframe with sample level metadata,
-        |  ``schema.sample``
+        
+                schema = omixatlas.get_schema("geo", ['dataset', 'sample'], "all", "all")
+
+                # to fetch the dataframe with dataset level metadata
+                print(schema.dataset)
+
+                # to fetch the dataframe with sample level metadata
+                print(schema.sample)
         """
 
         # get schema_type_dict
@@ -760,6 +787,9 @@ class OmixAtlas:
             |          }
             |      }
             |  }
+        
+        ``Errors:``
+            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail
         """
         if repo_key and body and isinstance(body, dict):
             body = json.dumps(body)
@@ -780,7 +810,10 @@ class OmixAtlas:
     def update_schema(self, repo_key: str, body: dict) -> dict:
         """
         Use update_schema(repo_key, payload) to update the existing schema of an OmixAtlas.
-        |  omixatlas.update_schema(repo_key, payload)
+        
+        .. code::
+        
+                omixatlas.update_schema(repo_key, payload)
 
         ``Args :``
             |  ``repo_key (str):`` repo_id OR repo_name. This is a mandatory field.
@@ -808,6 +841,9 @@ class OmixAtlas:
 
                 # returns JSON object as a dictionary
                 payload = json.load(schema)
+        
+        ``Errors:``
+            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail
         """
         schema_type = body["data"]["attributes"]["schema_type"]
         schema_base_url = f"{self.discover_url}/repositories"
@@ -922,6 +958,10 @@ class OmixAtlas:
 
 
                 omixatlas.format_converter("cbioportal", "ACC_2019_Mutation_ACYC-FMI-19", "maf")
+        
+        ``Errors:``
+            |  ``InvalidParameterException:`` invalid value of any parameter for example like - repo_id or repo_name etc
+            |  ``paramException:`` Incompatible or empty value of any parameter
         """
         if not (repo_key and isinstance(repo_key, str)):
             raise InvalidParameterException("repo_id/repo_name")
