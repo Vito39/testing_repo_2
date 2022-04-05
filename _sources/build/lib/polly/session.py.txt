@@ -10,6 +10,9 @@ class PollySession(Session):
     ``Args:``
         |  ``token (str):`` token copy from polly.
         |  ``env (str):`` polly or testpolly or devpolly.
+
+    ``Returns:``
+        |  None
     
     To use this function 
 
@@ -18,10 +21,8 @@ class PollySession(Session):
 
 
             from polly.session import PollySession
-            session = PollySession(token,'env')
+            session = PollySession(token)
 
-    ``Returns:``
-        |  None
     """
     def __init__(self, REFRESH_TOKEN, env="polly"):
     

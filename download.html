@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polly package" href="polly.html" />
-    <link rel="prev" title="About Polly Library" href="Polly.html" /> 
+    <link rel="next" title="Querying metadata" href="query.html" />
+    <link rel="prev" title="polly package" href="polly.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,14 +40,13 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Polly.html">About Polly Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polly.html">polly package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Downloading Dataset</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#downloading-any-dataset">1. Downloading any Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#downloading-gct-and-opening-it-in-a-data-frame">2. Downloading .gct and opening it in a data frame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#downloading-h5ad-file-and-opening-it-in-a-data-frame">3. Downloading .h5ad file and opening it in a data frame</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#downloading-vcf-files">4. Downloading vcf files</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="polly.html">polly package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="query.html">Querying metadata</a></li>
 </ul>
 
@@ -76,7 +75,7 @@
            <div itemprop="articleBody">
              
   <section id="downloading-dataset">
-<h1>Downloading Dataset<a class="headerlink" href="#downloading-dataset" title="Permalink to this headline"></a></h1>
+<span id="targetd"></span><h1>Downloading Dataset<a class="headerlink" href="#downloading-dataset" title="Permalink to this headline"></a></h1>
 <section id="downloading-any-dataset">
 <h2>1. Downloading any Dataset<a class="headerlink" href="#downloading-any-dataset" title="Permalink to this headline"></a></h2>
 <p>To download any dataset, the following function can be used to get the signed URL of the dataset.</p>
@@ -142,30 +141,14 @@
 </div>
 <p>In order to get started with analysis of single cell data on Polly, users can refer to this <a class="reference external" href="https://github.com/ElucidataInc/polly-python/blob/main/consumption_starter_notebooks/SingleCell-polly-python.ipynb">notebook</a> hosted on our github.</p>
 </section>
-<section id="downloading-vcf-files">
-<h2>4. Downloading vcf files<a class="headerlink" href="#downloading-vcf-files" title="Permalink to this headline"></a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">&quot;gnomad_v2.1.1_genome_TP53&quot;</span> <span class="c1">#dataset which user wants to download.</span>
-<span class="n">repo_key</span> <span class="o">=</span> <span class="mi">1628836648493</span> <span class="n">OR</span> <span class="s2">&quot;gnomad&quot;</span> <span class="c1">#repo_id OR repo_name from which dataset should be downloaded from.</span>
-<span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_id</span><span class="si">}</span><span class="s2">.vcf&quot;</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="n">repo_key</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
-<span class="n">url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;download_url&#39;</span><span class="p">)</span>
-<span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget -O &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39; &#39;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloaded data successfully&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Download not successful&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The downloaded vcf file can be further analysed using the docker environment containing Hail package on Polly.</p>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Polly.html" class="btn btn-neutral float-left" title="About Polly Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="polly.html" class="btn btn-neutral float-right" title="polly package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="polly.html" class="btn btn-neutral float-left" title="polly package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="query.html" class="btn btn-neutral float-right" title="Querying metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

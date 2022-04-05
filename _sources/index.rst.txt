@@ -11,8 +11,8 @@ Welcome to polly's documentation!
    :caption: Contents:
    
    Polly
-   download
    polly
+   download
    query
 * :ref:`genindex`
 

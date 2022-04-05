@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Querying metadata" href="query.html" />
-    <link rel="prev" title="Downloading Dataset" href="download.html" /> 
+    <link rel="next" title="Downloading Dataset" href="download.html" />
+    <link rel="prev" title="About Polly Library" href="Polly.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,15 +40,14 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Polly.html">About Polly Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Dataset</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">polly package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.auth">polly.auth module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.omixatlas">polly.omixatlas module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-polly.session">polly.session module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.workspaces">polly.workspaces module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="query.html">Querying metadata</a></li>
 </ul>
 
@@ -80,44 +79,21 @@
 <h1>polly package<a class="headerlink" href="#polly-package" title="Permalink to this headline"></a></h1>
 <section id="module-polly.auth">
 <span id="polly-auth-module"></span><h2>polly.auth module<a class="headerlink" href="#module-polly.auth" title="Permalink to this headline"></a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="polly.auth.UnauthorizedException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UnauthorizedException</span></span><a class="headerlink" href="#polly.auth.UnauthorizedException" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-</dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="polly.auth.Polly">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Polly</span></span><a class="headerlink" href="#polly.auth.Polly" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This is a class for authorization for polly.
-There are function classmethods</p>
-<ol class="arabic simple">
-<li><p>auth(token,env)</p></li>
-<li><p>get_session(token,env)</p></li>
-</ol>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="polly.auth.Polly.default_session">
-<span class="sig-name descname"><span class="pre">default_session</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#polly.auth.Polly.default_session" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
+<p>This class for authorization to use polly on local, which include following member functions.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.auth.Polly.auth">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.auth.Polly.auth" title="Permalink to this definition"></a></dt>
-<dd><p>function for auth to connect on polly</p>
+<dd><p>Function for authorization to use polly on terminal or notebook</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly(default) or testpolly or devpolly.</div>
 </div>
 </dd>
-</dl>
-<p>To use auth function import class Polly</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="s1">&#39;env&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">if token is not satisfied it will throw a error.</div>
 <div class="line">else it will auth you  </div>
@@ -128,25 +104,23 @@ There are function classmethods</p>
 </div>
 </dd>
 </dl>
+<p>To use auth function import class Polly</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
+<span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.auth.Polly.get_session">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.auth.Polly.get_session" title="Permalink to this definition"></a></dt>
-<dd><p>function to get session for polly</p>
+<dd><p>Function to get session from polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
 </div>
 </dd>
-</dl>
-<p>To use auth function import class Polly</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
-<span class="n">polly</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="s1">&#39;env&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code>        </dt><dd><div class="line-block">
 <div class="line">if token is not satisfied it will throw UnauthorizedException.</div>
 <div class="line">else it will return a polly.session object</div>
@@ -157,6 +131,11 @@ There are function classmethods</p>
 </div>
 </dd>
 </dl>
+<p>To use get_seesion function import class Polly</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Polly</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -168,148 +147,132 @@ There are function classmethods</p>
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OmixAtlas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>OmixAtlas class interact with omixatlases datalakes 
-that contain datasets to query</p>
+<p>OmixAtlas class interact with omixatlases repository. You can query datasets and metadata.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly(default) or testpolly or devpolly. </div>
 </div>
 </dd>
 </dl>
-<p>we can init a OmixAtlas class object using</p>
+<p>We can init a OmixAtlas class object using.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>    
-<span class="c1"># to use OmixAtlas class functions</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">get_all_omixatlas</span><span class="p">()</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.get_all_omixatlas">
 <span class="sig-name descname"><span class="pre">get_all_omixatlas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.get_all_omixatlas" title="Permalink to this definition"></a></dt>
-<dd><p>This function will return a list of datalakes that are 
-available to query.</p>
-<p>to use this function import Omixatlas class and make a object</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>    
-<span class="c1"># to use OmixAtlas class functions</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">get_all_omixatlas</span><span class="p">()</span>
-</pre></div>
-</div>
+<dd><p>This function will return a list of omixatlas repository in polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
 </div>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">It will return a list of objects like this</div>
-<div class="line">{</div>
-<div class="line">‘repo_name’: ‘repo’, </div>
-<div class="line">‘repo_id’: ‘1646’, </div>
-<div class="line">‘indexes’: {</div>
-<div class="line-block">
-<div class="line">‘gct_metadata’: ‘repo_gct_metadata’, </div>
-<div class="line-block">
-<div class="line">‘h5ad_metadata’: ‘repo_h5ad_metadata’,</div>
-<div class="line">‘csv’: ‘repo_csv’,</div>
-<div class="line">‘files’: ‘repo_files’, </div>
-<div class="line">‘json’: ‘repo_json’, </div>
-<div class="line">‘ipynb’: ‘repo_ipynb’, </div>
-<div class="line">‘gct_data’: ‘repo_gct_data’, </div>
-<div class="line">‘h5ad_data’: ‘repo_h5ad_data’</div>
-<div class="line">},</div>
-</div>
-</div>
-<div class="line">‘diseases’: [], </div>
-<div class="line">‘organisms’: [], </div>
-<div class="line">‘sources’: [], </div>
-<div class="line">‘datatypes’: [], </div>
-<div class="line">‘dataset_count’: 0, </div>
-<div class="line">‘disease_count’: 0, </div>
-<div class="line">‘tissue_count’: 0, </div>
-<div class="line">‘organism_count’: 0, </div>
-<div class="line">‘cell_line_count’: 0, </div>
-<div class="line">‘cell_type_count’: 0, </div>
-<div class="line">‘drug_count’: 0, </div>
-<div class="line">‘data_type_count’: 0, </div>
-<div class="line">‘data_source_count’: 0, </div>
-<div class="line">‘sample_count’: 0,</div>
-<div class="line">‘normal_sample_count’: 0</div>
-<div class="line">}</div>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>It will return a list of objects like this</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s1">&#39;repo_name&#39;</span><span class="p">:</span> <span class="s1">&#39;repo&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;repo_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1646&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;indexes&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="s1">&#39;gct_metadata&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_gct_metadata&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;h5ad_metadata&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_h5ad_metadata&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;csv&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_files&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_json&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;ipynb&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_ipynb&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;gct_data&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_gct_data&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;h5ad_data&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_h5ad_data&#39;</span>
+    <span class="p">},</span>
+<span class="s1">&#39;diseases&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;organisms&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;sources&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;datatypes&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;dataset_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;disease_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;tissue_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;organism_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;cell_line_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;cell_type_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;drug_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;data_type_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;data_source_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;sample_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="s1">&#39;normal_sample_count&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </dd>
 </dl>
+<div class="line-block">
+<div class="line">To use this function import Omixatlas class and make a object.</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>    
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">omixatlas</span><span class="o">.</span><span class="n">get_all_omixatlas</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.omixatlas_summary">
 <span class="sig-name descname"><span class="pre">omixatlas_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.omixatlas_summary" title="Permalink to this definition"></a></dt>
 <dd><p>This function will return you a object that contain information 
-about that repo.</p>
+about omixatlas repository.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id </div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id or repo_name</div>
 </div>
 </dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>    
-<span class="c1"># to use OmixAtlas class functions</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">omixatlas_summary</span><span class="p">()</span>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>It will return a object like this.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s1">&#39;repo_name&#39;</span><span class="p">:</span> <span class="s1">&#39;repo&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;repo_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1646&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;indexes&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;gct_metadata&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_gct_metadata&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;h5ad_metadata&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_h5ad_metadata&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;csv&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_files&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_json&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;ipynb&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_ipynb&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;gct_data&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_gct_data&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;h5ad_data&#39;</span><span class="p">:</span> <span class="s1">&#39;repo_h5ad_data&#39;</span>
+    <span class="p">},</span>
+<span class="s1">&#39;diseases&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;organisms&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;sources&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;datatypes&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+<span class="s1">&#39;dataset_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;disease_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;tissue_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;organism_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;cell_line_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;cell_type_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;drug_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;data_type_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;data_source_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<span class="s1">&#39;sample_count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="s1">&#39;normal_sample_count&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">It will return a object like this  </div>
-<div class="line">{</div>
-<div class="line">‘repo_name’: ‘repo’, </div>
-<div class="line">‘repo_id’: ‘1646’, </div>
-<div class="line">‘indexes’: {</div>
-<div class="line-block">
-<div class="line">‘gct_metadata’: ‘repo_gct_metadata’, </div>
-<div class="line">‘h5ad_metadata’: ‘repo_h5ad_metadata’,</div>
-<div class="line">‘csv’: ‘repo_csv’,</div>
-<div class="line">‘files’: ‘repo_files’, </div>
-<div class="line">‘json’: ‘repo_json’, </div>
-<div class="line">‘ipynb’: ‘repo_ipynb’, </div>
-<div class="line">‘gct_data’: ‘repo_gct_data’, </div>
-<div class="line">‘h5ad_data’: ‘repo_h5ad_data’</div>
-<div class="line">},</div>
-</div>
-<div class="line">‘diseases’: [], </div>
-<div class="line">‘organisms’: [], </div>
-<div class="line">‘sources’: [], </div>
-<div class="line">‘datatypes’: [], </div>
-<div class="line">‘dataset_count’: 0, </div>
-<div class="line">‘disease_count’: 0, </div>
-<div class="line">‘tissue_count’: 0, </div>
-<div class="line">‘organism_count’: 0, </div>
-<div class="line">‘cell_line_count’: 0, </div>
-<div class="line">‘cell_type_count’: 0, </div>
-<div class="line">‘drug_count’: 0, </div>
-<div class="line">‘data_type_count’: 0, </div>
-<div class="line">‘data_source_count’: 0, </div>
-<div class="line">‘sample_count’: 0,</div>
-<div class="line">‘normal_sample_count’: 0</div>
-<div class="line">}</div>
-</div>
 </dd>
 </dl>
+<div class="line-block">
+<div class="line">To use this function see the code below</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>    
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">omixatlas</span><span class="o">.</span><span class="n">omixatlas_summary</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.query_metadata">
 <span class="sig-name descname"><span class="pre">query_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_api_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.query_metadata" title="Permalink to this definition"></a></dt>
-<dd><p>This function will returns a table containing the datasets that satisfied
-the sql query</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Omixatlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>    
-<span class="c1"># to use OmixAtlas class functions</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = &#39;brd4&#39;&quot;</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">query_metadata</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query_api_version</span><span class="o">=</span><span class="s2">&quot;v2&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-</pre></div>
-</div>
+<dd><p>This function will returns a table containing the datasets that satisfied the sql query.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">(str)</span> <span class="pre">:</span></code> sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
@@ -319,7 +282,7 @@ the sql query</p>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">it will return a table that will contain metadata (for example- disease,</div>
+<div class="line">It will return a table that will contain metadata (for example- disease,</div>
 <div class="line">total_num_cells) and datasets that satisfied the sql query</div>
 </div>
 </dd>
@@ -329,6 +292,14 @@ the sql query</p>
 </div>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>    
+<span class="c1"># to use OmixAtlas class functions</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = &#39;brd4&#39;&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="n">query_metadata</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query_api_version</span><span class="o">=</span><span class="s2">&quot;v2&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="line-block">
 <div class="line">To know about quering metadata <a class="reference internal" href="query.html#targetq"><span class="std std-ref">Querying metadata</span></a> </div>
 </div>
@@ -346,63 +317,49 @@ the sql query</p>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">data_type</span> <span class="pre">(str)</span> <span class="pre">:</span></code> is the datatype for which user wants to get the schema for. The default value is ‘all’, which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use ‘single_cell’.</div>
 </div>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">{</div>
-<div class="line-block">
-<div class="line">‘dataset’:pd.DataFrame,</div>
-<div class="line">‘sample’:pd.DataFrame</div>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;dataset&#39;</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="s1">&#39;sample&#39;</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+<span class="p">}</span>
+<span class="n">DataFrame</span> <span class="n">consists</span> <span class="n">of</span> <span class="n">schema</span> <span class="n">metadata</span> <span class="n">summary</span>
+<span class="n">i</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">gct_metadata</span> <span class="ow">or</span> <span class="n">h5ad_metadata</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Column</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">Sample</span><span class="p">)</span>
+<span class="n">metdata</span> <span class="n">schema</span> <span class="n">definition</span> <span class="k">for</span> <span class="n">sample</span><span class="p">:</span>
+    <span class="n">schema</span><span class="p">:{</span>
+        <span class="s2">&quot;&lt;SOURCE&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;&lt;DATATYPE&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;&lt;FIELD_NAME&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text | integer | object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">Min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="o">...</span> <span class="n">other</span> <span class="n">fields</span>
+            <span class="p">}</span>
+            <span class="o">...</span> <span class="n">other</span> <span class="n">Data</span> <span class="n">types</span>
+        <span class="p">}</span>
+        <span class="o">...</span> <span class="n">other</span> <span class="n">Sources</span>
+    <span class="p">}</span>
+<span class="n">ii</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">files</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Global</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="n">PS</span> <span class="p">:</span><span class="o">-</span> <span class="n">ALL</span><span class="p">,</span> <span class="n">ALL</span> <span class="n">keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">rigid</span> <span class="k">for</span> <span class="n">dataset</span> <span class="n">level</span> <span class="n">schema</span> <span class="n">also</span>
+<span class="n">There</span> <span class="n">it</span> <span class="n">can</span> <span class="n">be</span> <span class="o">&lt;</span><span class="n">SOURCE</span><span class="o">&gt;</span> <span class="ow">and</span> <span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;</span> <span class="n">key</span> <span class="n">also</span>
+<span class="n">metadata</span> <span class="n">schema</span> <span class="n">definition</span> <span class="k">for</span> <span class="n">a</span> <span class="n">dataset</span><span class="p">:</span>
+    <span class="n">schema</span><span class="p">:{</span>
+            <span class="s2">&quot;ALL&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;ALL&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;&lt;FIELD_NAME&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text | integer | object&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">Min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                    <span class="p">},</span>
+                    <span class="o">...</span> <span class="n">other</span> <span class="n">fields</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+<span class="n">iii</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">gct_metadata</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Row</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">Feature</span><span class="p">)</span>
+<span class="n">Not</span> <span class="n">there</span> <span class="n">right</span> <span class="n">now</span>
+</pre></div>
 </div>
-<div class="line">}</div>
-<div class="line">DataFrame consists of schema metadata summary</div>
-<div class="line">i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)</div>
-<div class="line">metdata schema definition for sample:</div>
-<div class="line-block">
-<div class="line">schema:{</div>
-<div class="line-block">
-<div class="line">“&lt;SOURCE&gt;”: {</div>
-<div class="line-block">
-<div class="line">“&lt;DATATYPE&gt;”: {</div>
-<div class="line-block">
-<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
-<div class="line">“type”: “text | integer | object”,</div>
-<div class="line">“description”: “string”, (Min=1, Max=100)</div>
-<div class="line">},</div>
-<div class="line">… other fields</div>
-</div>
-<div class="line">}</div>
-<div class="line">… other Data types</div>
-</div>
-<div class="line">}</div>
-<div class="line">… other Sources</div>
-</div>
-<div class="line">}</div>
-</div>
-<div class="line">ii) schema_type : files i.e Global Fields (dataset)</div>
-<div class="line">PS :- ALL, ALL keys is not rigid for dataset level schema also</div>
-<div class="line">There it can be &lt;SOURCE&gt; and &lt;DATATYPE&gt; key also</div>
-<div class="line">metadata schema definition for a dataset:</div>
-<div class="line-block">
-<div class="line">schema:{</div>
-<div class="line-block">
-<div class="line">“ALL”: {</div>
-<div class="line-block">
-<div class="line">“ALL”: {</div>
-<div class="line-block">
-<div class="line">“&lt;FIELD_NAME&gt;”: {</div>
-<div class="line">“type”: “text | integer | object”,</div>
-<div class="line">“description”: “string”, (Min=1, Max=100)</div>
-<div class="line">},</div>
-<div class="line">… other fields</div>
-</div>
-<div class="line">}</div>
-</div>
-<div class="line">}</div>
-</div>
-</div>
-<div class="line">iii) schema_type : gct_metadata i.e Row Fields (Feature)</div>
-<div class="line">Not there right now</div>
-</div>
-</dd>
+</div></blockquote>
+<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> repo_key and schema_type_dict are either empty or its datatype is not correct</div>
@@ -434,24 +391,20 @@ the sql query</p>
 <dt><code class="docutils literal notranslate"><span class="pre">Args</span> <span class="pre">:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key:</span></code> (str) repo_id OR repo_name. This is a mandatory field.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">payload:</span></code> (dict) The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
-<div class="line">{</div>
-<div class="line-block">
-<div class="line">“data”: {</div>
-<div class="line-block">
-<div class="line">“id”: “&lt;REPO_KEY&gt;”,</div>
-<div class="line">“type”: “schema”,</div>
-<div class="line">“attributes”: {</div>
-<div class="line">“schema_type”: “files | gct_metadata | h5ad_metadata”,</div>
-<div class="line">“schema”: {</div>
-<div class="line-block">
-<div class="line">… field definitions</div>
 </div>
-<div class="line">}</div>
-<div class="line">}</div>
-</div>
-<div class="line">}</div>
-</div>
-<div class="line">}</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;REPO_KEY&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;schema&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema_type&quot;</span><span class="p">:</span> <span class="s2">&quot;files | gct_metadata | h5ad_metadata&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="o">...</span> <span class="n">field</span> <span class="n">definitions</span>
+        <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
@@ -472,24 +425,20 @@ the sql query</p>
 <dt><code class="docutils literal notranslate"><span class="pre">Args</span> <span class="pre">:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str):</span></code> repo_id OR repo_name. This is a mandatory field.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">payload</span> <span class="pre">(dict):</span></code> The payload is a JSON file which should be as per the structure defined for schema. Only data-admin will have the authentication to update the schema.</div>
-<div class="line">{</div>
-<div class="line-block">
-<div class="line">“data”: {</div>
-<div class="line-block">
-<div class="line">“id”: “&lt;REPO_KEY&gt;”,</div>
-<div class="line">“type”: “schema”,</div>
-<div class="line">“attributes”: {</div>
-<div class="line">“schema_type”: “files | gct_metadata | h5ad_metadata”,</div>
-<div class="line">“schema”: {</div>
-<div class="line-block">
-<div class="line">… field definitions</div>
 </div>
-<div class="line">}</div>
-<div class="line">}</div>
-</div>
-<div class="line">}</div>
-</div>
-<div class="line">}</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;REPO_KEY&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;schema&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;schema_type&quot;</span><span class="p">:</span> <span class="s2">&quot;files | gct_metadata | h5ad_metadata&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="o">...</span> <span class="n">field</span> <span class="n">definitions</span>
+        <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </dd>
 </dl>
@@ -505,7 +454,7 @@ the sql query</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.download_data">
 <span class="sig-name descname"><span class="pre">download_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.download_data" title="Permalink to this definition"></a></dt>
-<dd><p>To download any dataset, the following function can be used to get the signed URL of the dataset.</p>
+<dd><p>To download any dataset, the following function can be used.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="s2">&quot;repo_key&quot;</span><span class="p">,</span> <span class="s2">&quot;[dataset_id]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -528,14 +477,14 @@ the sql query</p>
 </dl>
 <div class="line-block">
 <div class="line">The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:        </div>
+<div class="line">You can also download data in other format like gct,vcf to know how to write code <a class="reference internal" href="download.html#targetd"><span class="std std-ref">Click Here</span></a></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.save_to_workspace">
 <span class="sig-name descname"><span class="pre">save_to_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">&lt;module</span> <span class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/opt/hostedtoolcache/Python/3.10.4/x64/lib/python3.10/json/__init__.py'&gt;</span></span></span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.save_to_workspace" title="Permalink to this definition"></a></dt>
-<dd><p>Function for saving data from omixatlas to workspaces.
-Makes a call to v1/omixatlas/workspace_jobs</p>
+<dd><p>Function for saving data from omixatlas to workspaces.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo id</div>
@@ -583,142 +532,92 @@ Makes a call to v1/omixatlas/workspace_jobs</p>
 </dd></dl>
 
 </section>
-<section id="module-polly.session">
-<span id="polly-session-module"></span><h2>polly.session module<a class="headerlink" href="#module-polly.session" title="Permalink to this headline"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="polly.session.PollySession">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PollySession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">REFRESH_TOKEN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.session.PollySession" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.sessions.Session</span></code></p>
-<p>This class contain function to create session for 
-polly.</p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
-</div>
-</dd>
-</dl>
-<p>To use this function</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.session</span> <span class="kn">import</span> <span class="n">PollySession</span>
-<span class="n">session</span> <span class="o">=</span> <span class="n">PollySession</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="s1">&#39;env&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">None</div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 <section id="module-polly.workspaces">
 <span id="polly-workspaces-module"></span><h2>polly.workspaces module<a class="headerlink" href="#module-polly.workspaces" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="polly.workspaces.Workspaces">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class contain</p>
-<ol class="arabic simple">
-<li><p>constructure to init workspaces class object</p></li>
-<li><p>to create workspace function</p></li>
-<li><p>to fetch workspaces</p></li>
-<li><p>upload files to workspaces</p></li>
-<li><p>download files from workspaces</p></li>
-</ol>
-<p>This is a constructure which init a obj that
-can use all function and methods of Workspaces class</p>
+<p>This class contains functions to interact with workspaces on Polly. We can initialize a object that
+can use all function and methods of Workspaces class.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly or testpolly or devpolly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly(default) or testpolly or devpolly.</div>
 </div>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">init</span> <span class="n">a</span> <span class="n">obj</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># to init a obj</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="c1"># from there you can other methods</span>
+<span class="n">workspaces</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.workspaces.Workspaces.create_workspace">
 <span class="sig-name descname"><span class="pre">create_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces.create_workspace" title="Permalink to this definition"></a></dt>
-<dd><p>this function create workspace on polly</p>
+<dd><p>This function create workspace on polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(str):</span></code> name of the workspace</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">description</span> <span class="pre">(str):</span></code> general information about workspace</div>
 </div>
 </dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">to</span> <span class="n">create</span> <span class="n">a</span> <span class="n">obj</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">create_workspace</span><span class="p">()</span>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">It will return a object like this.       </div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">9999</span><span class="p">,</span> 
+<span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;rrrrr&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+<span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;for docu&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;created_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2022-03-16 11:08:47.127260&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;last_modified&#39;</span><span class="p">:</span> <span class="s1">&#39;2022-03-16 11:08:47.127260&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;creator&#39;</span><span class="p">:</span> <span class="mi">1127</span><span class="p">,</span> 
+<span class="s1">&#39;project_property&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;workspaces&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+<span class="p">},</span> 
+<span class="s1">&#39;organisation&#39;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><dl>
-<dt>it will return a dict like this</dt><dd><div class="line-block">
-<div class="line">{</div>
-<div class="line">‘id’: 9999, </div>
-<div class="line">‘name’: ‘rrrrr’, </div>
-<div class="line">‘active’: True, </div>
-<div class="line">‘description’: ‘for docu’, </div>
-<div class="line">‘created_time’: ‘2022-03-16 11:08:47.127260’, </div>
-<div class="line">‘last_modified’: ‘2022-03-16 11:08:47.127260’, </div>
-<div class="line">‘creator’: 1127, </div>
-<div class="line">‘project_property’: {</div>
-<div class="line-block">
-<div class="line">‘type’: ‘workspaces’,</div>
-<div class="line">‘labels’: ‘’</div>
-</div>
-<div class="line">}, </div>
-<div class="line">‘organisation’: 1</div>
-<div class="line">}</div>
-</div>
 </dd>
 </dl>
-</dd>
-</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># to create a obj</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="c1"># from there you can other methods</span>
+<span class="n">workspaces</span><span class="o">.</span><span class="n">create_workspace</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.workspaces.Workspaces.fetch_my_workspaces">
 <span class="sig-name descname"><span class="pre">fetch_my_workspaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.workspaces.Workspaces.fetch_my_workspaces" title="Permalink to this definition"></a></dt>
-<dd><p>this function fetch workspace from polly</p>
+<dd><p>This function fetch workspaces from Polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
 </div>
 </dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">a</span> <span class="n">obj</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">there</span> <span class="n">you</span> <span class="n">can</span> <span class="n">other</span> <span class="n">methods</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">it will return a table with following attributes </div>
-<div class="line">type id attributes.id attributes.name attributes.active attributes.description attributes.created_time attributes.last_modified attributes.creator attributes.project_property.type attributes.project_property.labels attributes.organisation links.self</div>
+<div class="line">it will return a table with attributes </div>
 </div>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a obj</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="c1"># from there you can other methods</span>
+<span class="n">workspaces</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.workspaces.Workspaces.upload_to_workspaces">
 <span class="sig-name descname"><span class="pre">upload_to_workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.workspaces.Workspaces.upload_to_workspaces" title="Permalink to this definition"></a></dt>
 <dd><p>Function to upload files/folders to workspaces</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a obj</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
-<span class="c1"># from there you can other methods</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">upload_to_workspaces</span><span class="p">(</span><span class="n">workspace_id</span><span class="p">,</span> <span class="n">workspace_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span>
-</pre></div>
-</div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
@@ -736,18 +635,18 @@ can use all function and methods of Workspaces class</p>
 </div>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a obj</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="c1"># from there you can other methods</span>
+<span class="n">workspaces</span><span class="o">.</span><span class="n">upload_to_workspaces</span><span class="p">(</span><span class="n">workspace_id</span><span class="p">,</span> <span class="n">workspace_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.workspaces.Workspaces.download_from_workspaces">
 <span class="sig-name descname"><span class="pre">download_from_workspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.workspaces.Workspaces.download_from_workspaces" title="Permalink to this definition"></a></dt>
 <dd><p>Function to download files/folders from workspaces</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a obj</span>
-<span class="n">obj</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
-<span class="c1"># from there you can other methods</span>
-<span class="n">obj</span><span class="o">.</span><span class="n">download_from_workspaces</span><span class="p">(</span><span class="n">workspace_id</span><span class="p">,</span> <span class="n">workspace_path</span><span class="p">)</span>
-</pre></div>
-</div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
@@ -765,6 +664,12 @@ can use all function and methods of Workspaces class</p>
 </div>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a obj</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="c1"># from there you can other methods</span>
+<span class="n">workspaces</span><span class="o">.</span><span class="n">download_from_workspaces</span><span class="p">(</span><span class="n">workspace_id</span><span class="p">,</span> <span class="n">workspace_path</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -779,8 +684,8 @@ can use all function and methods of Workspaces class</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="download.html" class="btn btn-neutral float-left" title="Downloading Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="query.html" class="btn btn-neutral float-right" title="Querying metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Polly.html" class="btn btn-neutral float-left" title="About Polly Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="download.html" class="btn btn-neutral float-right" title="Downloading Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

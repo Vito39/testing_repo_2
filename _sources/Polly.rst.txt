@@ -51,24 +51,3 @@ The following code is required to add the authentication function in the Polly P
         AUTH_TOKEN = "[authentication_token_copied]"
         Polly.auth(AUTH_TOKEN)
 
-4. Calling a function
-----------------------
-
-In order to call a functions from a particular class, corresponding object should be defined.
-E.g. for functions related to OmixAtlas,
-
-.. code::
-
-
-        omixatlas = OmixAtlas()
-        output = omixatlas.[function()]
-Similarly, for functions related to Workspaces,
-
-.. code::
-
-
-        workspaces = Workspaces()
-        output = workspaces.[function()]
-
-The output of the functions is in JSON and/or data frame formats. You can print/download this output.
-
