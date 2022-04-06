@@ -14,9 +14,8 @@ To download any dataset, the following function can be used to get the signed UR
 
 |  ``repo_key``: (str) repo_id OR repo_name from where the data needs to be downloaded.
 |  ``dataset_id``: (str) dataset_id which the user wants to download.
-|  The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function. The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata("[query written in SQL]").
-|  The output of this function is a signed URL. The data can be downloaded by clicking on this URL.
-|  NOTE: This signed URL expires after 60 minutes from when it is generated.
+|  This will download the data.
+|  The ``[repo_name OR repo_id]`` of an OmixAtlas can be identified by calling the get_all_omixatlas() function. The ``[dataset_id]`` can be obtained by querying the metadata at the dataset level using ``query_metadata("[query written in SQL]")``.
 |  The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:
 
 2. Downloading .gct and opening it in a data frame
