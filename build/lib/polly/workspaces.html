@@ -113,8 +113,8 @@ if self.session.env == “polly”:</p>
 This function create workspace on polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(str):</span></code> name of the workspace</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">description</span> <span class="pre">(str):</span></code> general information about workspace</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">(str):</span></code> name of the workspace.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">description</span> <span class="pre">(str):</span></code> general information about workspace.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
@@ -177,7 +177,7 @@ This function fetch workspaces from Polly.</p>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">it will return a table with attributes</div>
+<div class="line">it will return a table with attributes.</div>
 </div>
 </dd>
 </dl>
@@ -202,12 +202,12 @@ return dataframe</p>
 <dt>def upload_to_workspaces(</dt><dd><p>self, workspace_id: int, workspace_path: str, local_path: str</p>
 </dd>
 <dt>) -&gt; None:</dt><dd><p>“””
-Function to upload files/folders to workspaces</p>
+Function to upload files/folders to workspaces.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> file path on workspace if folder does not exist it will create</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path</span> <span class="pre">:</span></code> uploaded file path</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> file path on workspace if folder does not exist it will create.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path</span> <span class="pre">:</span></code> uploaded file path.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
@@ -215,8 +215,8 @@ Function to upload files/folders to workspaces</p>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> when the parameter like workspace id is invalid</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidPathException:</span></code> when the file to path is invalid</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> when the parameter like workspace id is invalid.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidPathException:</span></code> when the file to path is invalid.</div>
 </div>
 </dd>
 </dl>
@@ -254,11 +254,11 @@ logging.basicConfig(level=logging.INFO)
 logging.info(f”Upload successful on workspace-id={workspace_id}.”)</p>
 </dd>
 <dt>def download_from_workspaces(self, workspace_id: int, workspace_path: str) -&gt; None:</dt><dd><p>“””
-Function to download files/folders from workspaces</p>
+Function to download files/folders from workspaces.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> downloaded file on workspace</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">:</span></code> id of the where file need to uploaded.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">:</span></code> downloaded file on workspace.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
@@ -266,9 +266,9 @@ Function to download files/folders from workspaces</p>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidPathException</span> <span class="pre">:</span></code> for invalid path</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">OperationFailedException</span> <span class="pre">:</span></code> when downloading fails</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> when the parameter like workspace id is invalid</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidPathException</span> <span class="pre">:</span></code> for invalid path.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OperationFailedException</span> <span class="pre">:</span></code> when downloading fails.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> when the parameter like workspace id is invalid.</div>
 </div>
 </dd>
 </dl>

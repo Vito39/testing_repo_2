@@ -103,7 +103,7 @@ from cmapPy.pandasGEXpress.parse import parse
 from cmapPy.pandasGEXpress.concat import assemble_common_meta, assemble_data</p>
 <dl>
 <dt>class Cohort:</dt><dd><p>“””
-This class contain function which can be used to create, add or remove samples, merge metadata edit or delete</p>
+This class contain function which can be used to create, add or remove samples, merge metadata edit or delete.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
@@ -111,7 +111,8 @@ This class contain function which can be used to create, add or remove samples, 
 </div>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To use this class init a object like this</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.cohort</span> <span class="kn">import</span> <span class="n">Cohort</span>
+<span class="c1"># To use this class init a object like this</span>
 <span class="n">cohort</span> <span class="o">=</span> <span class="n">Cohort</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -197,15 +198,15 @@ All_data_matrix = assemble_data(</p>
 return All_data_matrix</p>
 </dd>
 <dt>def edit_cohort(self, new_cohort_name=None, new_description=None):</dt><dd><p>“””
-This function is used to edit a cohort name and description</p>
+This function is used to edit a cohort name and description.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">new_cohort_name(str):</span></code> Optional Argument: new identifier name for the cohort</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">new_description(str):</span></code> Optional Argument: new description about the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">new_cohort_name(str):</span></code> Optional Argument: new identifier name for the cohort.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">new_description(str):</span></code> Optional Argument: new description about the cohort.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">A confirmation message on updation of cohort</div>
+<div class="line">A confirmation message on updation of cohort.</div>
 </div>
 </dd>
 </dl>
@@ -305,7 +306,7 @@ if not (os.path.exists(gct_path) and os.path.exists(jpco_path)):</p>
 This function is used to delete a cohort.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">A confirmation message on deletion of cohort</div>
+<div class="line">A confirmation message on deletion of cohort.</div>
 </div>
 </dd>
 </dl>
@@ -317,7 +318,7 @@ self.folder_path = None
 self._cohort_details = None</p>
 </dd>
 <dt>def remove_from_cohort(self, entity_id: list) -&gt; None:</dt><dd><p>“””
-This function is used for removing dataset_id or sample_id from a cohort</p>
+This function is used for removing dataset_id or sample_id from a cohort.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> list of dataset_id or sample_id to be removed from the cohort.</div>
@@ -397,15 +398,15 @@ openfile.truncate()</p>
 logging.info(f”’{dataset_count}’ dataset/s removed from Cohort!”)</p>
 </dd>
 <dt>def add_to_cohort(self, repo_key: str, entity_id: list) -&gt; None:</dt><dd><p>“””
-This function is used to add dataset(s) or sample(s) to a cohort</p>
+This function is used to add dataset(s) or sample(s) to a cohort.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> repo_key(repo_name/repo_id) for the omixatlas to be added</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> list of entity_ids to be added to the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> repo_key(repo_name/repo_id) for the omixatlas to be added.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> list of entity_ids to be added to the cohort.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">A confirmation message for number of dataset(s) or sample(s) which are added to the cohort</div>
+<div class="line">A confirmation message for number of dataset(s) or sample(s) which are added to the cohort.</div>
 </div>
 </dd>
 </dl>
@@ -494,7 +495,7 @@ with open(file_name, “w”) as outfile:</p>
 </div></blockquote>
 </dd>
 <dt>def _gctfile(self, repo_info: str, dataset_id: str, file_path: str) -&gt; None:</dt><dd><p>“””
-Function to add gct file to a cohort
+Function to add gct file to a cohort.
 “””
 if not (repo_info and isinstance(repo_info, str)):</p>
 <blockquote>
@@ -531,18 +532,18 @@ repo_key=None,
 entity_id=None,</p>
 </dd>
 <dt>) -&gt; None:</dt><dd><p>“””
-This function is used to create a cohort</p>
+This function is used to create a cohort.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path to instantiate the cohort</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">cohort_name(str):</span></code> identifier name for the cohort</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">description(str):</span></code> description about the cohort</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> Optional argument: list of sample_id or dataset_id to be added to the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path to instantiate the cohort.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">cohort_name(str):</span></code> identifier name for the cohort.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">description(str):</span></code> description about the cohort.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> Optional argument: list of sample_id or dataset_id to be added to the cohort.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">A confirmation message on creation of cohort</div>
+<div class="line">A confirmation message on creation of cohort.</div>
 </div>
 </dd>
 </dl>
@@ -592,7 +593,7 @@ if entity_id is not None and repo_key is not None:</p>
 logging.info(“Cohort Created !”)</p>
 </dd>
 <dt>def _get_user_id(self):</dt><dd><p>“””
-Function to get user id
+Function to get user id.
 “””
 me_url = f”{self.base_url}/users/me”
 details = self.session.get(me_url)
@@ -601,7 +602,7 @@ user_id = details.json().get(“data”, {}).get(“attributes”, {}).get(“us
 return user_id</p>
 </dd>
 <dt>def summarize_cohort(self):</dt><dd><p>“””
-Function to return metadata and summary of a cohort</p>
+Function to return metadata and summary of a cohort.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
@@ -624,11 +625,11 @@ Function to load an existing cohort into an object.
 Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path of the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path of the cohort.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">A confirmation message on instantiation of the cohort</div>
+<div class="line">A confirmation message on instantiation of the cohort.</div>
 </div>
 </dd>
 </dl>
@@ -654,7 +655,7 @@ logging.basicConfig(level=logging.INFO)
 logging.info(“Cohort Loaded !”)</p>
 </dd>
 <dt>def _get_metadetails(self) -&gt; dict:</dt><dd><p>“””
-Function to return metadata details of a cohort
+Function to return metadata details of a cohort.
 “””
 data = self._cohort_details
 meta_dict = {}
@@ -672,7 +673,7 @@ for key, value in data.items():</p>
 <p>return meta_dict</p>
 </dd>
 <dt>def _get_df(self) -&gt; pd.DataFrame:</dt><dd><p>“””
-Function to return cohort summary in a dataframe
+Function to return cohort summary in a dataframe.
 “””
 data = self._cohort_details
 df_dict = {“source_omixatlas”: [], “datatype”: [], “entity_id”: []}
@@ -701,7 +702,7 @@ if entity == “dataset”:</p>
 return dataframe</p>
 </dd>
 <dt>def _get_metadata(self, repo_key: str, dataset_id: str) -&gt; dict:</dt><dd><p>“””
-Function to return metadata for a dataset
+Function to return metadata for a dataset.
 “””
 obj = OmixAtlas()
 response_omixatlas = obj.omixatlas_summary(repo_key)
@@ -721,7 +722,7 @@ metadata = helpers.get_metadata(obj, elastic_url, query)
 return metadata</p>
 </dd>
 <dt>def _validate_repo(self, repo_name: str, dataset_id: list) -&gt; list:</dt><dd><p>“””
-Function to validate repo and datasets given as argument for adding to cohort
+Function to validate repo and datasets given as argument for adding to cohort.
 “””
 dict_dataset = self._cohort_details.get(“source_omixatlas”)
 dataset_list = list(self._cohort_details[“entity_id”].keys())
@@ -771,7 +772,7 @@ continue</p>
 <p>return valid_dataset_id</p>
 </dd>
 <dt>def _get_entity(self, repo_name: str) -&gt; str:</dt><dd><p>“””
-Function to get the entity type of repo
+Function to get the entity type of repo.
 “””
 for repo, dict in COHORT_REPO_INFO.items():</p>
 <blockquote>

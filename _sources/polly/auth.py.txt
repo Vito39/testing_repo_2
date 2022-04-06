@@ -18,7 +18,7 @@ class Polly:
     @classmethod
     def auth(cls, token, env="polly"):
         """
-        Function for authorization to use polly on terminal or notebook
+        Function for authorization to use polly on terminal or notebook.
 
         ``Args:``
             |  ``token (str):`` token copy from polly.
@@ -27,12 +27,12 @@ class Polly:
         
         ``Returns:``
             |  if token is not satisfied it will throw a error.
-            |  else it will auth you  
+            |  else it will auth you.  
         
         ``Error:``
-            |  ``UnauthorizedException:`` when the token is expired
+            |  ``UnauthorizedException:`` when the token is expired.
 
-        To use auth function import class Polly
+        To use auth function import class Polly.
 
         .. code::
 
@@ -53,12 +53,12 @@ class Polly:
 
         ``Returns:``        
             |  if token is not satisfied it will throw UnauthorizedException.
-            |  else it will return a polly.session object
+            |  else it will return a polly.session object.
         
         ``Error:``
-            |  ``UnauthorizedException:`` when the token is expired
+            |  ``UnauthorizedException:`` when the token is expired.
 
-        To use get_seesion function import class Polly
+        To use get_seesion function import class Polly.
 
 
         .. code::

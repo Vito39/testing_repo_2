@@ -83,7 +83,7 @@ default_session = None</p>
 def auth(cls, token, env=”polly”):</p>
 <blockquote>
 <div><p>“””
-Function for authorization to use polly on terminal or notebook</p>
+Function for authorization to use polly on terminal or notebook.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
@@ -92,15 +92,15 @@ Function for authorization to use polly on terminal or notebook</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">if token is not satisfied it will throw a error.</div>
-<div class="line">else it will auth you</div>
+<div class="line">else it will auth you.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired.</div>
 </div>
 </dd>
 </dl>
-<p>To use auth function import class Polly</p>
+<p>To use auth function import class Polly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
 <span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
@@ -121,15 +121,15 @@ Function to get session from polly.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">if token is not satisfied it will throw UnauthorizedException.</div>
-<div class="line">else it will return a polly.session object</div>
+<div class="line">else it will return a polly.session object.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Error:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnauthorizedException:</span></code> when the token is expired.</div>
 </div>
 </dd>
 </dl>
-<p>To use get_seesion function import class Polly</p>
+<p>To use get_seesion function import class Polly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.auth</span> <span class="kn">import</span> <span class="n">Polly</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">Polly</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>

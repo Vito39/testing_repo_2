@@ -135,7 +135,7 @@ This function will return a list of omixatlas repository in polly.</p>
 <div class="line">None</div>
 </div>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>It will return a list of objects like this</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>It will return a list of objects like this.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="s1">&#39;repo_name&#39;</span><span class="p">:</span> <span class="s1">&#39;repo&#39;</span><span class="p">,</span>
 <span class="s1">&#39;repo_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1646&#39;</span><span class="p">,</span>
@@ -186,11 +186,10 @@ error_handler(response)
 return response.json()</p>
 </dd>
 <dt>def omixatlas_summary(self, key: str):</dt><dd><p>“””
-This function will return you a object that contain information
-about omixatlas repository.</p>
+This function will return you a object that contain information about omixatlas repository.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id or repo_name</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id or repo_name.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>It will return a object like this.</p>
@@ -228,7 +227,7 @@ about omixatlas repository.</p>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">To use this function see the code below</div>
+<div class="line">To use this function see the code below.</div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
 <span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
@@ -253,20 +252,20 @@ page_size=None,  # Note: do not increase page size more than 999</p>
 This function will returns a table containing the datasets that satisfied the sql query.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">(str)</span> <span class="pre">:</span></code> sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">experimental_features</span> <span class="pre">:</span></code> <a class="reference internal" href="../query.html#target"><span class="std std-ref">this section includes in querying metadata</span></a></div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">query_api_version</span> <span class="pre">(str)</span> <span class="pre">:</span></code> v1 or v2</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">(int):</span></code> page size for query</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">(str)</span> <span class="pre">:</span></code> sql query  on  omixatlas for example - “SELECT * FROM liveromix_atlas.datasets”.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">experimental_features</span> <span class="pre">:</span></code> <a class="reference internal" href="../query.html#target"><span class="std std-ref">this section includes in querying metadata</span></a>.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">query_api_version</span> <span class="pre">(str)</span> <span class="pre">:</span></code> v1 or v2.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">page_size</span> <span class="pre">(int):</span></code> page size for query.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
 <div class="line">It will return a table that will contain metadata (for example- disease,</div>
-<div class="line">total_num_cells) and datasets that satisfied the sql query</div>
+<div class="line">total_num_cells) and datasets that satisfied the sql query.</div>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">UnfinishedQueryException:</span></code> when query has not finised the execution</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">QueryFailedException:</span></code> when query failed to execute</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UnfinishedQueryException:</span></code> when query has not finised the execution.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">QueryFailedException:</span></code> when query failed to execute.</div>
 </div>
 </dd>
 </dl>
@@ -279,7 +278,7 @@ This function will returns a table containing the datasets that satisfied the sq
 </pre></div>
 </div>
 <div class="line-block">
-<div class="line">To know about quering metadata <a class="reference internal" href="../query.html#targetq"><span class="std std-ref">Querying metadata</span></a></div>
+<div class="line">To know about quering metadata <a class="reference internal" href="../query.html#targetq"><span class="std std-ref">Querying metadata</span></a>.</div>
 </div>
 <p>“””
 max_page_size = 999
@@ -640,13 +639,13 @@ Using this function to extract the schema of an OmixAtlas.</p>
 </div></blockquote>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> repo_key and schema_type_dict are either empty or its datatype is not correct</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> repo_key and schema_type_dict are either empty or its datatype is not correct.</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas</div>
+<div class="line">Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas.</div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
 
@@ -1013,7 +1012,7 @@ Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtl
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail.</div>
 </div>
 </dd>
 </dl>
@@ -1073,7 +1072,7 @@ Use update_schema(repo_key, payload) to update the existing schema of an OmixAtl
 <p>payload can be loaded from the JSON file in which schema is defined in the following manner:</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail.</div>
 </div>
 </dd>
 </dl>
@@ -1136,13 +1135,13 @@ To download any dataset, the following function can be used.</p>
 </div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">This will download the dataset</div>
+<div class="line">This will download the dataset.</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
 <div class="line">The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:</div>
-<div class="line">You can also download data in other format like gct,vcf to know how to write code <a class="reference internal" href="../download.html#targetd"><span class="std std-ref">Click Here</span></a></div>
+<div class="line">You can also download data in other format like gct to know how to write code <a class="reference internal" href="../download.html#targetd"><span class="std std-ref">Click Here</span></a>.</div>
 </div>
 <p>“””
 url = f”{self.resource_url}/{repo_name}/download”
@@ -1157,15 +1156,15 @@ return response.json()</p>
 Function for saving data from omixatlas to workspaces.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo id</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset id</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> workspace id of polly</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">(str)</span> <span class="pre">:</span></code> path in workspace where you want to save file</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo id.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset id.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> workspace id of polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">workspace_path</span> <span class="pre">(str)</span> <span class="pre">:</span></code> path in workspace where you want to save file.</div>
 </div>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">Example to save the dataset_id <code class="docutils literal notranslate"><span class="pre">'GSE101127_GPL1355'</span></code> from repo_id <code class="docutils literal notranslate"><span class="pre">1615965444377</span></code> to a workspace_id <code class="docutils literal notranslate"><span class="pre">8025</span></code> in a folder named <code class="docutils literal notranslate"><span class="pre">'data'</span></code></div>
+<div class="line">Example to save the dataset_id <code class="docutils literal notranslate"><span class="pre">'GSE101127_GPL1355'</span></code> from repo_id <code class="docutils literal notranslate"><span class="pre">1615965444377</span></code> to a workspace_id <code class="docutils literal notranslate"><span class="pre">8025</span></code> in a folder named <code class="docutils literal notranslate"><span class="pre">'data'</span></code>.</div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omixatlas</span><span class="o">.</span><span class="n">save_to_workspace</span><span class="p">(</span><span class="s1">&#39;1615965444377&#39;</span><span class="p">,</span> <span class="s1">&#39;GSE101127_GPL1355&#39;</span><span class="p">,</span> <span class="mi">8025</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1203,9 +1202,9 @@ logging.info(f”Data Saved to workspace={workspace_id}”)</p>
 Function to convert a file to maf format.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset_id</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">to(str)</span> <span class="pre">:</span></code> output file format</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span> <span class="pre">(str)</span> <span class="pre">:</span></code> dataset_id.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">to(str)</span> <span class="pre">:</span></code> output file format.</div>
 </div>
 </dd>
 </dl>
@@ -1217,7 +1216,7 @@ Function to convert a file to maf format.</p>
 </div>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> invalid value of any parameter for example like - repo_id or repo_name etc</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">InvalidParameterException:</span></code> invalid value of any parameter for example like - repo_id or repo_name etc.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> Incompatible or empty value of any parameter</div>
 </div>
 </dd>

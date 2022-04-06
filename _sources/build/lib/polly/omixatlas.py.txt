@@ -68,7 +68,7 @@ class OmixAtlas:
             |  None
 
         ``Returns:``
-            It will return a list of objects like this
+            It will return a list of objects like this.
 
             .. code::
 
@@ -124,11 +124,10 @@ class OmixAtlas:
 
     def omixatlas_summary(self, key: str):
         """
-        This function will return you a object that contain information 
-        about omixatlas repository.
+        This function will return you a object that contain information about omixatlas repository.
 
         ``Args:``
-            |  ``key (str) :`` repo_id or repo_name
+            |  ``key (str) :`` repo_id or repo_name.
 
         ``Returns:``
             It will return a object like this.
@@ -166,7 +165,7 @@ class OmixAtlas:
                     'normal_sample_count': 0
                     }
 
-        |  To use this function see the code below
+        |  To use this function see the code below.
 
         .. code::
         
@@ -193,20 +192,20 @@ class OmixAtlas:
         This function will returns a table containing the datasets that satisfied the sql query.                
 
         ``Args:``
-            |  ``query (str) :`` sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets"
-            |  ``experimental_features :`` :ref:`this section includes in querying metadata <target>`
-            |  ``query_api_version (str) :`` v1 or v2
-            |  ``page_size (int):`` page size for query
+            |  ``query (str) :`` sql query  on  omixatlas for example - "SELECT * FROM liveromix_atlas.datasets".
+            |  ``experimental_features :`` :ref:`this section includes in querying metadata <target>`.
+            |  ``query_api_version (str) :`` v1 or v2.
+            |  ``page_size (int):`` page size for query.
 
 
         
         ``Returns:``
             |  It will return a table that will contain metadata (for example- disease,
-            |  total_num_cells) and datasets that satisfied the sql query
+            |  total_num_cells) and datasets that satisfied the sql query.
         
         ``Errors:``
-            |  ``UnfinishedQueryException:`` when query has not finised the execution
-            |  ``QueryFailedException:`` when query failed to execute
+            |  ``UnfinishedQueryException:`` when query has not finised the execution.
+            |  ``QueryFailedException:`` when query failed to execute.
         
 
         .. code::
@@ -219,7 +218,7 @@ class OmixAtlas:
                 results = omixatlas.query_metadata(query, query_api_version="v2")
                 print(results)
 
-        |  To know about quering metadata :ref:`Querying metadata <targetq>` 
+        |  To know about quering metadata :ref:`Querying metadata <targetq>`.
         """
         max_page_size = 999
         if page_size is not None and page_size > max_page_size:
@@ -517,11 +516,11 @@ class OmixAtlas:
                     Not there right now
         
         ``Errors:``
-            |  ``invalidApiResponseException:`` datakey, attributes, schema_type is missing in repository schema
-            |  ``paramException:`` repo_key and schema_type_dict are either empty or its datatype is not correct
+            |  ``invalidApiResponseException:`` datakey, attributes, schema_type is missing in repository schema.
+            |  ``paramException:`` repo_key and schema_type_dict are either empty or its datatype is not correct.
 
 
-        |  Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas
+        |  Example to fetch dataset and sample level schema for all datatypes from all sources in GEO Omixatlas.
         
 
         .. code::
@@ -801,7 +800,7 @@ class OmixAtlas:
                     }
         
         ``Errors:``
-            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail
+            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail.
         """
         if repo_key and body and isinstance(body, dict):
             body = json.dumps(body)
@@ -858,7 +857,7 @@ class OmixAtlas:
                 payload = json.load(schema)
         
         ``Errors:``
-            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail
+            |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail.
         """
         schema_type = body["data"]["attributes"]["schema_type"]
         schema_base_url = f"{self.discover_url}/repositories"
@@ -906,10 +905,10 @@ class OmixAtlas:
         |  The ``[dataset_id]`` can be obtained by querying the metadata at the dataset level using ``query_metadata("[query written in SQL]")``.
 
         ``Returns:``
-            |  This will download the dataset
+            |  This will download the dataset.
         
         |  The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:        
-        |  You can also download data in other format like gct,vcf to know how to write code :ref:`Click Here <targetd>`
+        |  You can also download data in other format like gct to know how to write code :ref:`Click Here <targetd>`.
         """
         url = f"{self.resource_url}/{repo_name}/download"
         params = {"_id": _id}
@@ -924,12 +923,12 @@ class OmixAtlas:
         Function for saving data from omixatlas to workspaces.
 
         ``Args:``
-            |  ``repo_id (str) :`` repo id
-            |  ``dataset_id (str) :`` dataset id
-            |  ``workspace_id (str) :`` workspace id of polly
-            |  ``workspace_path (str) :`` path in workspace where you want to save file
+            |  ``repo_id (str) :`` repo id.
+            |  ``dataset_id (str) :`` dataset id.
+            |  ``workspace_id (str) :`` workspace id of polly.
+            |  ``workspace_path (str) :`` path in workspace where you want to save file.
         
-        | Example to save the dataset_id ``'GSE101127_GPL1355'`` from repo_id ``1615965444377`` to a workspace_id ``8025`` in a folder named ``'data'``
+        | Example to save the dataset_id ``'GSE101127_GPL1355'`` from repo_id ``1615965444377`` to a workspace_id ``8025`` in a folder named ``'data'``.
         
 
         .. code::
@@ -962,9 +961,9 @@ class OmixAtlas:
         Function to convert a file to maf format.
         
         ``Args:``
-            |  ``repo_key (str) :`` repo_id
-            |  ``dataset_id (str) :`` dataset_id
-            |  ``to(str) :`` output file format
+            |  ``repo_key (str) :`` repo_id.
+            |  ``dataset_id (str) :`` dataset_id.
+            |  ``to(str) :`` output file format.
         
         |  For example:
         
@@ -975,7 +974,7 @@ class OmixAtlas:
                 omixatlas.format_converter("cbioportal", "ACC_2019_Mutation_ACYC-FMI-19", "maf")
         
         ``Errors:``
-            |  ``InvalidParameterException:`` invalid value of any parameter for example like - repo_id or repo_name etc
+            |  ``InvalidParameterException:`` invalid value of any parameter for example like - repo_id or repo_name etc.
             |  ``paramException:`` Incompatible or empty value of any parameter
         """
         if not (repo_key and isinstance(repo_key, str)):

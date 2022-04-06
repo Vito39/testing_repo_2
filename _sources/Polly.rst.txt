@@ -27,6 +27,7 @@ The following libraries need to be imported over the development environment to 
         from polly.auth import Polly
         from polly.omixatlas import OmixAtlas
         from polly.workspaces import Workspaces
+        from polly.cohort import Cohort
 
 3. Authentication
 ------------------
