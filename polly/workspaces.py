@@ -43,8 +43,8 @@ class Workspaces:
         This function create workspace on polly.
         
         ``Args:``
-            |  ``name (str):`` name of the workspace
-            |  ``description (str):`` general information about workspace
+            |  ``name (str):`` name of the workspace.
+            |  ``description (str):`` general information about workspace.
 
         ``Returns:``
             |  It will return a object like this.       
@@ -103,7 +103,7 @@ class Workspaces:
             |  None
 
         ``Returns:``
-            |  it will return a table with attributes 
+            |  it will return a table with attributes.
 
 
         .. code::
@@ -127,19 +127,19 @@ class Workspaces:
         self, workspace_id: int, workspace_path: str, local_path: str
     ) -> None:
         """
-        Function to upload files/folders to workspaces
+        Function to upload files/folders to workspaces.
 
         ``Args:``
-            |  ``workspace_id :`` id of the where file need to uploaded
-            |  ``workspace_path :`` file path on workspace if folder does not exist it will create
-            |  ``local_path :`` uploaded file path
+            |  ``workspace_id :`` id of the where file need to uploaded.
+            |  ``workspace_path :`` file path on workspace if folder does not exist it will create.
+            |  ``local_path :`` uploaded file path.
         
         ``Returns:`` 
             |  None
         
         ``Errors:``
-            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
-            |  ``InvalidPathException:`` when the file to path is invalid
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid.
+            |  ``InvalidPathException:`` when the file to path is invalid.
 
 
         .. code::
@@ -173,19 +173,19 @@ class Workspaces:
 
     def download_from_workspaces(self, workspace_id: int, workspace_path: str) -> None:
         """
-        Function to download files/folders from workspaces
+        Function to download files/folders from workspaces.
 
         ``Args:``
-            |  ``workspace_id :`` id of the where file need to uploaded
-            |  ``workspace_path :`` downloaded file on workspace
+            |  ``workspace_id :`` id of the where file need to uploaded.
+            |  ``workspace_path :`` downloaded file on workspace.
         
         ``Returns:``
             |  None
         
         ``Error:``
-            |  ``InvalidPathException :`` for invalid path 
-            |  ``OperationFailedException :`` when downloading fails
-            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
+            |  ``InvalidPathException :`` for invalid path.
+            |  ``OperationFailedException :`` when downloading fails.
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid.
 
 
         .. code::

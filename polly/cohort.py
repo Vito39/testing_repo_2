@@ -34,7 +34,7 @@ from cmapPy.pandasGEXpress.concat import assemble_common_meta, assemble_data
 
 class Cohort:
     """
-    This class contain function which can be used to create, add or remove samples, merge metadata edit or delete
+    This class contain function which can be used to create, add or remove samples, merge metadata edit or delete.
 
     ``Args:``
         |  ``token (str):`` token copy from polly.
@@ -43,6 +43,7 @@ class Cohort:
     .. code::
 
 
+            from polly.cohort import Cohort
             # To use this class init a object like this
             cohort = Cohort(token)
     
@@ -108,14 +109,14 @@ class Cohort:
 
     def edit_cohort(self, new_cohort_name=None, new_description=None):
         """
-        This function is used to edit a cohort name and description
+        This function is used to edit a cohort name and description.
 
         ``Args:``
-            | ``new_cohort_name(str):`` Optional Argument: new identifier name for the cohort
-            | ``new_description(str):`` Optional Argument: new description about the cohort
+            | ``new_cohort_name(str):`` Optional Argument: new identifier name for the cohort.
+            | ``new_description(str):`` Optional Argument: new description about the cohort.
         
         ``Returns:``
-            | A confirmation message on updation of cohort
+            | A confirmation message on updation of cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -191,7 +192,7 @@ class Cohort:
         This function is used to delete a cohort.
         
         ``Returns:``
-            | A confirmation message on deletion of cohort
+            | A confirmation message on deletion of cohort.
         """
         shutil.rmtree(self.folder_path, ignore_errors=True)
         logging.basicConfig(level=logging.INFO)
@@ -201,7 +202,7 @@ class Cohort:
 
     def remove_from_cohort(self, entity_id: list) -> None:
         """
-        This function is used for removing dataset_id or sample_id from a cohort
+        This function is used for removing dataset_id or sample_id from a cohort.
         
         ``Args:``
             | ``entity_id(list):`` list of dataset_id or sample_id to be removed from the cohort.
@@ -258,14 +259,14 @@ class Cohort:
 
     def add_to_cohort(self, repo_key: str, entity_id: list) -> None:
         """
-        This function is used to add dataset(s) or sample(s) to a cohort
+        This function is used to add dataset(s) or sample(s) to a cohort.
         
         ``Args:``
-            | ``repo_key(str):`` repo_key(repo_name/repo_id) for the omixatlas to be added
-            | ``entity_id(list):`` list of entity_ids to be added to the cohort
+            | ``repo_key(str):`` repo_key(repo_name/repo_id) for the omixatlas to be added.
+            | ``entity_id(list):`` list of entity_ids to be added to the cohort.
         
         ``Returns:``
-            | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort
+            | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort.
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -331,7 +332,7 @@ class Cohort:
 
     def _gctfile(self, repo_info: str, dataset_id: str, file_path: str) -> None:
         """
-        Function to add gct file to a cohort
+        Function to add gct file to a cohort.
         """
         if not (repo_info and isinstance(repo_info, str)):
             raise InvalidParameterException("repo_name/repo_id")
@@ -359,17 +360,17 @@ class Cohort:
         entity_id=None,
     ) -> None:
         """
-        This function is used to create a cohort
+        This function is used to create a cohort.
         
         ``Args:``
-            | ``local_path(str):`` local path to instantiate the cohort
-            | ``cohort_name(str):`` identifier name for the cohort
-            | ``description(str):`` description about the cohort
-            | ``repo_key(str):`` Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added
-            | ``entity_id(list):`` Optional argument: list of sample_id or dataset_id to be added to the cohort
+            | ``local_path(str):`` local path to instantiate the cohort.
+            | ``cohort_name(str):`` identifier name for the cohort.
+            | ``description(str):`` description about the cohort.
+            | ``repo_key(str):`` Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added.
+            | ``entity_id(list):`` Optional argument: list of sample_id or dataset_id to be added to the cohort.
         
         ``Returns:``
-            | A confirmation message on creation of cohort
+            | A confirmation message on creation of cohort.
         """
         if not (local_path and isinstance(local_path, str)):
             raise InvalidParameterException("local_path")
@@ -407,7 +408,7 @@ class Cohort:
 
     def _get_user_id(self):
         """
-        Function to get user id
+        Function to get user id.
         """
         me_url = f"{self.base_url}/users/me"
         details = self.session.get(me_url)
@@ -417,7 +418,7 @@ class Cohort:
 
     def summarize_cohort(self):
         """
-        Function to return metadata and summary of a cohort
+        Function to return metadata and summary of a cohort.
         
         ``Returns:``
             | A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
@@ -436,10 +437,10 @@ class Cohort:
         Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
         
         ``Args:``
-            | ``local_path(str):`` local path of the cohort
+            | ``local_path(str):`` local path of the cohort.
         
         ``Returns:``
-            | A confirmation message on instantiation of the cohort
+            | A confirmation message on instantiation of the cohort.
         """
         if not os.path.exists(local_path):
             raise InvalidPathException(local_path)
@@ -459,7 +460,7 @@ class Cohort:
 
     def _get_metadetails(self) -> dict:
         """
-        Function to return metadata details of a cohort
+        Function to return metadata details of a cohort.
         """
         data = self._cohort_details
         meta_dict = {}
@@ -474,7 +475,7 @@ class Cohort:
 
     def _get_df(self) -> pd.DataFrame:
         """
-        Function to return cohort summary in a dataframe
+        Function to return cohort summary in a dataframe.
         """
         data = self._cohort_details
         df_dict = {"source_omixatlas": [], "datatype": [], "entity_id": []}
@@ -496,7 +497,7 @@ class Cohort:
 
     def _get_metadata(self, repo_key: str, dataset_id: str) -> dict:
         """
-        Function to return metadata for a dataset
+        Function to return metadata for a dataset.
         """
         obj = OmixAtlas()
         response_omixatlas = obj.omixatlas_summary(repo_key)
@@ -513,7 +514,7 @@ class Cohort:
 
     def _validate_repo(self, repo_name: str, dataset_id: list) -> list:
         """
-        Function to validate repo and datasets given as argument for adding to cohort
+        Function to validate repo and datasets given as argument for adding to cohort.
         """
         dict_dataset = self._cohort_details.get("source_omixatlas")
         dataset_list = list(self._cohort_details["entity_id"].keys())
@@ -546,7 +547,7 @@ class Cohort:
 
     def _get_entity(self, repo_name: str) -> str:
         """
-        Function to get the entity type of repo
+        Function to get the entity type of repo.
         """
         for repo, dict in COHORT_REPO_INFO.items():
             if repo_name == repo:
