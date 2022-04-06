@@ -11,6 +11,15 @@ polly.auth module
    :show-inheritance:
    :exclude-members:  UnauthorizedException, default_session 
 
+polly.cohort module
+-----------------
+
+.. automodule:: polly.cohort
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :exclude-members:  
+
 polly.omixatlas module
 ----------------------
 

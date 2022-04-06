@@ -22,3 +22,24 @@ DATA_TYPES = {
         }
     ]
 }
+
+# endpoints
+CONSTANTS_ENDPOINT = "/constants"
+REPOSITORIES_ENDPOINT = "/repositories"
+REPOSITORY_PACKAGE_ENDPOINT = REPOSITORIES_ENDPOINT + "/{}/packages"
+IMAGE_URL_ENDPOINT = (
+    "https://elucidatainc.github.io/PublicAssets/discover-fe-assets/omixatlas_hex.svg"
+)
+
+# statuscodes
+OK = 200
+CREATED = 201
+
+# cohort constants
+VALID_REPO_NAMES = {"tcga": ["mutation", "transcriptomics"]}
+COHORT_REPO_INFO = {
+    "tcga": {
+        "file_structure": "single",
+    }
+}
+dot = "."

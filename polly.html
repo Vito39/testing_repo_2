@@ -42,6 +42,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Polly.html">About Polly Library</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">polly package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.auth">polly.auth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polly-cohort-module">polly.cohort module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.omixatlas">polly.omixatlas module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly.workspaces">polly.workspaces module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-polly">Module contents</a></li>
@@ -136,6 +137,164 @@
 <span class="n">session</span> <span class="o">=</span> <span class="n">Polly</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="polly-cohort-module">
+<h2>polly.cohort module<a class="headerlink" href="#polly-cohort-module" title="Permalink to this headline"></a></h2>
+<span class="target" id="module-polly.cohort"></span><dl class="py class">
+<dt class="sig sig-object py" id="polly.cohort.Cohort">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'polly'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.cohort.Cohort" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.merge_metadata">
+<span class="sig-name descname"><span class="pre">merge_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.cohort.Cohort.merge_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Function to merge the sample level metadata from all the gct files in a cohort.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A pandas dataframe containing the merged metadata for analysis.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.merge_data_matrix">
+<span class="sig-name descname"><span class="pre">merge_data_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.merge_data_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Function to merge the data-matrix level metadata from all the gct files in a cohort.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A pandas dataframe containing the merged data for analysis.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.edit_cohort">
+<span class="sig-name descname"><span class="pre">edit_cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_cohort_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.cohort.Cohort.edit_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used to edit a cohort name and description</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">new_cohort_name(str):</span></code> Optional Argument: new identifier name for the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">new_description(str):</span></code> Optional Argument: new description about the cohort</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message on updation of cohort</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.is_valid">
+<span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.is_valid" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used to check if a cohort is valid or not.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A boolean result based on the validity of the cohort.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.delete_cohort">
+<span class="sig-name descname"><span class="pre">delete_cohort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.delete_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used to delete a cohort.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message on deletion of cohort</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.remove_from_cohort">
+<span class="sig-name descname"><span class="pre">remove_from_cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.remove_from_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used for removing dataset_id or sample_id from a cohort</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> list of dataset_id or sample_id to be removed from the cohort.</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message on removal of dataset_id or sample_id from cohort.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.add_to_cohort">
+<span class="sig-name descname"><span class="pre">add_to_cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.add_to_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used to add dataset(s) or sample(s) to a cohort</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> repo_key(repo_name/repo_id) for the omixatlas to be added</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> list of entity_ids to be added to the cohort</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message for number of dataset(s) or sample(s) which are added to the cohort</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.create_cohort">
+<span class="sig-name descname"><span class="pre">create_cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#polly.cohort.Cohort.create_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>This function is used to create a cohort</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path to instantiate the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">cohort_name(str):</span></code> identifier name for the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">description(str):</span></code> description about the cohort</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key(str):</span></code> Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">entity_id(list):</span></code> Optional argument: list of sample_id or dataset_id to be added to the cohort</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message on creation of cohort</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.summarize_cohort">
+<span class="sig-name descname"><span class="pre">summarize_cohort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#polly.cohort.Cohort.summarize_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>Function to return metadata and summary of a cohort</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
+or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
+and data type available in the cohort.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="polly.cohort.Cohort.load_cohort">
+<span class="sig-name descname"><span class="pre">load_cohort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.cohort.Cohort.load_cohort" title="Permalink to this definition"></a></dt>
+<dd><p>Function to load an existing cohort into an object.
+Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">local_path(str):</span></code> local path of the cohort</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">A confirmation message on instantiation of the cohort</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -271,7 +430,7 @@ about omixatlas repository.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="polly.omixatlas.OmixAtlas.query_metadata">
-<span class="sig-name descname"><span class="pre">query_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_api_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.query_metadata" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">query_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_api_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">QUERY_API_V1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polly.omixatlas.OmixAtlas.query_metadata" title="Permalink to this definition"></a></dt>
 <dd><p>This function will returns a table containing the datasets that satisfied the sql query.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">

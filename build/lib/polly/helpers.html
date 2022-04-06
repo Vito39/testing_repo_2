@@ -282,6 +282,53 @@ if not data_type:</p>
 </div></blockquote>
 <p>return data_type</p>
 </dd>
+<dt>def get_metadata(self, url: str, payload: dict) -&gt; str:</dt><dd><p>“””
+Function to return the data-type of the required dataset
+“””
+if not (url and isinstance(url, str)):</p>
+<blockquote>
+<div><p>raise InvalidParameterException(“url”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not (payload and isinstance(payload, dict)):</dt><dd><p>raise InvalidParameterException(“payload”)</p>
+</dd>
+</dl>
+<p>response = self.session.post(url, data=json.dumps(payload))
+error_handler(response)
+response_data = response.json()
+hits = response_data.get(“hits”, {}).get(“hits”)
+if not (hits and isinstance(hits, list)):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>raise paramException(</dt><dd><p>title=”Param Error”,
+detail=”No matches found with the given repo details. Please try again.”,</p>
+</dd>
+</dl>
+<p>)</p>
+</div></blockquote>
+<p>dataset = hits[0]
+return dataset</p>
+</dd>
+<dt>def elastic_query(index_name: str, dataset_id: str) -&gt; dict:</dt><dd><dl>
+<dt>query = {</dt><dd><dl>
+<dt>“query”: {</dt><dd><dl>
+<dt>“bool”: {</dt><dd><dl class="simple">
+<dt>“must”: [</dt><dd><p>{“term”: {“_index”: index_name}},
+{“term”: {“dataset_id.keyword”: dataset_id}},</p>
+</dd>
+</dl>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}
+return query</p>
+</dd>
 </dl>
 
 

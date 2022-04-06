@@ -145,8 +145,45 @@ return exception_str</p>
 </dd>
 </dl>
 </dd>
+<dt>class InvalidCohortPathException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self):</dt><dd><p>return “This path does not represent a Cohort. Please try again.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class InvalidCohortNameException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self, cohort_name):</dt><dd><p>return f”The identifier {cohort_name} does not represent a valid cohort name. Please try again.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class InvalidRepoException(Exception):</dt><dd><dl class="simple">
+<dt>def __init__(self, repo_name):</dt><dd><p>self.repo_name = repo_name</p>
+</dd>
+<dt>def __str__(self):</dt><dd><p>return “This feature supports the repo : ‘tcga’ . Please try again.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class InvalidDatasetException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self):</dt><dd><p>return “Dataset/s not added.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class InvalidCohortOperationException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self):</dt><dd><p>return “This operation is not valid as no cohort has been instantiated.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class EmptyCohortException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self):</dt><dd><p>return “There are no datasets to be merged in the cohort. Please try adding datasets using add_to_cohort() function.”</p>
+</dd>
+</dl>
+</dd>
+<dt>class CohortEditException(Exception):</dt><dd><dl class="simple">
+<dt>def __str__(self):</dt><dd><p>return “No parameter specified for editing in cohort”</p>
+</dd>
+</dl>
+</dd>
 <dt>class MissingKeyException(Exception):</dt><dd><dl class="simple">
-<dt>def __init__(self, key):</dt><dd><p>self.reason = key</p>
+<dt>def __init__(self, key):</dt><dd><p>self.key = key</p>
 </dd>
 <dt>def __str__(self):</dt><dd><p>return f”Missing keys {self.key}”</p>
 </dd>
