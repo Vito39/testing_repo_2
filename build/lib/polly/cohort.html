@@ -102,12 +102,28 @@ import datetime
 from cmapPy.pandasGEXpress.parse import parse
 from cmapPy.pandasGEXpress.concat import assemble_common_meta, assemble_data</p>
 <dl>
-<dt>class Cohort:</dt><dd><dl>
-<dt>def __init__(self, token=None, env=”polly”) -&gt; None:</dt><dd><p>self.session = Polly.get_session(token, env=env)
+<dt>class Cohort:</dt><dd><p>“””
+This class contain function which can be used to create, add or remove samples, merge metadata edit or delete</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly(default) or testpolly or devpolly.</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To use this class init a object like this</span>
+<span class="n">cohort</span> <span class="o">=</span> <span class="n">Cohort</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>“””
+def __init__(self, token=None, env=”polly”) -&gt; None:</p>
+<blockquote>
+<div><p>self.session = Polly.get_session(token, env=env)
 self.base_url = f”<a class="reference external" href="https://v2.api">https://v2.api</a>.{self.session.env}.elucidata.io”
 self.folder_path = None
 self._cohort_details = None</p>
-</dd>
+</div></blockquote>
+<dl>
 <dt>def _read_gcts(self, dataset_ids: list, file_path: str) -&gt; pd.DataFrame:</dt><dd><dl class="simple">
 <dt>gct_files = [</dt><dd><p>f”{file_path}/{self._cohort_details.get(‘entity_id’,{}).get(dataset_id)[0]}_{dataset_id}.gct”
 for dataset_id in dataset_ids</p>

@@ -33,6 +33,20 @@ from cmapPy.pandasGEXpress.concat import assemble_common_meta, assemble_data
 
 
 class Cohort:
+    """
+    This class contain function which can be used to create, add or remove samples, merge metadata edit or delete
+
+    ``Args:``
+        |  ``token (str):`` token copy from polly.
+        |  ``env (str):`` polly(default) or testpolly or devpolly.
+        
+    .. code::
+
+
+            # To use this class init a object like this
+            cohort = Cohort(token)
+    
+    """
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
