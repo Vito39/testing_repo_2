@@ -52,7 +52,8 @@ class Cohort:
     def merge_metadata(self):
         """
         Function to merge the sample level metadata from all the gct files in a cohort.
-        Returns:
+
+        ``Returns:``
             | A pandas dataframe containing the merged metadata for analysis.
         """
         if self._cohort_details is None:
@@ -75,7 +76,8 @@ class Cohort:
     def merge_data_matrix(self) -> pd.DataFrame:
         """
         Function to merge the data-matrix level metadata from all the gct files in a cohort.
-        Returns:
+
+        ``Returns:``
             | A pandas dataframe containing the merged data for analysis.
         """
         if self._cohort_details is None:
@@ -93,10 +95,12 @@ class Cohort:
     def edit_cohort(self, new_cohort_name=None, new_description=None):
         """
         This function is used to edit a cohort name and description
-        Args:
-            | new_cohort_name(str): Optional Argument: new identifier name for the cohort
-            | new_description(str): Optional Argument: new description about the cohort
-        Returns:
+
+        ``Args:``
+            | ``new_cohort_name(str):`` Optional Argument: new identifier name for the cohort
+            | ``new_description(str):`` Optional Argument: new description about the cohort
+        
+        ``Returns:``
             | A confirmation message on updation of cohort
         """
         if self._cohort_details is None:
@@ -146,7 +150,8 @@ class Cohort:
     def is_valid(self) -> bool:
         """
         This function is used to check if a cohort is valid or not.
-        Returns:
+        
+        ``Returns:``
             | A boolean result based on the validity of the cohort.
         """
         if self._cohort_details is None:
@@ -170,7 +175,8 @@ class Cohort:
     def delete_cohort(self) -> None:
         """
         This function is used to delete a cohort.
-        Returns:
+        
+        ``Returns:``
             | A confirmation message on deletion of cohort
         """
         shutil.rmtree(self.folder_path, ignore_errors=True)
@@ -182,9 +188,11 @@ class Cohort:
     def remove_from_cohort(self, entity_id: list) -> None:
         """
         This function is used for removing dataset_id or sample_id from a cohort
-        Args:
-            | entity_id(list): list of dataset_id or sample_id to be removed from the cohort.
-        Returns:
+        
+        ``Args:``
+            | ``entity_id(list):`` list of dataset_id or sample_id to be removed from the cohort.
+        
+        ``Returns:``
             | A confirmation message on removal of dataset_id or sample_id from cohort.
         """
         if self._cohort_details is None:
@@ -237,10 +245,12 @@ class Cohort:
     def add_to_cohort(self, repo_key: str, entity_id: list) -> None:
         """
         This function is used to add dataset(s) or sample(s) to a cohort
-        Args:
-            | repo_key(str): repo_key(repo_name/repo_id) for the omixatlas to be added
-            | entity_id(list): list of entity_ids to be added to the cohort
-        Returns:
+        
+        ``Args:``
+            | ``repo_key(str):`` repo_key(repo_name/repo_id) for the omixatlas to be added
+            | ``entity_id(list):`` list of entity_ids to be added to the cohort
+        
+        ``Returns:``
             | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort
         """
         if self._cohort_details is None:
@@ -336,13 +346,15 @@ class Cohort:
     ) -> None:
         """
         This function is used to create a cohort
-        Args:
-            | local_path(str): local path to instantiate the cohort
-            | cohort_name(str): identifier name for the cohort
-            | description(str): description about the cohort
-            | repo_key(str): Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added
-            | entity_id(list): Optional argument: list of sample_id or dataset_id to be added to the cohort
-        Returns:
+        
+        ``Args:``
+            | ``local_path(str):`` local path to instantiate the cohort
+            | ``cohort_name(str):`` identifier name for the cohort
+            | ``description(str):`` description about the cohort
+            | ``repo_key(str):`` Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added
+            | ``entity_id(list):`` Optional argument: list of sample_id or dataset_id to be added to the cohort
+        
+        ``Returns:``
             | A confirmation message on creation of cohort
         """
         if not (local_path and isinstance(local_path, str)):
@@ -392,7 +404,8 @@ class Cohort:
     def summarize_cohort(self):
         """
         Function to return metadata and summary of a cohort
-        Returns:
+        
+        ``Returns:``
             | A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
               or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
               and data type available in the cohort.
@@ -407,9 +420,11 @@ class Cohort:
         """
         Function to load an existing cohort into an object.
         Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
-        Args:
-            | local_path(str): local path of the cohort
-        Returns:
+        
+        ``Args:``
+            | ``local_path(str):`` local path of the cohort
+        
+        ``Returns:``
             | A confirmation message on instantiation of the cohort
         """
         if not os.path.exists(local_path):

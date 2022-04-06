@@ -8,7 +8,26 @@ import os
 
 
 class Workspaces:
+    """
+    This class contains functions to interact with workspaces on Polly. We can initialize a object that
+    can use all function and methods of Workspaces class.
+    
+    ``Args:``
+        |  ``token (str):`` token copy from polly.
+        |  ``env (str):`` polly(default) or testpolly or devpolly.
+    
+
+    .. code::
+
+
+            # to init a obj
+            workspaces = Workspaces(token)
+            # from there you can other methods
+            workspaces.fetch_my_workspaces()
+
+    """
     def __init__(self, token=None, env="polly") -> None:
+
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
         self.resource_url = f"{self.base_url}/workspaces"
@@ -20,6 +39,44 @@ class Workspaces:
             self.env_string = "devenv"
 
     def create_workspace(self, name: str, description=None):
+        """
+        This function create workspace on polly.
+        
+        ``Args:``
+            |  ``name (str):`` name of the workspace
+            |  ``description (str):`` general information about workspace
+
+        ``Returns:``
+            |  It will return a object like this.       
+            .. code::
+
+
+                    
+                        {
+                        'id': 9999, 
+                        'name': 'rrrrr', 
+                        'active': True, 
+                        'description': 'for docu', 
+                        'created_time': '2022-03-16 11:08:47.127260', 
+                        'last_modified': '2022-03-16 11:08:47.127260', 
+                        'creator': 1127, 
+                        'project_property': {
+                            'type': 'workspaces',
+                            'labels': ''
+                        }, 
+                        'organisation': 1
+                        }
+        
+        
+        .. code::
+
+
+                # to create a obj
+                workspaces = Workspaces(token)
+                # from there you can other methods
+                workspaces.create_workspace()
+
+        """
         url = self.resource_url
         payload = {
             "data": {
@@ -39,6 +96,24 @@ class Workspaces:
         return attributes
 
     def fetch_my_workspaces(self):
+        """
+        This function fetch workspaces from Polly.
+        
+        ``Args:``
+            |  None
+
+        ``Returns:``
+            |  it will return a table with attributes 
+
+
+        .. code::
+
+
+                # create a obj
+                workspaces = Workspaces(token)
+                # from there you can other methods
+                workspaces.fetch_my_workspaces()
+        """
         url = self.resource_url
         response = self.session.get(url)
         error_handler(response)
@@ -53,6 +128,28 @@ class Workspaces:
     ) -> None:
         """
         Function to upload files/folders to workspaces
+
+        ``Args:``
+            |  ``workspace_id :`` id of the where file need to uploaded
+            |  ``workspace_path :`` file path on workspace if folder does not exist it will create
+            |  ``local_path :`` uploaded file path
+        
+        ``Returns:`` 
+            |  None
+        
+        ``Errors:``
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
+            |  ``InvalidPathException:`` when the file to path is invalid
+
+
+        .. code::
+
+
+                # create a obj
+                workspaces = Workspaces(token)
+                # from there you can other methods
+                workspaces.upload_to_workspaces(workspace_id, workspace_path, local_path)
+
         """
         if not (workspace_id and isinstance(workspace_id, int)):
             raise InvalidParameterException("workspace_id")
@@ -77,6 +174,28 @@ class Workspaces:
     def download_from_workspaces(self, workspace_id: int, workspace_path: str) -> None:
         """
         Function to download files/folders from workspaces
+
+        ``Args:``
+            |  ``workspace_id :`` id of the where file need to uploaded
+            |  ``workspace_path :`` downloaded file on workspace
+        
+        ``Returns:``
+            |  None
+        
+        ``Error:``
+            |  ``InvalidPathException :`` for invalid path 
+            |  ``OperationFailedException :`` when downloading fails
+            |  ``InvalidParameterException:`` when the parameter like workspace id is invalid
+
+
+        .. code::
+
+
+                # create a obj
+                workspaces = Workspaces(token)
+                # from there you can other methods
+                workspaces.download_from_workspaces(workspace_id, workspace_path)
+        
         """
         if not (workspace_id and isinstance(workspace_id, int)):
             raise InvalidParameterException("workspace_id")

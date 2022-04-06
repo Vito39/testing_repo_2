@@ -1,0 +1,73 @@
+name: Sphinx build
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    name: uploading python doc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+        
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install .
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install wheel
+      
+      - name: Current Branch Name
+        run: |
+          echo ${GITHUB_REF#refs/*/}
+
+      - name: making doc
+        run: |
+          sudo apt-get install -y expect
+          export ans="n"
+          export ans1="Polly_Documentation"
+          export ans2="hrishabh_kamal"
+          export ans3="1"
+          export ans4="en"
+          echo '#!/usr/bin/expect -f' > doc.sh
+          echo 'set timeout -1' >> doc.sh
+          echo 'spawn sphinx-quickstart' >> doc.sh
+          echo 'expect -ex {Separate source and build directories (y/n) [n]:}' >> doc.sh
+          echo 'send -- "n\n"' >> doc.sh
+          echo 'expect -ex {Project name:}' >> doc.sh
+          echo 'send -- "$env(ans1)\r"' >> doc.sh
+          echo 'expect -ex {Author name(s):}' >> doc.sh
+          echo 'send -- "$env(ans2)\r"' >> doc.sh
+          echo 'expect -ex {Project release []:}' >> doc.sh
+          echo 'send -- "$env(ans3)\r"' >> doc.sh
+          echo 'expect -ex {Project language [en]:}' >> doc.sh
+          echo 'send -- "$env(ans4)\r"' >> doc.sh
+          echo 'expect eof' >> doc.sh
+          chmod +x ./doc.sh
+          ./doc.sh
+          cp make_doc/conf_html.py conf.py
+          cp make_doc/index.rst index.rst
+          cp make_doc/polly.rst polly.rst
+          mv make_doc/download.rst download.rst
+          mv make_doc/query.rst query.rst
+          mv make_doc/Polly.rst Polly.rst
+          sphinx-apidoc -o . .
+          make html
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-docs
+          path: _build/html/
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/html/
