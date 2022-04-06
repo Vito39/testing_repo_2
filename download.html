@@ -85,9 +85,8 @@
 <div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span></code>: (str) repo_id OR repo_name from where the data needs to be downloaded.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">dataset_id</span></code>: (str) dataset_id which the user wants to download.</div>
-<div class="line">The [repo_name OR repo_id] of an OmixAtlas can be identified by calling the get_all_omixatlas() function. The [dataset_id] can be obtained by querying the metadata at the dataset level using query_metadata(“[query written in SQL]”).</div>
-<div class="line">The output of this function is a signed URL. The data can be downloaded by clicking on this URL.</div>
-<div class="line">NOTE: This signed URL expires after 60 minutes from when it is generated.</div>
+<div class="line">This will download the data.</div>
+<div class="line">The <code class="docutils literal notranslate"><span class="pre">[repo_name</span> <span class="pre">OR</span> <span class="pre">repo_id]</span></code> of an OmixAtlas can be identified by calling the get_all_omixatlas() function. The <code class="docutils literal notranslate"><span class="pre">[dataset_id]</span></code> can be obtained by querying the metadata at the dataset level using <code class="docutils literal notranslate"><span class="pre">query_metadata(&quot;[query</span> <span class="pre">written</span> <span class="pre">in</span> <span class="pre">SQL]&quot;)</span></code>.</div>
 <div class="line">The output data is in .gct/h5ad format. This data can be parsed into a data frame for better accessibility using the following code:</div>
 </div>
 </section>
