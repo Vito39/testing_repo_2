@@ -10,10 +10,10 @@ Welcome to polly's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   Polly
+   make_doc/Polly
    polly
-   download
-   query
+   make_doc/download
+   make_doc/query
 * :ref:`genindex`
 
    
