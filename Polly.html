@@ -86,7 +86,7 @@
 <h2>About Polly Python<a class="headerlink" href="#about-polly-python" title="Permalink to this headline"></a></h2>
 <p>Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.</p>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="_images/Polly_property.png"><img alt="Overview of services that polly provides" src="_images/Polly_property.png" style="width: 525.0px; height: 675.0px;" /></a>
+<a class="reference internal image-reference" href="_images/Polly_property.png"><img alt="Overview of services that polly provides" src="_images/Polly_property.png" style="width: 555.0px; height: 675.0px;" /></a>
 <figcaption>
 <p><span class="caption-text">overview of services that polly provides</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
@@ -128,6 +128,11 @@ The following libraries need to be imported over the development environment to 
 <p>The following code is required to add the authentication function in the Polly Python library</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTH_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;[authentication_token_copied]&quot;</span>
 <span class="n">Polly</span><span class="o">.</span><span class="n">auth</span><span class="p">(</span><span class="n">AUTH_TOKEN</span><span class="p">)</span>
+<span class="c1"># after that you can make class objects without using token</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">()</span>
+<span class="n">cohort1</span> <span class="o">=</span> <span class="n">Cohort</span><span class="p">()</span>
+<span class="n">cohort2</span> <span class="o">=</span> <span class="n">Cohort</span><span class="p">()</span>
+<span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
