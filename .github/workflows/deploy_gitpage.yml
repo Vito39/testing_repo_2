@@ -53,10 +53,10 @@ jobs:
           echo 'expect eof' >> doc.sh
           chmod +x ./doc.sh
           ./doc.sh
+          sphinx-apidoc -o . .
           cp make_doc/conf_html.py conf.py
           cp make_doc/index.rst index.rst
           cp make_doc/polly.rst polly.rst
-          sphinx-apidoc -o . .
           make html
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

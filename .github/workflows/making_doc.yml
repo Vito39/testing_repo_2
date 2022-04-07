@@ -55,10 +55,10 @@ jobs:
           echo 'expect eof' >> doc.sh
           chmod +x ./doc.sh
           ./doc.sh
+          sphinx-apidoc -o . .
           cp make_doc/conf_md.py conf.py
           cp make_doc/index.rst index.rst
           cp make_doc/polly.rst polly.rst
-          sphinx-apidoc -o . .
           make markdown
           python3 polly/upload_files.py
           
