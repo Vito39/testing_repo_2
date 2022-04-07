@@ -60,9 +60,11 @@ The following code is required to add the authentication function in the Polly P
 
         AUTH_TOKEN = "[authentication_token_copied]"
         Polly.auth(AUTH_TOKEN)
-        # after that you can make class objects without using token
+        .. after that you can make class objects without using token
         omixatlas = OmixAtlas()
         cohort1 = Cohort()
         cohort2 = Cohort()
         workspaces = Workspaces()
+
+
 
