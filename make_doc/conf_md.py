@@ -30,7 +30,7 @@ source_suffix = ['.rst','.py']
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx_markdown_builder']
+extensions = ['sphinx.ext.autodoc','sphinx_markdown_builder']
 
 
 # Add any paths that contain templates here, relative to this directory.
