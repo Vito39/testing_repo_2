@@ -8,7 +8,7 @@ Polly Python library provides convenient access to the above-mentioned functiona
 
 .. figure:: ./Polly_property.png
    :height: 225
-   :width: 175
+   :width: 185
    :scale: 300
    :alt: Overview of services that polly provides
    :align: center
@@ -60,4 +60,9 @@ The following code is required to add the authentication function in the Polly P
 
         AUTH_TOKEN = "[authentication_token_copied]"
         Polly.auth(AUTH_TOKEN)
+        # after that you can make class objects without using token
+        omixatlas = OmixAtlas()
+        cohort1 = Cohort()
+        cohort2 = Cohort()
+        workspaces = Workspaces()
 
