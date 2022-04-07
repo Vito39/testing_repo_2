@@ -39,7 +39,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','env/*', 'make_doc/*', 'examples/*','tests/*']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','env/*', 'examples/*','tests/*']
 add_module_names = False
 autodoc_member_order = 'bysource'
 autodoc_preserve_defaults = True

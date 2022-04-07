@@ -56,10 +56,6 @@ jobs:
           cp make_doc/conf_html.py conf.py
           cp make_doc/index.rst index.rst
           cp make_doc/polly.rst polly.rst
-          mv make_doc/download.rst download.rst
-          mv make_doc/query.rst query.rst
-          mv make_doc/Polly.rst Polly.rst
-          mv make_doc/Polly_property.png Polly_property.png
           sphinx-apidoc -o . .
           make html
       - name: Upload artifacts
