@@ -9,7 +9,6 @@ class PollySession(Session):
 
     ``Args:``
         |  ``token (str):`` token copy from polly.
-        |  ``env (str):`` polly or testpolly or devpolly.
 
     ``Returns:``
         |  None

@@ -38,7 +38,6 @@ class Cohort:
 
     ``Args:``
         |  ``token (str):`` token copy from polly.
-        |  ``env (str):`` polly(default) or testpolly or devpolly.
         
     .. code::
 
@@ -54,219 +53,105 @@ class Cohort:
         self.folder_path = None
         self._cohort_details = None
 
-    def _read_gcts(self, dataset_ids: list, file_path: str) -> pd.DataFrame:
-        gct_files = [
-            f"{file_path}/{self._cohort_details.get('entity_id',{}).get(dataset_id)[0]}_{dataset_id}.gct"
-            for dataset_id in dataset_ids
-        ]
-        results_gct = Parallel(n_jobs=4)(
-            delayed(parse)(gct_file) for gct_file in gct_files
-        )
-        return results_gct
-
-    def merge_metadata(self):
+    def create_cohort(
+        self,
+        local_path: str,
+        cohort_name: str,
+        description: str,
+        repo_key=None,
+        entity_id=None,
+    ) -> None:
         """
-        Function to merge the sample level metadata from all the gct files in a cohort.
-
-        ``Returns:``
-            | A pandas dataframe containing the merged metadata for analysis.
-        """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        file_path = self.folder_path
-        sample_list = list(self._cohort_details["entity_id"].keys())
-        if len(sample_list) == 0:
-            raise EmptyCohortException
-        results_gct = self._read_gcts(sample_list, file_path)
-        gct_files = [dataset_id + ".gct" for dataset_id in sample_list]
-        All_Metadata = assemble_common_meta(
-            [i.col_metadata_df for i in results_gct],
-            fields_to_remove=[],
-            sources=gct_files,
-            remove_all_metadata_fields=False,
-            error_report_file="errors",
-        )
-        return All_Metadata
-
-    def merge_data_matrix(self) -> pd.DataFrame:
-        """
-        Function to merge the data-matrix level metadata from all the gct files in a cohort.
-
-        ``Returns:``
-            | A pandas dataframe containing the merged data for analysis.
-        """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        file_path = self.folder_path
-        sample_list = list(self._cohort_details["entity_id"].keys())
-        if len(sample_list) == 0:
-            raise EmptyCohortException
-        results_gct = self._read_gcts(sample_list, file_path)
-        All_data_matrix = assemble_data(
-            [i.data_df for i in results_gct], concat_direction="horiz"
-        )
-        return All_data_matrix
-
-    def edit_cohort(self, new_cohort_name=None, new_description=None):
-        """
-        This function is used to edit a cohort name and description.
-
+        This function is used to create a cohort.
+        
         ``Args:``
-            | ``new_cohort_name(str):`` Optional Argument: new identifier name for the cohort.
-            | ``new_description(str):`` Optional Argument: new description about the cohort.
+            |  ``local_path(str):`` local path to instantiate the cohort.
+            |  ``cohort_name(str):`` identifier name for the cohort.
+            |  ``description(str):`` description about the cohort.
+            |  ``repo_key(str):`` Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added.
+            |  ``entity_id(list):`` Optional argument: list of sample_id or dataset_id to be added to the cohort.
         
         ``Returns:``
-            | A confirmation message on updation of cohort.
-        """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        if new_cohort_name is None and new_description is None:
-            raise CohortEditException
-        if new_cohort_name:
-            self._edit_cohort_name(new_cohort_name)
-        if new_description:
-            self._edit_cohort_description(new_description)
-
-    def _edit_cohort_name(self, new_cohort_name: str):
-        if not (new_cohort_name and isinstance(new_cohort_name, str)):
-            return
-        if dot in new_cohort_name:
-            logging.error("The cohort name is not valid. Please try again.")
-            return
-        p = Path(self.folder_path)
-        parent = p.parent
-        str_parent = str(parent.resolve())
-        new_path = helpers.make_path(str_parent, f"{new_cohort_name}.pco")
-        existing_path = self.folder_path
-        os.rename(existing_path, new_path)
-        self.folder_path = new_path
-        logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Name Updated!")
-
-    def _edit_cohort_description(self, new_description: str):
-        if not (new_description and isinstance(new_description, str)):
-            return
-        existing_path = self.folder_path
-        meta_path = helpers.make_path(existing_path, "cohort.meta")
-        with open(meta_path, "r+b") as openfile:
-            byte = openfile.read()
-            data = base64.b64decode((byte))
-            json_data = json.loads(data.decode("utf-8"))
-            json_data["description"] = new_description
-            self._cohort_details = json_data
-            input = json.dumps(json_data)
-            encoded_data = base64.b64encode(input.encode("utf-8"))
-            openfile.seek(0)
-            openfile.write(encoded_data)
-            openfile.truncate()
-        logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Description Updated!")
-
-    def is_valid(self) -> bool:
-        """
-        This function is used to check if a cohort is valid or not.
+            |  A confirmation message on creation of cohort.
         
-        ``Returns:``
-            | A boolean result based on the validity of the cohort.
+        ``Errors:``
+            |  ``InvalidParameterException:`` Empty or Invalid Parameters
+            |  ``InvalidCohortNameException:`` The cohort_name does not represent a valid cohort name.
+            |  ``InvalidPathException:`` Provided path does not represent a file or a directory.
+
+        | After making Cohort Object you can create cohort.
+        | Example-
+        | 1. while passing argument of repo and dataset.
+
+        .. code::
+
+
+                cohort.create_cohort("/import/tcga_cohort","moderate","tcga_tp53_brca_mutation_moderate","tcga",moderate_data)
+
+        | 2. without passing argument of repo and dataset.
+        .. code::
+
+
+                cohort2.create_cohort("/import/tcga_cohort","higher","tcga_tp53_brca_mutation_high")
+        
+
         """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        if not os.path.exists(self.folder_path):
+        if not (local_path and isinstance(local_path, str)):
+            raise InvalidParameterException("local_path")
+        if not (cohort_name and isinstance(cohort_name, str)):
+            raise InvalidParameterException("cohort_name")
+        if not (description and isinstance(description, str)):
+            raise InvalidParameterException("description")
+        if not os.path.exists(local_path):
             raise InvalidPathException
-        meta_path = helpers.make_path(self.folder_path, "cohort.meta")
-        if not os.path.exists(meta_path):
-            return False
-        sample_list = list(self._cohort_details["entity_id"].keys())
-        if len(sample_list) == 0:
-            return True
-        for sample in sample_list:
-            omixatlas = self._cohort_details.get("entity_id", {}).get(sample)[0]
-            gct_path = f"{self.folder_path}/{omixatlas}_{sample}.gct"
-            jpco_path = f"{self.folder_path}/{omixatlas}_{sample}.jpco"
-            if not (os.path.exists(gct_path) and os.path.exists(jpco_path)):
-                return False
-        return True
-
-    def delete_cohort(self) -> None:
-        """
-        This function is used to delete a cohort.
-        
-        ``Returns:``
-            | A confirmation message on deletion of cohort.
-        """
-        shutil.rmtree(self.folder_path, ignore_errors=True)
-        logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Deleted Successfuly!")
-        self.folder_path = None
-        self._cohort_details = None
-
-    def remove_from_cohort(self, entity_id: list) -> None:
-        """
-        This function is used for removing dataset_id or sample_id from a cohort.
-        
-        ``Args:``
-            | ``entity_id(list):`` list of dataset_id or sample_id to be removed from the cohort.
-        
-        ``Returns:``
-            | A confirmation message on removal of dataset_id or sample_id from cohort.
-        """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        if not (entity_id and isinstance(entity_id, list)):
-            raise InvalidParameterException("entity_id")
-        dataset_count = 0
-        verified_dataset = []
-        file_meta = helpers.make_path(self.folder_path, "cohort.meta")
-        with open(file_meta, "r+b") as openfile:
-            byte = openfile.read()
-            data = base64.b64decode((byte))
-            json_data = json.loads(data.decode("utf-8"))
-            dataset_id = list(json_data["entity_id"].keys())
-            for dataset in entity_id:
-                if dataset not in dataset_id:
-                    logging.basicConfig(level=logging.INFO)
-                    logging.info(f"Dataset Id - {dataset} not present in the Cohort.")
-                    continue
-                dataset_count += 1
-                verified_dataset.append(dataset)
-                omixatlas = json_data.get("entity_id", {}).get(dataset)[0]
-                gct_path = f"{self.folder_path}/{omixatlas}_{dataset}.gct"
-                json_path = f"{self.folder_path}/{omixatlas}_{dataset}.jpco"
-                os.remove(gct_path)
-                os.remove(json_path)
-                del json_data.get("entity_id")[dataset]
-                json_data.get("source_omixatlas").get(omixatlas).remove(dataset)
-            omixatlas_dict = json_data.get("source_omixatlas")
-            empty_keys = []
-            for key, value in omixatlas_dict.items():
-                if value == []:
-                    empty_keys.append(key)
-            for key in empty_keys:
-                del omixatlas_dict[key]
-            json_data["number_of_samples"] -= dataset_count
-            json_data["source_omixatlas"] = omixatlas_dict
-            if not bool(json_data.get("entity_id")):
-                if "entity_type" in json_data:
-                    del json_data["entity_type"]
-            self._cohort_details = json_data
-            input = json.dumps(json_data)
+        if dot in cohort_name:
+            raise InvalidCohortNameException(cohort_name)
+        file_path = os.path.join(local_path, f"{cohort_name}.pco")
+        user_id = self._get_user_id()
+        os.makedirs(file_path)
+        metadata = {
+            "number_of_samples": 0,
+            "entity_id": {},
+            "source_omixatlas": {},
+            "description": description,
+            "user_id": user_id,
+            "date_created": str(datetime.datetime.now()),
+            "version": "0.1",
+        }
+        file_name = os.path.join(file_path, "cohort.meta")
+        input = json.dumps(metadata)
+        with open(file_name, "wb") as outfile:
             encoded_data = base64.b64encode(input.encode("utf-8"))
-            openfile.seek(0)
-            openfile.write(encoded_data)
-            openfile.truncate()
+            outfile.write(encoded_data)
+        self.folder_path = str(file_path)
+        self._cohort_details = metadata
+        if entity_id is not None and repo_key is not None:
+            self.add_to_cohort(repo_key, entity_id)
         logging.basicConfig(level=logging.INFO)
-        logging.info(f"'{dataset_count}' dataset/s removed from Cohort!")
+        logging.info("Cohort Created !")
 
     def add_to_cohort(self, repo_key: str, entity_id: list) -> None:
         """
         This function is used to add dataset(s) or sample(s) to a cohort.
         
         ``Args:``
-            | ``repo_key(str):`` repo_key(repo_name/repo_id) for the omixatlas to be added.
-            | ``entity_id(list):`` list of entity_ids to be added to the cohort.
+            |  ``repo_key(str):`` repo_key(repo_name/repo_id) for the omixatlas to be added.
+            |  ``entity_id(list):`` list of entity_ids to be added to the cohort.
         
         ``Returns:``
-            | A confirmation message for number of dataset(s) or sample(s) which are added to the cohort.
+            |  A confirmation message for number of dataset(s) or sample(s) which are added to the cohort.
+        
+        ``Errors:``
+            |  ``InvalidParameterException:`` Empty or Invalid Parameters.
+            |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.
+        
+        |  After creating cohort we can add cohort.
+        | Example-
+        .. code::
+
+
+                cohort.add_to_cohort("tcga",high_data)
+
         """
         if self._cohort_details is None:
             raise InvalidCohortOperationException
@@ -316,6 +201,353 @@ class Cohort:
         logging.basicConfig(level=logging.INFO)
         logging.info(f"'{len(dataset_id)}' dataset/s added to Cohort!")
 
+    def edit_cohort(self, new_cohort_name=None, new_description=None):
+        """
+        This function is used to edit a cohort name and description.
+
+        ``Args:``
+            |  ``new_cohort_name(str):`` Optional Argument: new identifier name for the cohort.
+            |  ``new_description(str):`` Optional Argument: new description about the cohort.
+        
+        ``Returns:``
+            |  A confirmation message on updation of cohort.
+        
+        ``Errors:``
+            |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.
+            |  ``CohortEditException:`` No parameter specified for editing in cohort
+        
+        |  Example-
+        .. code::
+
+
+                cohort.edit_cohort("high_edited","tcga_tp53_brca_mutation_high_edited")
+
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        if new_cohort_name is None and new_description is None:
+            raise CohortEditException
+        if new_cohort_name:
+            self._edit_cohort_name(new_cohort_name)
+        if new_description:
+            self._edit_cohort_description(new_description)
+
+    def is_valid(self) -> bool:
+        """
+        This function is used to check if a cohort is valid or not.
+        
+        ``Returns:``
+            |  A boolean result based on the validity of the cohort.
+
+        ``Errors:``
+            |  ``InvalidPathException:`` Cohort path does not represent a file or a directory.
+            |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.
+
+        .. code::
+
+
+                cohort2.is_valid()
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        if not os.path.exists(self.folder_path):
+            raise InvalidPathException
+        meta_path = helpers.make_path(self.folder_path, "cohort.meta")
+        if not os.path.exists(meta_path):
+            return False
+        sample_list = list(self._cohort_details["entity_id"].keys())
+        if len(sample_list) == 0:
+            return True
+        for sample in sample_list:
+            omixatlas = self._cohort_details.get("entity_id", {}).get(sample)[0]
+            gct_path = f"{self.folder_path}/{omixatlas}_{sample}.gct"
+            jpco_path = f"{self.folder_path}/{omixatlas}_{sample}.jpco"
+            if not (os.path.exists(gct_path) and os.path.exists(jpco_path)):
+                return False
+        return True
+
+    def _read_gcts(self, dataset_ids: list, file_path: str) -> pd.DataFrame:
+        gct_files = [
+            f"{file_path}/{self._cohort_details.get('entity_id',{}).get(dataset_id)[0]}_{dataset_id}.gct"
+            for dataset_id in dataset_ids
+        ]
+        results_gct = Parallel(n_jobs=4)(
+            delayed(parse)(gct_file) for gct_file in gct_files
+        )
+        return results_gct
+
+    def merge_metadata(self):
+        """
+        Function to merge the sample level metadata from all the gct files in a cohort.
+
+        ``Returns:``
+            |  A pandas dataframe containing the merged metadata for analysis.
+
+        ``Errors:``
+                | ``EmptyCohortException:`` There are no datasets to be merged in the cohort
+                | ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.    
+        
+        |  Example-
+        .. code::
+
+
+                high_metadata = cohort.merge_metadata()
+        
+        high_metadata will be  a table.
+
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        file_path = self.folder_path
+        sample_list = list(self._cohort_details["entity_id"].keys())
+        if len(sample_list) == 0:
+            raise EmptyCohortException
+        results_gct = self._read_gcts(sample_list, file_path)
+        gct_files = [dataset_id + ".gct" for dataset_id in sample_list]
+        All_Metadata = assemble_common_meta(
+            [i.col_metadata_df for i in results_gct],
+            fields_to_remove=[],
+            sources=gct_files,
+            remove_all_metadata_fields=False,
+            error_report_file="errors",
+        )
+        return All_Metadata
+
+    def merge_data_matrix(self) -> pd.DataFrame:
+        """
+        Function to merge the data-matrix level metadata from all the gct files in a cohort.
+
+        ``Returns:``
+            |  A pandas dataframe containing the merged data for analysis.
+
+        ``Errors:``
+                | ``EmptyCohortException:`` There are no datasets to be merged in the cohort
+                | ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.    
+        
+        |  Example-
+        .. code::
+
+
+                high_data_matrix = cohort.merge_data_matrix()
+
+        | high_data_matrix will a table. 
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        file_path = self.folder_path
+        sample_list = list(self._cohort_details["entity_id"].keys())
+        if len(sample_list) == 0:
+            raise EmptyCohortException
+        results_gct = self._read_gcts(sample_list, file_path)
+        All_data_matrix = assemble_data(
+            [i.data_df for i in results_gct], concat_direction="horiz"
+        )
+        return All_data_matrix
+
+    def _edit_cohort_name(self, new_cohort_name: str):
+        if not (new_cohort_name and isinstance(new_cohort_name, str)):
+            return
+        if dot in new_cohort_name:
+            logging.error("The cohort name is not valid. Please try again.")
+            return
+        p = Path(self.folder_path)
+        parent = p.parent
+        str_parent = str(parent.resolve())
+        new_path = helpers.make_path(str_parent, f"{new_cohort_name}.pco")
+        existing_path = self.folder_path
+        os.rename(existing_path, new_path)
+        self.folder_path = new_path
+        logging.basicConfig(level=logging.INFO)
+        logging.info("Cohort Name Updated!")
+
+    def _edit_cohort_description(self, new_description: str):
+        if not (new_description and isinstance(new_description, str)):
+            return
+        existing_path = self.folder_path
+        meta_path = helpers.make_path(existing_path, "cohort.meta")
+        with open(meta_path, "r+b") as openfile:
+            byte = openfile.read()
+            data = base64.b64decode((byte))
+            json_data = json.loads(data.decode("utf-8"))
+            json_data["description"] = new_description
+            self._cohort_details = json_data
+            input = json.dumps(json_data)
+            encoded_data = base64.b64encode(input.encode("utf-8"))
+            openfile.seek(0)
+            openfile.write(encoded_data)
+            openfile.truncate()
+        logging.basicConfig(level=logging.INFO)
+        logging.info("Cohort Description Updated!")
+
+    def summarize_cohort(self):
+        """
+        Function to return metadata and summary of a cohort.
+        
+        ``Returns:``
+            |  A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
+              or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
+              and data type available in the cohort.
+        
+        ``Errors:``
+            |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.    
+        
+        | Example-
+        .. code::
+
+        
+                metadata, cohort_details = cohort2.summarize_cohort()
+        | metadata will contain a object like this.
+        .. code::
+
+        
+                {
+                'cohort_name': 'higher',
+                'number_of_samples': 6,
+                'description': 'tcga_tp53_brca_mutation_high'
+                }
+        | cohort detail will contain a table like that
+        .. csv-table::
+            :header: "", "source_omixatlas",  "datatype", "dataset_id"
+            :delim: |
+
+            0 |	tcga |	Mutation |	BRCA_Mutation_TCGA-A8-A09Q-01A-11W-A019-09
+            1 |	tcga |	Mutation |	BRCA_Mutation_TCGA-AN-A0FL-01A-11W-A050-09
+            2 |	tcga |	Mutation |	BRCA_Mutation_TCGA-AR-A254-01A-21D-A167-09
+            3 |	tcga |	Mutation |	BRCA_Mutation_TCGA-D8-A1XO-01A-11D-A14K-09
+            4 |	tcga |	Mutation |	BRCA_Mutation_TCGA-EW-A1J2-01A-21D-A13L-09
+            5 |	tcga |	Mutation |	BRCA_Mutation_TCGA-LL-A50Y-01A-11D-A25Q-09
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        meta_details = self._get_metadetails()
+        df_details = self._get_df()
+        return meta_details, df_details
+
+    def load_cohort(self, local_path: str):
+        """
+        Function to load an existing cohort into an object.
+        Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
+        
+        ``Args:``
+            |  ``local_path(str):`` local path of the cohort.
+        
+        ``Returns:``
+            |  A confirmation message on instantiation of the cohort.
+        
+        ``Errors:``
+            |  ``InvalidPathException:`` This path does not represent a file or a directory.
+            |  ``InvalidCohortPathException:`` This path does not represent a Cohort.
+        
+        |  Example-
+        .. code::
+
+
+                cohort.load_cohort("/import/high_edited.pco")
+
+        """
+        if not os.path.exists(local_path):
+            raise InvalidPathException(local_path)
+        file_meta = helpers.make_path(local_path, "cohort.meta")
+        if not os.path.exists(file_meta):
+            raise InvalidCohortPathException
+        file = open(file_meta, "r")
+        byte = file.read()
+        file.close()
+        data = base64.b64decode((byte))
+        str_data = data.decode("utf-8")
+        json_data = json.loads(str_data)
+        self._cohort_details = json_data
+        self.folder_path = local_path
+        logging.basicConfig(level=logging.INFO)
+        logging.info("Cohort Loaded !")
+
+    def remove_from_cohort(self, entity_id: list) -> None:
+        """
+        This function is used for removing dataset_id or sample_id from a cohort.
+        
+        ``Args:``
+            |  ``entity_id(list):`` list of dataset_id or sample_id to be removed from the cohort.
+        
+        ``Returns:``
+            |  A confirmation message on removal of dataset_id or sample_id from cohort.
+
+        ``Errors:``
+            |  ``InvalidParameterException:`` Empty or Invalid Parameters
+            |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.
+        
+        |  Example-
+        .. code::
+
+
+                cohort.remove_from_cohort(high_data[0:2])
+
+        """
+        if self._cohort_details is None:
+            raise InvalidCohortOperationException
+        if not (entity_id and isinstance(entity_id, list)):
+            raise InvalidParameterException("entity_id")
+        dataset_count = 0
+        verified_dataset = []
+        file_meta = helpers.make_path(self.folder_path, "cohort.meta")
+        with open(file_meta, "r+b") as openfile:
+            byte = openfile.read()
+            data = base64.b64decode((byte))
+            json_data = json.loads(data.decode("utf-8"))
+            dataset_id = list(json_data["entity_id"].keys())
+            for dataset in entity_id:
+                if dataset not in dataset_id:
+                    logging.basicConfig(level=logging.INFO)
+                    logging.info(f"Dataset Id - {dataset} not present in the Cohort.")
+                    continue
+                dataset_count += 1
+                verified_dataset.append(dataset)
+                omixatlas = json_data.get("entity_id", {}).get(dataset)[0]
+                gct_path = f"{self.folder_path}/{omixatlas}_{dataset}.gct"
+                json_path = f"{self.folder_path}/{omixatlas}_{dataset}.jpco"
+                os.remove(gct_path)
+                os.remove(json_path)
+                del json_data.get("entity_id")[dataset]
+                json_data.get("source_omixatlas").get(omixatlas).remove(dataset)
+            omixatlas_dict = json_data.get("source_omixatlas")
+            empty_keys = []
+            for key, value in omixatlas_dict.items():
+                if value == []:
+                    empty_keys.append(key)
+            for key in empty_keys:
+                del omixatlas_dict[key]
+            json_data["number_of_samples"] -= dataset_count
+            json_data["source_omixatlas"] = omixatlas_dict
+            if not bool(json_data.get("entity_id")):
+                if "entity_type" in json_data:
+                    del json_data["entity_type"]
+            self._cohort_details = json_data
+            input = json.dumps(json_data)
+            encoded_data = base64.b64encode(input.encode("utf-8"))
+            openfile.seek(0)
+            openfile.write(encoded_data)
+            openfile.truncate()
+        logging.basicConfig(level=logging.INFO)
+        logging.info(f"'{dataset_count}' dataset/s removed from Cohort!")
+
+    def delete_cohort(self) -> None:
+        """
+        This function is used to delete a cohort.
+        
+        ``Returns:``
+            |  A confirmation message on deletion of cohort.
+        
+        |  Example-
+        .. code::
+
+
+                cohort.delete_cohort()
+        """
+        shutil.rmtree(self.folder_path, ignore_errors=True)
+        logging.basicConfig(level=logging.INFO)
+        logging.info("Cohort Deleted Successfuly!")
+        self.folder_path = None
+        self._cohort_details = None
+
     def _add_metadata(self, repo_key: str, dataset_id: str, local_path: str) -> None:
         """
         Function to add dataset level metadata to a cohort.
@@ -351,61 +583,6 @@ class Cohort:
         except Exception as e:
             raise OperationFailedException(e)
 
-    def create_cohort(
-        self,
-        local_path: str,
-        cohort_name: str,
-        description: str,
-        repo_key=None,
-        entity_id=None,
-    ) -> None:
-        """
-        This function is used to create a cohort.
-        
-        ``Args:``
-            | ``local_path(str):`` local path to instantiate the cohort.
-            | ``cohort_name(str):`` identifier name for the cohort.
-            | ``description(str):`` description about the cohort.
-            | ``repo_key(str):`` Optional argument: repo_key(repo_name/repo_id) for the omixatlas to be added.
-            | ``entity_id(list):`` Optional argument: list of sample_id or dataset_id to be added to the cohort.
-        
-        ``Returns:``
-            | A confirmation message on creation of cohort.
-        """
-        if not (local_path and isinstance(local_path, str)):
-            raise InvalidParameterException("local_path")
-        if not (cohort_name and isinstance(cohort_name, str)):
-            raise InvalidParameterException("cohort_name")
-        if not (description and isinstance(description, str)):
-            raise InvalidParameterException("description")
-        if not os.path.exists(local_path):
-            raise InvalidPathException
-        if dot in cohort_name:
-            raise InvalidCohortNameException(cohort_name)
-        file_path = os.path.join(local_path, f"{cohort_name}.pco")
-        user_id = self._get_user_id()
-        os.makedirs(file_path)
-        metadata = {
-            "number_of_samples": 0,
-            "entity_id": {},
-            "source_omixatlas": {},
-            "description": description,
-            "user_id": user_id,
-            "date_created": str(datetime.datetime.now()),
-            "version": "0.1",
-        }
-        file_name = os.path.join(file_path, "cohort.meta")
-        input = json.dumps(metadata)
-        with open(file_name, "wb") as outfile:
-            encoded_data = base64.b64encode(input.encode("utf-8"))
-            outfile.write(encoded_data)
-        self.folder_path = str(file_path)
-        self._cohort_details = metadata
-        if entity_id is not None and repo_key is not None:
-            self.add_to_cohort(repo_key, entity_id)
-        logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Created !")
-
     def _get_user_id(self):
         """
         Function to get user id.
@@ -415,48 +592,6 @@ class Cohort:
         error_handler(details)
         user_id = details.json().get("data", {}).get("attributes", {}).get("user_id")
         return user_id
-
-    def summarize_cohort(self):
-        """
-        Function to return metadata and summary of a cohort.
-        
-        ``Returns:``
-            | A tuple with the first value as cohort metadata information (name, description and number of dataset(s)
-              or sample(s) in the cohort) and the second value as dataframe containing the source, dataset_id or sample_id
-              and data type available in the cohort.
-        """
-        if self._cohort_details is None:
-            raise InvalidCohortOperationException
-        meta_details = self._get_metadetails()
-        df_details = self._get_df()
-        return meta_details, df_details
-
-    def load_cohort(self, local_path: str):
-        """
-        Function to load an existing cohort into an object.
-        Once loaded, the functions described in the documentation can be used for the object where the cohort is loaded.
-        
-        ``Args:``
-            | ``local_path(str):`` local path of the cohort.
-        
-        ``Returns:``
-            | A confirmation message on instantiation of the cohort.
-        """
-        if not os.path.exists(local_path):
-            raise InvalidPathException(local_path)
-        file_meta = helpers.make_path(local_path, "cohort.meta")
-        if not os.path.exists(file_meta):
-            raise InvalidCohortPathException
-        file = open(file_meta, "r")
-        byte = file.read()
-        file.close()
-        data = base64.b64decode((byte))
-        str_data = data.decode("utf-8")
-        json_data = json.loads(str_data)
-        self._cohort_details = json_data
-        self.folder_path = local_path
-        logging.basicConfig(level=logging.INFO)
-        logging.info("Cohort Loaded !")
 
     def _get_metadetails(self) -> dict:
         """

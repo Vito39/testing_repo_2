@@ -22,7 +22,6 @@ class Polly:
 
         ``Args:``
             |  ``token (str):`` token copy from polly.
-            |  ``env (str):`` polly(default) or testpolly or devpolly.
 
         
         ``Returns:``
@@ -49,7 +48,6 @@ class Polly:
 
         ``Args:``
             |  ``token (str):`` token copy from polly.
-            |  ``env (str):`` polly or testpolly or devpolly.
 
         ``Returns:``        
             |  if token is not satisfied it will throw UnauthorizedException.

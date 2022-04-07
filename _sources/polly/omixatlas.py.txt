@@ -39,7 +39,6 @@ class OmixAtlas:
 
     ``Args:``
         |  ``token (str):`` token copy from polly.
-        |  ``env (str):`` polly(default) or testpolly or devpolly. 
     
     We can init a OmixAtlas class object using. 
     
@@ -62,6 +61,8 @@ class OmixAtlas:
 
     def get_all_omixatlas(self):
         """
+        .. _targetget:
+
         This function will return a list of omixatlas repository in polly.
 
         ``Args:``
@@ -212,7 +213,7 @@ class OmixAtlas:
         
 
                 from polly.omixatlas import OmixAtlas
-                omixatlas = OmixAtlas(token,env)    
+                omixatlas = OmixAtlas(token)    
                 # to use OmixAtlas class functions
                 query = "SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = 'brd4'"
                 results = omixatlas.query_metadata(query, query_api_version="v2")
@@ -798,6 +799,18 @@ class OmixAtlas:
                             }
                         }
                     }
+            |  ``payload`` can be loaded from the JSON file in which schema is defined in the following manner:
+
+            .. code::
+
+
+                    import json
+
+                    # Opening JSON file
+                    schema = open('schema_file.json')
+
+                    # returns JSON object as a dictionary
+                    payload = json.load(schema)
         
         ``Errors:``
             |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail.
@@ -844,17 +857,19 @@ class OmixAtlas:
                             }
                         }
                     }
-        payload can be loaded from the JSON file in which schema is defined in the following manner:
+            |  ``payload`` can be loaded from the JSON file in which schema is defined in the following manner:
 
 
-        .. code::
-                import json
+            .. code::
 
-                # Opening JSON file
-                schema = open('schema_file.json')
 
-                # returns JSON object as a dictionary
-                payload = json.load(schema)
+                    import json
+
+                    # Opening JSON file
+                    schema = open('schema_file.json')
+
+                    # returns JSON object as a dictionary
+                    payload = json.load(schema)
         
         ``Errors:``
             |  ``apiErrorException:`` Params are either empty or its datatype is not correct or see detail.
@@ -901,7 +916,7 @@ class OmixAtlas:
             |  ``repo_key (str):`` repo_id OR repo_name from where the data needs to be downloaded.
             |  ``dataset_id (str):`` dataset_id which the user wants to download.
 
-        |  The ``[repo_name OR repo_id]`` of an OmixAtlas can be identified by calling the ``get_all_omixatlas()`` function.
+        |  The ``[repo_name OR repo_id]`` of an OmixAtlas can be identified by calling the :ref:`get_all_omixatlas() <targetget>` function.
         |  The ``[dataset_id]`` can be obtained by querying the metadata at the dataset level using ``query_metadata("[query written in SQL]")``.
 
         ``Returns:``
@@ -958,7 +973,7 @@ class OmixAtlas:
 
     def format_converter(self, repo_key: str, dataset_id: str, to: str) -> None:
         """
-        Function to convert a file to maf format.
+        Function to convert a file format.
         
         ``Args:``
             |  ``repo_key (str) :`` repo_id.

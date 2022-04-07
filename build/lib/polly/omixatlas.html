@@ -105,7 +105,6 @@ OmixAtlas class interact with omixatlases repository. You can query datasets and
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">(str):</span></code> polly(default) or testpolly or devpolly.</div>
 </div>
 </dd>
 </dl>
@@ -129,7 +128,8 @@ self.resource_url = f”{self.base_url}/v1/omixatlases”</p>
 </div></blockquote>
 <dl>
 <dt>def get_all_omixatlas(self):</dt><dd><p>“””
-This function will return a list of omixatlas repository in polly.</p>
+.. _targetget:</p>
+<p>This function will return a list of omixatlas repository in polly.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line">None</div>
@@ -270,7 +270,7 @@ This function will returns a table containing the datasets that satisfied the sq
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
-<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+<span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 <span class="c1"># to use OmixAtlas class functions</span>
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT src_dataset_id, name FROM geo.features WHERE LOWER(name) = &#39;brd4&#39;&quot;</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="n">query_metadata</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">query_api_version</span><span class="o">=</span><span class="s2">&quot;v2&quot;</span><span class="p">)</span>
@@ -1010,6 +1010,18 @@ Use insert_schema(repo_key, payload) to update the existing schema of an OmixAtl
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">payload</span></code> can be loaded from the JSON file in which schema is defined in the following manner:</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Opening JSON file</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;schema_file.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># returns JSON object as a dictionary</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail.</div>
@@ -1067,10 +1079,19 @@ Use update_schema(repo_key, payload) to update the existing schema of an OmixAtl
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">payload</span></code> can be loaded from the JSON file in which schema is defined in the following manner:</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Opening JSON file</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;schema_file.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># returns JSON object as a dictionary</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
-</dl>
-<p>payload can be loaded from the JSON file in which schema is defined in the following manner:</p>
-<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">apiErrorException:</span></code> Params are either empty or its datatype is not correct or see detail.</div>
 </div>
@@ -1130,7 +1151,7 @@ To download any dataset, the following function can be used.</p>
 </dd>
 </dl>
 <div class="line-block">
-<div class="line">The <code class="docutils literal notranslate"><span class="pre">[repo_name</span> <span class="pre">OR</span> <span class="pre">repo_id]</span></code> of an OmixAtlas can be identified by calling the <code class="docutils literal notranslate"><span class="pre">get_all_omixatlas()</span></code> function.</div>
+<div class="line">The <code class="docutils literal notranslate"><span class="pre">[repo_name</span> <span class="pre">OR</span> <span class="pre">repo_id]</span></code> of an OmixAtlas can be identified by calling the <a class="reference internal" href="../../../polly.html#targetget"><span class="std std-ref">get_all_omixatlas()</span></a> function.</div>
 <div class="line">The <code class="docutils literal notranslate"><span class="pre">[dataset_id]</span></code> can be obtained by querying the metadata at the dataset level using <code class="docutils literal notranslate"><span class="pre">query_metadata(&quot;[query</span> <span class="pre">written</span> <span class="pre">in</span> <span class="pre">SQL]&quot;)</span></code>.</div>
 </div>
 <dl>
@@ -1199,7 +1220,7 @@ logging.info(f”Data Saved to workspace={workspace_id}”)</p>
 <p>return response.json()</p>
 </dd>
 <dt>def format_converter(self, repo_key: str, dataset_id: str, to: str) -&gt; None:</dt><dd><p>“””
-Function to convert a file to maf format.</p>
+Function to convert a file format.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">(str)</span> <span class="pre">:</span></code> repo_id.</div>
