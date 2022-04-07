@@ -145,7 +145,7 @@ class Cohort:
             |  ``InvalidParameterException:`` Empty or Invalid Parameters.
             |  ``InvalidCohortOperationException:`` This operation is not valid as no cohort has been instantiated.
         
-        |  After creating cohort we can add cohort.
+        | After creating cohort we can add cohort.
         | Example-
         .. code::
 
