@@ -56,7 +56,7 @@
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
       <li>&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/polly/session.py.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/make_doc/conf_md.py.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -64,59 +64,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p>from requests import Session
-import os</p>
-<dl>
-<dt>class PollySession(Session):</dt><dd><p>“””
-This class contain function to create session for
-polly.</p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">(str):</span></code> token copy from polly.</div>
-</div>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
-<div class="line">None</div>
-</div>
-</dd>
-</dl>
-<p>To use this function</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.session</span> <span class="kn">import</span> <span class="n">PollySession</span>
-<span class="n">session</span> <span class="o">=</span> <span class="n">PollySession</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>“””
-def __init__(self, REFRESH_TOKEN, env=”polly”):</p>
-<blockquote>
-<div><p>Session.__init__(self)
-try:</p>
-<blockquote>
-<div><p># for python version &gt;= python3.8
-from importlib.metadata import version</p>
-<p>version = version(“polly-python”)</p>
-</div></blockquote>
-<dl>
-<dt>except ImportError:</dt><dd><p># for python version &lt; python3.8
-import pkg_resources</p>
-<p>version = pkg_resources.get_distribution(“polly-python”).version</p>
-</dd>
-</dl>
-<p>client = os.getenv(“POLLY_SERVICE”)
-if client is not None:</p>
-<blockquote>
-<div><p>version = version + “/” + client</p>
-</div></blockquote>
+  <p># Configuration file for the Sphinx documentation builder.
+#
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
+# <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html">https://www.sphinx-doc.org/en/master/usage/configuration.html</a></p>
+<p># – Path setup ————————————————————–</p>
+<p># If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+import os
+import sys
+sys.path.insert(0, os.path.abspath(‘.’))</p>
+<p># – Project information —————————————————–</p>
+<p>project = ‘Polly_Documentation’
+copyright = ‘2022, hrishabh kamal’
+author = ‘hrishabh kamal’</p>
+<p># The full version, including alpha/beta/rc tags
+release = ‘1’</p>
+<p># – General configuration —————————————————
+source_suffix = [‘.rst’,’.py’]
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named ‘sphinx.ext.*’) or your custom
+# ones.
+extensions = [‘sphinx.ext.autodoc’,’sphinx_markdown_builder’]</p>
+<p># Add any paths that contain templates here, relative to this directory.
+templates_path = [‘_templates’]</p>
+<p># List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+# This pattern also affects html_static_path and html_extra_path.
+exclude_patterns = [‘_build’, ‘Thumbs.db’, ‘.DS_Store’,’env/<em>’, ‘examples/</em>’,’tests/<a href="#id1"><span class="problematic" id="id2">*</span></a>’]
+add_module_names = False
+autodoc_member_order = ‘bysource’
+autodoc_preserve_defaults = True
+# – Options for HTML output ————————————————-</p>
+<p># The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+html_theme = ‘sphinx_rtd_theme’</p>
+<p># Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named “default.css” will overwrite the builtin “default.css”.
+html_static_path = [‘_static’]</p>
 <dl class="simple">
-<dt>else:</dt><dd><p>version = version + “/local”</p>
+<dt>def skip_some_classes(app, what, name, obj, skip, options):</dt><dd><p>return skip or (isinstance(obj, type) and obj.__base__ is object)</p>
 </dd>
-<dt>self.headers = {</dt><dd><p>“Content-Type”: “application/vnd.api+json”,
-“Cookie”: f”refreshToken={REFRESH_TOKEN}”,
-“User-Agent”: “polly-python/” + version,</p>
-</dd>
-</dl>
-<p>}
-self.env = env</p>
-</div></blockquote>
+<dt>def setup(app):</dt><dd><p>app.connect(‘autodoc-skip-member’, skip_some_classes)</p>
 </dd>
 </dl>
 
