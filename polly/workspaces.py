@@ -14,7 +14,6 @@ class Workspaces:
     
     ``Args:``
         |  ``token (str):`` token copy from polly.
-        |  ``env (str):`` polly(default) or testpolly or devpolly.
     
 
     .. code::

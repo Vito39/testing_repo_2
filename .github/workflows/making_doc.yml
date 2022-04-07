@@ -61,6 +61,7 @@ jobs:
           mv make_doc/download.rst download.rst
           mv make_doc/query.rst query.rst
           mv make_doc/Polly.rst Polly.rst
+          mv make_doc/Polly_property.png Polly_property.png
           sphinx-apidoc -o . .
           make markdown
           python3 polly/upload_files.py

@@ -36,11 +36,3 @@ polly.workspaces module
    :members:
    :undoc-members:
    :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: polly
-   :members:
-   :undoc-members:
-   :show-inheritance:
