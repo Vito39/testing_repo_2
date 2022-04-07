@@ -6,7 +6,7 @@ About Polly Python
 ------------------
 Polly Python library provides convenient access to the above-mentioned functionalities through function in Python language.
 
-.. figure:: Polly_property.png
+.. figure:: ./Polly_property.png
    :height: 225
    :width: 175
    :scale: 300
