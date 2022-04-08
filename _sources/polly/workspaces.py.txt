@@ -19,11 +19,12 @@ class Workspaces:
     .. code::
 
 
-            # to init a obj
+            # to initialize a obj
             workspaces = Workspaces(token)
             # from there you can other methods
             workspaces.fetch_my_workspaces()
-
+    
+    If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
     def __init__(self, token=None, env="polly") -> None:
 

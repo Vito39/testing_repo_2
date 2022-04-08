@@ -43,9 +43,10 @@ class Cohort:
 
 
             from polly.cohort import Cohort
-            # To use this class init a object like this
+            # To use this class initialize a object like this if you are not authorised on polly
             cohort = Cohort(token)
     
+    If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)

@@ -40,7 +40,7 @@ class OmixAtlas:
     ``Args:``
         |  ``token (str):`` token copy from polly.
     
-    We can init a OmixAtlas class object using. 
+    We can initialize a OmixAtlas class object using. 
     
     
     .. code::
@@ -49,6 +49,7 @@ class OmixAtlas:
             from polly.omixatlas import OmixAtlas
             omixatlas = OmixAtlas(token)
     
+    If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
@@ -518,6 +519,7 @@ class OmixAtlas:
         
         ``Errors:``
             |  ``invalidApiResponseException:`` datakey, attributes, schema_type is missing in repository schema.
+            |  ``RequestException:`` Schema not found.
             |  ``paramException:`` repo_key and schema_type_dict are either empty or its datatype is not correct.
 
 

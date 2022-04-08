@@ -59,7 +59,6 @@
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
       <li>&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/build/lib/polly/cohort.py.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -111,11 +110,12 @@ This class contain function which can be used to create, add or remove samples, 
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.cohort</span> <span class="kn">import</span> <span class="n">Cohort</span>
-<span class="c1"># To use this class init a object like this</span>
+<span class="c1"># To use this class initialize a object like this if you are not authorised on polly</span>
 <span class="n">cohort</span> <span class="o">=</span> <span class="n">Cohort</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>“””
+<p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../../../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
+“””
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)

@@ -59,7 +59,6 @@
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
       <li>&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/polly/workspaces.py.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -84,13 +83,14 @@ can use all function and methods of Workspaces class.</p>
 </div>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># to init a obj</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># to initialize a obj</span>
 <span class="n">workspaces</span> <span class="o">=</span> <span class="n">Workspaces</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 <span class="c1"># from there you can other methods</span>
 <span class="n">workspaces</span><span class="o">.</span><span class="n">fetch_my_workspaces</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>“””
+<p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
+“””
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)

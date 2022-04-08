@@ -59,7 +59,6 @@
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
       <li>&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/polly/omixatlas.py.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -108,12 +107,13 @@ OmixAtlas class interact with omixatlases repository. You can query datasets and
 </div>
 </dd>
 </dl>
-<p>We can init a OmixAtlas class object using.</p>
+<p>We can initialize a OmixAtlas class object using.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">polly.omixatlas</span> <span class="kn">import</span> <span class="n">OmixAtlas</span>
 <span class="n">omixatlas</span> <span class="o">=</span> <span class="n">OmixAtlas</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>“””
+<p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
+“””
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)
@@ -640,6 +640,7 @@ Using this function to extract the schema of an OmixAtlas.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RequestException:</span></code> Schema not found.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">paramException:</span></code> repo_key and schema_type_dict are either empty or its datatype is not correct.</div>
 </div>
 </dd>
