@@ -656,49 +656,191 @@ Once loaded, the functions described in the documentation can be used for the ob
 <div class="line"><code class="docutils literal notranslate"><span class="pre">data_type</span> <span class="pre">(str)</span> <span class="pre">:</span></code> is the datatype for which user wants to get the schema for. The default value is ‘all’, which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use ‘single_cell’.</div>
 </div>
 </dd>
-</dl>
-<p><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><div class="line-block">
+<div class="line">It will contain the schema for dataset, sample as dataframe.</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s1">&#39;dataset&#39;</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="s1">&#39;sample&#39;</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
 <span class="p">}</span>
-<span class="n">DataFrame</span> <span class="n">consists</span> <span class="n">of</span> <span class="n">schema</span> <span class="n">metadata</span> <span class="n">summary</span>
-<span class="n">i</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">gct_metadata</span> <span class="ow">or</span> <span class="n">h5ad_metadata</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Column</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">Sample</span><span class="p">)</span>
-<span class="n">metdata</span> <span class="n">schema</span> <span class="n">definition</span> <span class="k">for</span> <span class="n">sample</span><span class="p">:</span>
-    <span class="n">schema</span><span class="p">:{</span>
-        <span class="s2">&quot;&lt;SOURCE&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;&lt;DATATYPE&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;&lt;FIELD_NAME&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text | integer | object&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">Min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-                <span class="p">},</span>
-                <span class="o">...</span> <span class="n">other</span> <span class="n">fields</span>
-            <span class="p">}</span>
-            <span class="o">...</span> <span class="n">other</span> <span class="n">Data</span> <span class="n">types</span>
-        <span class="p">}</span>
-        <span class="o">...</span> <span class="n">other</span> <span class="n">Sources</span>
-    <span class="p">}</span>
-<span class="n">ii</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">files</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Global</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">PS</span> <span class="p">:</span><span class="o">-</span> <span class="n">ALL</span><span class="p">,</span> <span class="n">ALL</span> <span class="n">keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">rigid</span> <span class="k">for</span> <span class="n">dataset</span> <span class="n">level</span> <span class="n">schema</span> <span class="n">also</span>
-<span class="n">There</span> <span class="n">it</span> <span class="n">can</span> <span class="n">be</span> <span class="o">&lt;</span><span class="n">SOURCE</span><span class="o">&gt;</span> <span class="ow">and</span> <span class="o">&lt;</span><span class="n">DATATYPE</span><span class="o">&gt;</span> <span class="n">key</span> <span class="n">also</span>
-<span class="n">metadata</span> <span class="n">schema</span> <span class="n">definition</span> <span class="k">for</span> <span class="n">a</span> <span class="n">dataset</span><span class="p">:</span>
-    <span class="n">schema</span><span class="p">:{</span>
-            <span class="s2">&quot;ALL&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;ALL&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;&lt;FIELD_NAME&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text | integer | object&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">Min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-                    <span class="p">},</span>
-                    <span class="o">...</span> <span class="n">other</span> <span class="n">fields</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-<span class="n">iii</span><span class="p">)</span> <span class="n">schema_type</span> <span class="p">:</span> <span class="n">gct_metadata</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">Row</span> <span class="n">Fields</span> <span class="p">(</span><span class="n">Feature</span><span class="p">)</span>
-<span class="n">Not</span> <span class="n">there</span> <span class="n">right</span> <span class="n">now</span>
 </pre></div>
 </div>
-</div></blockquote>
-<dl>
+<div class="line-block">
+<div class="line">you can access dataset, sample schema in following manner.</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># import pandas as pd</span>
+<span class="c1"># pd.set_option(&#39;expand_frame_repr&#39;, False)</span>
+<span class="c1"># use above two line if your dataframe does not print in single line</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">omixatlas</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s2">&quot;9&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;sample&#39;</span><span class="p">])</span>
+
+<span class="c1"># to fetch the dataframe with dataset level metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># to fetch the dataframe with sample level metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.dataset</span></code> will contain dataframe you can print them in a table form like this.</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Datatype</p></th>
+<th class="head"><p>Field Name</p></th>
+<th class="head"><p>Field Description</p></th>
+<th class="head"><p>Field Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>curated_organism</p></td>
+<td><p>Orgnism from which the samples were derived</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>src_uri</p></td>
+<td><p>Unique URI derived from data file’s S3 location</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>total_num_samples</p></td>
+<td><p>Total number of samples in a dataset</p></td>
+<td><p>integer</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>year</p></td>
+<td><p>Year in which the dataset was published</p></td>
+<td><p>integer</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>description</p></td>
+<td><p>Description of the dataset</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>curated_cell_line</p></td>
+<td><p>Cell lines from which the samples were derived…</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>data_table_name</p></td>
+<td><p>Name of the data table associated with data file</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>data_table_version</p></td>
+<td><p>Current version of the data table associated w…</p></td>
+<td><p>integer</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">schema.sample</span></code> will contain dataframe you can print them in a table form like this.</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Datatype</p></th>
+<th class="head"><p>Field Name</p></th>
+<th class="head"><p>Field Description</p></th>
+<th class="head"><p>Field Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>growth_protocol_ch1</p></td>
+<td><p>NA</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>src_uri</p></td>
+<td><p>Unique URI derived from source data file’s S3 …</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>sample_id</p></td>
+<td><p>Unique ID associated with every sample</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>curated_gene_modified</p></td>
+<td><p>Gene modified through genetic modification</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>dose_ch1</p></td>
+<td><p>NA</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>curated_cohort_name</p></td>
+<td><p>Name of the cohort to which the sample belongs</p></td>
+<td><p>text</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>curated_control</p></td>
+<td><p>Signifies whether the given sample is a contro…</p></td>
+<td><p>integer</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>all</p></td>
+<td><p>all</p></td>
+<td><p>src_dataset_id</p></td>
+<td><p>Dataset ID of the file this data entity origin…</p></td>
+<td><p>text</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Errors:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">invalidApiResponseException:</span></code> datakey, attributes, schema_type is missing in repository schema.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">RequestException:</span></code> Schema not found.</div>

@@ -475,7 +475,7 @@ class OmixAtlas:
             |  ``data_type (str) :`` is the datatype for which user wants to get the schema for. The default value is 'all', which will fetch the schema of all datatypes except single cell. To fetch the schema for single cell datatype from an OmixAtlas, the user should use 'single_cell'.
         
         ``Returns:``
-
+            |  It will contain the schema for dataset, sample as dataframe.
             .. code::
             
 
@@ -484,38 +484,51 @@ class OmixAtlas:
                         'dataset':pd.DataFrame,
                         'sample':pd.DataFrame
                     }
-                    DataFrame consists of schema metadata summary
-                    i) schema_type : gct_metadata or h5ad_metadata i.e Column Fields (Sample)
-                    metdata schema definition for sample:
-                        schema:{
-                            "<SOURCE>": {
-                                "<DATATYPE>": {
-                                    "<FIELD_NAME>": {
-                                    "type": "text | integer | object",
-                                    "description": "string", (Min=1, Max=100)
-                                    },
-                                    ... other fields
-                                }
-                                ... other Data types
-                            }
-                            ... other Sources
-                        }
-                    ii) schema_type : files i.e Global Fields (dataset)
-                    PS :- ALL, ALL keys is not rigid for dataset level schema also
-                    There it can be <SOURCE> and <DATATYPE> key also
-                    metadata schema definition for a dataset:
-                        schema:{
-                                "ALL": {
-                                    "ALL": {
-                                        "<FIELD_NAME>": {
-                                        "type": "text | integer | object",
-                                        "description": "string", (Min=1, Max=100)
-                                        },
-                                        ... other fields
-                                    }
-                                }
-                    iii) schema_type : gct_metadata i.e Row Fields (Feature)
-                    Not there right now
+            |  you can access dataset, sample schema in following manner.
+
+            .. code::
+
+
+                    # import pandas as pd
+                    # pd.set_option('expand_frame_repr', False)
+                    # use above two line if your dataframe does not print in single line
+                    schema = omixatlas.get_schema("9", ['dataset', 'sample'])
+
+                    # to fetch the dataframe with dataset level metadata
+                    print(schema.dataset)
+
+                    # to fetch the dataframe with sample level metadata
+                    print(schema.sample)
+            
+            | ``schema.dataset`` will contain dataframe you can print them in a table form like this.
+            
+            .. csv-table::
+                :header: "", Source, Datatype, "Field Name", "Field Description", "Field Type"
+                :delim: |
+
+                0  |  all |  all |   curated_organism |       Orgnism from which the samples were derived  |     text
+                1  |  all |  all |            src_uri |   Unique URI derived from data file's S3 location  |     text
+                2  |  all |  all |  total_num_samples |              Total number of samples in a dataset  |  integer
+                3  |  all |  all |               year |           Year in which the dataset was published  |  integer
+                4  |  all |  all |        description |                        Description of the dataset  |     text
+                5  |  all |  all |  curated_cell_line | Cell lines from which the samples were derived...  |     text
+                6  |  all | all  |   data_table_name  | Name of the data table associated with data file   |    text
+                7  |  all |  all | data_table_version | Current version of the data table associated w...  |  integer
+            
+            | ``schema.sample`` will contain dataframe you can print them in a table form like this.
+            
+            .. csv-table::
+                :header: "", "Source", "Datatype", "Field Name", "Field Description", "Field Type"
+                :delim: |
+                
+                0  |  all  |  all  |   growth_protocol_ch1 |                                                NA |    text
+                1  |  all  |  all  |               src_uri | Unique URI derived from source data file's S3 ... |    text
+                2  |  all  |  all  |             sample_id |            Unique ID associated with every sample |    text
+                3  |  all  |  all  | curated_gene_modified |        Gene modified through genetic modification |    text
+                4  |  all  |  all  |              dose_ch1 |                                                NA |    text
+                5  |  all  |  all  |   curated_cohort_name |    Name of the cohort to which the sample belongs |    text
+                6  |  all  |  all  |       curated_control | Signifies whether the given sample is a contro... | integer
+                7  |  all  |  all  |        src_dataset_id | Dataset ID of the file this data entity origin... |    text        
         
         ``Errors:``
             |  ``invalidApiResponseException:`` datakey, attributes, schema_type is missing in repository schema.
