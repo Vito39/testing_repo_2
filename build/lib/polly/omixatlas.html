@@ -496,6 +496,10 @@ schema_type definition at the top level</p>
 </pre></div>
 </div>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <p>“””
 resp_dict = {}
 schema_base_url = f”{self.discover_url}/repositories”
@@ -830,8 +834,12 @@ df_map[key] = self.nested_dict_to_df(flatten_dict)</p>
 <p>return self.return_schema_data(df_map)</p>
 </dd>
 <dt>def return_schema_data(self, df_map: dict) -&gt; tuple:</dt><dd><p>“””
-Return schema data as named tuple
-“””
+Return schema data as named tuple</p>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>“””
 # change key value from index -&gt; schema_level
 # index and schema_level is in the const indexes_schema_level_map
 schema_level_dict = {}
@@ -850,8 +858,12 @@ def visualize_schema(</p>
 <div><p>self, repo_key: str, schema_level=[“dataset”, “sample”], source=””, data_type=””</p>
 </div></blockquote>
 <dl>
-<dt>) -&gt; dict:</dt><dd><p>“””
-To visulize schema of a repository.</p>
+<dt>) -&gt; dict:</dt><dd><p>“””</p>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>To visulize schema of a repository.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">repo_key</span> <span class="pre">=&gt;</span> <span class="pre">str</span> <span class="pre">=&gt;</span></code> &lt;owner_name.repo_name&gt;/&lt;repo_id&gt;</div>
@@ -955,6 +967,10 @@ Compute schema_type based on data_type and schema_level</p>
 <div class="line">sample and  ——       h5ad_metadata</div>
 <div class="line">single cell</div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <p>“””
 if schema_level and isinstance(schema_level, list):</p>
 <blockquote>
@@ -1052,6 +1068,10 @@ Flatten the nested dict</p>
 </div>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <p>“””
 reformed_dict = {}
 source_list = []
@@ -1105,6 +1125,10 @@ Convert flatten dict into df and print it</p>
 <dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>DataFrame</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <p>“””
 pd.options.display.max_columns = None
 pd.options.display.width = None
@@ -1122,6 +1146,10 @@ Format the dict data</p>
 <div class="line">It will return Equivalent json string of dictionary.</div>
 </div>
 </dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
 </dl>
 <p>“””
 if data and isinstance(data, Dict):</p>
@@ -1273,6 +1301,10 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 def search_metadata(self, query: dict):</p>
 <blockquote>
 <div><p>“””</p>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <p>“””
 url = f”{self.resource_url}/_search”
 payload = query

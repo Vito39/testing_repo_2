@@ -69,15 +69,21 @@
   <p>from polly.session import PollySession</p>
 <p>link_doc = “<a class="reference external" href="https://docs.elucidata.io/OmixAtlas/Polly%20Python.html">https://docs.elucidata.io/OmixAtlas/Polly%20Python.html</a>”</p>
 <dl>
-<dt>class UnauthorizedException(Exception):</dt><dd><dl class="simple">
-<dt>def __str__(self):</dt><dd><p>return f”Authorization failed as credentials not found. Please use Polly.auth(token) as shown here  —- {link_doc}”</p>
-</dd>
+<dt>class UnauthorizedException(Exception):</dt><dd><p>“””</p>
+<dl class="field-list simple">
+<dt class="field-odd">meta private</dt>
+<dd class="field-odd"><p></p></dd>
 </dl>
+<p>“””
+def __str__(self):</p>
+<blockquote>
+<div><p>return f”Authorization failed as credentials not found. Please use Polly.auth(token) as shown here  —- {link_doc}”</p>
+</div></blockquote>
 </dd>
 <dt>class Polly:</dt><dd><p>“””
-This class for authorization to use polly on local, which include following member functions.</p>
-<p>“””
-default_session = None</p>
+This class for authorization to use polly on local, which include following member functions.
+“””
+_default_session = None</p>
 <p>&#64;classmethod
 def auth(cls, token, env=”polly”):</p>
 <blockquote>
@@ -104,7 +110,7 @@ Function for authorization to use polly on terminal or notebook.</p>
 </pre></div>
 </div>
 <p>“””
-cls.default_session = PollySession(token, env=env)</p>
+cls._default_session = PollySession(token, env=env)</p>
 </div></blockquote>
 <p>&#64;classmethod
 def get_session(cls, token=None, env=”polly”):</p>
@@ -135,9 +141,9 @@ Function to get session from polly.</p>
 if not token:</p>
 <blockquote>
 <div><dl class="simple">
-<dt>if not cls.default_session:</dt><dd><p>raise UnauthorizedException</p>
+<dt>if not cls._default_session:</dt><dd><p>raise UnauthorizedException</p>
 </dd>
-<dt>else:</dt><dd><p>return cls.default_session</p>
+<dt>else:</dt><dd><p>return cls._default_session</p>
 </dd>
 </dl>
 </div></blockquote>

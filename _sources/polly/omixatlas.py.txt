@@ -407,6 +407,8 @@ class OmixAtlas:
                             }
                         }
                     }
+        
+        :meta private:
         """
         resp_dict = {}
         schema_base_url = f"{self.discover_url}/repositories"
@@ -572,6 +574,8 @@ class OmixAtlas:
     def return_schema_data(self, df_map: dict) -> tuple:
         """
         Return schema data as named tuple
+        
+        :meta private:
         """
         # change key value from index -> schema_level
         # index and schema_level is in the const indexes_schema_level_map
@@ -587,6 +591,9 @@ class OmixAtlas:
         self, repo_key: str, schema_level=["dataset", "sample"], source="", data_type=""
     ) -> dict:
         """
+        
+        :meta private:
+
         To visulize schema of a repository.
 
         ``Args:``
@@ -662,6 +669,8 @@ class OmixAtlas:
         |  sample    --------      gct_metadata
         |  sample and  ------       h5ad_metadata
         |  single cell
+        
+        :meta private:
         """
         if schema_level and isinstance(schema_level, list):
             if "dataset" in schema_level and "sample" in schema_level:
@@ -727,6 +736,8 @@ class OmixAtlas:
             |      'Field Type': field_type_list
             |  }
 
+        
+        :meta private:
         """
         reformed_dict = {}
         source_list = []
@@ -768,6 +779,8 @@ class OmixAtlas:
 
         ``Returns:``
             DataFrame
+        
+        :meta private:
         """
         pd.options.display.max_columns = None
         pd.options.display.width = None
@@ -783,6 +796,8 @@ class OmixAtlas:
         
         ``Returns:``
             |  It will return Equivalent json string of dictionary.
+                
+        :meta private:
         """
         if data and isinstance(data, Dict):
             return json.dumps(data, indent=4)
@@ -909,7 +924,8 @@ class OmixAtlas:
     # ? DEPRECATED
     def search_metadata(self, query: dict):
         """
-        
+                
+        :meta private:
         """
         url = f"{self.resource_url}/_search"
         payload = query

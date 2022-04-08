@@ -4,6 +4,10 @@ link_doc = "https://docs.elucidata.io/OmixAtlas/Polly%20Python.html"
 
 
 class UnauthorizedException(Exception):
+    """
+    
+    :meta private:
+    """
     def __str__(self):
         return f"Authorization failed as credentials not found. Please use Polly.auth(token) as shown here  ---- {link_doc}"
 
@@ -11,9 +15,8 @@ class UnauthorizedException(Exception):
 class Polly:
     """
     This class for authorization to use polly on local, which include following member functions.
-    
     """
-    default_session = None
+    _default_session = None 
 
     @classmethod
     def auth(cls, token, env="polly"):
@@ -39,7 +42,7 @@ class Polly:
                 from polly.auth import Polly
                 Polly.auth(token)
         """
-        cls.default_session = PollySession(token, env=env)
+        cls._default_session = PollySession(token, env=env)
 
     @classmethod
     def get_session(cls, token=None, env="polly"):
@@ -67,9 +70,9 @@ class Polly:
 
         """
         if not token:
-            if not cls.default_session:
+            if not cls._default_session:
                 raise UnauthorizedException
             else:
-                return cls.default_session
+                return cls._default_session
         else:
             return PollySession(token, env=env)
