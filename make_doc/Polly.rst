@@ -38,6 +38,8 @@ The following libraries need to be imported over the development environment to 
         from polly.workspaces import Workspaces
         from polly.cohort import Cohort
 
+.. _auth:
+
 3. Authentication
 ------------------
 Authentication of the account is required to be able to access the capabilities of the Polly Python library.

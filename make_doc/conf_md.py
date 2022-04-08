@@ -43,6 +43,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','env/*', 'examples/*','te
 add_module_names = False
 autodoc_member_order = 'bysource'
 autodoc_preserve_defaults = True
+html_show_sourcelink = False
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
