@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo apt-get install -y expect
           export ans="n"
-          export ans1="Polly's"
+          export ans1="Polly"
           export ans2="hrishabh_kamal"
           export ans3="1"
           export ans4="en"
