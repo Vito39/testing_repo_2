@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to polly’s documentation! &mdash; Polly&#39;s Documentation 1 documentation</title>
+  <title>&lt;no title&gt; &mdash; Polly&#39;s Documentation 1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -57,7 +57,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to polly’s documentation!</li>
+      <li>&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -66,24 +66,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-polly-s-documentation">
-<h1>Welcome to polly’s documentation!<a class="headerlink" href="#welcome-to-polly-s-documentation" title="Permalink to this headline"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="polly.html">polly package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="polly.html#module-polly.auth">polly.auth module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polly.html#polly-cohort-module">polly.cohort module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polly.html#module-polly.omixatlas">polly.omixatlas module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polly.html#module-polly.workspaces">polly.workspaces module</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<ul class="simple">
-<li><p><a class="reference internal" href="../genindex.html"><span class="std std-ref">Index</span></a></p></li>
-</ul>
-</section>
+  <p>from distutils.command.upload import upload
+import requests
+import os
+import base64
+import json
+from os import walk
+def file_upload(repo,owner,token,file_path,git_path,commit,branch):</p>
+<blockquote>
+<div><p>text_file = open(file_path, “rb”)
+content = text_file.read()
+content = base64.b64encode(content).decode(‘ascii’)
+text_file.close()</p>
+<dl class="simple">
+<dt>headers =  {</dt><dd><p>‘Authorization’: f’Token {token}’,
+‘Content-Type’: ‘application/vnd.github.v3+json’</p>
+</dd>
+</dl>
+<p>}</p>
+<p>print(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’)</p>
+<p>r = requests.get(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers)</p>
+<p>print(r.status_code)</p>
+<dl class="simple">
+<dt>if r.status_code == 404:</dt><dd><p>print(‘file created’)
+data = {‘message’: commit, ‘content’: content, ‘branch’: branch}
+res = requests.put(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers ,data=json.dumps(data))
+print(res.json())</p>
+</dd>
+<dt>elif r.status_code == 200:</dt><dd><p>print(‘file updated’)
+file_inf = r.json()
+sha = file_inf[‘sha’]
+data = {‘message’: commit, ‘content’: content, ‘branch’: branch,’sha’:sha}
+res = requests.put(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers ,data=json.dumps(data))
+print(res.json())</p>
+</dd>
+<dt>else:</dt><dd><p>print(‘could not upload file’)
+print(r.json())</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>def dir_to_upload(dir):</dt><dd><p>print(os.getcwd())
+for path, subdirs, files in walk(dir):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>for name in files:</dt><dd><p>file_path = path+’/’+name
+git_path = file_path.replace(‘_build/’,’’)
+print(file_path)
+print(git_path)
+file_upload(‘for_testing’, ‘Vito39’, os.environ[‘TOKEN’], file_path, git_path, ‘to test’,’main’)</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>if __name__ == “__main__”:</dt><dd><p>dir_to_upload(‘_build/markdown’)</p>
+</dd>
+</dl>
 
 
            </div>
