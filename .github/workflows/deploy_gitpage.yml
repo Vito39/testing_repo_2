@@ -62,8 +62,17 @@ jobs:
           sed -i '$d' polly.rst
           sed -i '$d' polly.rst
           sed -i '$d' polly.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          sed -i '$d' index.rst
+          echo -e "\n   make_doc/Polly\n   polly\n   make_doc/download\n   make_doc/query\n* :ref:\`genindex\`" >> index.rst
           cp make_doc/conf_html.py conf.py
-          cp make_doc/index.rst index.rst
           make html
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
