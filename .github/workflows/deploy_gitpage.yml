@@ -51,8 +51,7 @@ jobs:
           echo 'expect -ex {Project language [en]:}' >> doc.sh
           echo 'send -- "en\r"' >> doc.sh
           echo 'expect eof' >> doc.sh
-          chmod +rwx ./doc.sh
-          /doc.sh <<< $"$ans\n$ans1\n$ans2\n$ans3\n$ans4\n" 
+          chmod +x ./doc.sh
           ./doc.sh
           sphinx-apidoc -f -o . . polly/application_error_info.py polly/constants.py polly/errors.py polly/helpers.py polly/index_schema_level_conversion_const.py polly/session.py make_doc/upload_files.py
           sed -i '/Submodules/, +1 d' polly.rst
