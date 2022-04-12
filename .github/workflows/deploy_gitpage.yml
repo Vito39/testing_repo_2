@@ -32,11 +32,6 @@ jobs:
       - name: making doc
         run: |
           sudo apt-get install -y expect
-          export ans="n"
-          export ans1="Polly"
-          export ans2="hrishabh_kamal"
-          export ans3="1"
-          export ans4="en"
           echo '#!/usr/bin/expect -f' > doc.sh
           echo 'set timeout -1' >> doc.sh
           echo 'spawn sphinx-quickstart' >> doc.sh
