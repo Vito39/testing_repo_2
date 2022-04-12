@@ -41,13 +41,18 @@ jobs:
           echo 'set timeout -1' >> doc.sh
           echo 'spawn sphinx-quickstart' >> doc.sh
           echo 'expect -ex {Separate source and build directories (y/n) [n]:}' >> doc.sh
+          echo 'send -- "n\n"' >> doc.sh
           echo 'expect -ex {Project name:}' >> doc.sh
+          echo 'send -- "Polly\r"' >> doc.sh
           echo 'expect -ex {Author name(s):}' >> doc.sh
+          echo 'send -- "hrishabh_kamal\r"' >> doc.sh
           echo 'expect -ex {Project release []:}' >> doc.sh
+          echo 'send -- "1\r"' >> doc.sh
           echo 'expect -ex {Project language [en]:}' >> doc.sh
+          echo 'send -- "en\r"' >> doc.sh
           echo 'expect eof' >> doc.sh
           chmod +rwx ./doc.sh
-          sudo ./doc.sh <<< $"$ans\n$ans1\n$ans2\n$ans3\n$ans4\n" 
+          /doc.sh <<< $"$ans\n$ans1\n$ans2\n$ans3\n$ans4\n" 
           ./doc.sh
           sphinx-apidoc -f -o . . polly/application_error_info.py polly/constants.py polly/errors.py polly/helpers.py polly/index_schema_level_conversion_const.py polly/session.py make_doc/upload_files.py
           sed -i '/Submodules/, +1 d' polly.rst
