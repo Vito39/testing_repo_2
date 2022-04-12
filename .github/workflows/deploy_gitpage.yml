@@ -40,16 +40,7 @@ jobs:
           echo '#!/usr/bin/expect -f' > doc.sh
           echo 'set timeout -1' >> doc.sh
           echo 'spawn sphinx-quickstart' >> doc.sh
-          echo 'expect -ex {Separate source and build directories (y/n) [n]:}' >> doc.sh
-          echo 'send -- "n\n"' >> doc.sh
-          echo 'expect -ex {Project name:}' >> doc.sh
-          echo 'send -- "$env(ans1)\r"' >> doc.sh
-          echo 'expect -ex {Author name(s):}' >> doc.sh
-          echo 'send -- "$env(ans2)\r"' >> doc.sh
-          echo 'expect -ex {Project release []:}' >> doc.sh
-          echo 'send -- "$env(ans3)\r"' >> doc.sh
-          echo 'expect -ex {Project language [en]:}' >> doc.sh
-          echo 'send -- "$env(ans4)\r"' >> doc.sh
+          printf "$ans\n$ans1\n$ans2\n$ans3\n" | doc.sh
           echo 'expect eof' >> doc.sh
           chmod +x ./doc.sh
           ./doc.sh
