@@ -4,6 +4,5 @@ testing_repo_2
 .. toctree::
    :maxdepth: 4
 
-   conf
    polly
    setup
