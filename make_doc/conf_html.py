@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = "Polly's Documentation"
-copyright = '2022, hrishabh kamal'
-author = 'hrishabh kamal'
+copyright = '2022, Polly-python-team'
+author = 'Polly-python-team'
 
 # The full version, including alpha/beta/rc tags
 release = '1'
