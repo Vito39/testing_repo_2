@@ -2,35 +2,37 @@ polly package
 =============
 
 
-polly.auth module
------------------
+
+polly.auth
+----------
 
 .. automodule:: polly.auth
    :members:
    :undoc-members:
    :show-inheritance:
 
-polly.cohort module
--------------------
+polly.cohort
+------------
 
 .. automodule:: polly.cohort
    :members:
    :undoc-members:
    :show-inheritance:
 
-polly.omixatlas module
-----------------------
+polly.omixatlas
+---------------
 
 .. automodule:: polly.omixatlas
    :members:
    :undoc-members:
    :show-inheritance:
 
-polly.workspaces module
------------------------
+polly.workspaces
+----------------
 
 .. automodule:: polly.workspaces
    :members:
    :undoc-members:
    :show-inheritance:
+
 
