@@ -4,6 +4,9 @@ import os
 import base64
 import json
 from os import walk
+from datetime import datetime
+import sys
+
 def file_upload(repo,owner,token,file_path,git_path,commit,branch):
         text_file = open(file_path, "rb")        
         content = text_file.read()
@@ -16,7 +19,6 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
             'Content-Type': 'application/vnd.github.v3+json'
         }
 
-        print(f'https://api.github.com/repos/{owner}/{repo}/contents/{git_path}')
 
         r = requests.get(f'https://api.github.com/repos/{owner}/{repo}/contents/{git_path}', headers=headers)
         
@@ -39,15 +41,17 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
             print(r.json())
 
 
-def dir_to_upload(dir):
-    print(os.getcwd())
-    for path, subdirs, files in walk(dir):
+def dir_to_upload(dir_to_upload, destination, repo, owner, branch):
+    for path, subdirs, files in walk(dir_to_upload):
         for name in files:
-            file_path = path+'/'+name
+            file_path = destination + '/' + path+ '/' + name
             git_path = file_path.replace('_build/','')
+            now = datetime.now() 
+            commit = "updated file on " + now.strftime("%m/%d/%Y, %H:%M:%S")
             print(file_path)
             print(git_path)
-            file_upload('for_testing', 'Vito39', os.environ['TOKEN'], file_path, git_path, 'to test','main')
+            file_upload(repo, owner, os.environ['TOKEN'], file_path, git_path, commit, branch)
 
 if __name__ == "__main__":
-    dir_to_upload('_build/markdown')
+    args = sys.argv
+    dir_to_upload(*args[1:])

@@ -1,0 +1,4 @@
+sphinx==4.4.0
+sphinxcontrib-napoleon
+sphinx_rtd_theme
+sphinx-markdown-builder
