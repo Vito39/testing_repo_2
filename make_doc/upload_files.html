@@ -72,9 +72,10 @@ import os
 import base64
 import json
 from os import walk
-def file_upload(repo,owner,token,file_path,git_path,commit,branch):</p>
-<blockquote>
-<div><p>text_file = open(file_path, “rb”)
+from datetime import datetime
+import sys</p>
+<dl>
+<dt>def file_upload(repo,owner,token,file_path,git_path,commit,branch):</dt><dd><p>text_file = open(file_path, “rb”)
 content = text_file.read()
 content = base64.b64encode(content).decode(‘ascii’)
 text_file.close()</p>
@@ -84,7 +85,6 @@ text_file.close()</p>
 </dd>
 </dl>
 <p>}</p>
-<p>print(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’)</p>
 <p>r = requests.get(f’<a class="reference external" href="https://api.github.com/repos">https://api.github.com/repos</a>/{owner}/{repo}/contents/{git_path}’, headers=headers)</p>
 <p>print(r.status_code)</p>
 <dl class="simple">
@@ -104,22 +104,23 @@ print(res.json())</p>
 print(r.json())</p>
 </dd>
 </dl>
-</div></blockquote>
-<dl>
-<dt>def dir_to_upload(dir):</dt><dd><p>print(os.getcwd())
-for path, subdirs, files in walk(dir):</p>
-<blockquote>
-<div><dl class="simple">
-<dt>for name in files:</dt><dd><p>file_path = path+’/’+name
+</dd>
+<dt>def dir_to_upload(dir_to_upload, destination, repo, owner, branch):</dt><dd><dl class="simple">
+<dt>for path, subdirs, files in walk(dir_to_upload):</dt><dd><dl class="simple">
+<dt>for name in files:</dt><dd><p>file_path = destination + ‘/’ + path+ ‘/’ + name
 git_path = file_path.replace(‘_build/’,’’)
+now = datetime.now()
+commit = “updated file on ” + now.strftime(“%m/%d/%Y, %H:%M:%S”)
 print(file_path)
 print(git_path)
-file_upload(‘for_testing’, ‘Vito39’, os.environ[‘TOKEN’], file_path, git_path, ‘to test’,’main’)</p>
+file_upload(repo, owner, os.environ[‘TOKEN’], file_path, git_path, commit, branch)</p>
 </dd>
 </dl>
-</div></blockquote>
 </dd>
-<dt>if __name__ == “__main__”:</dt><dd><p>dir_to_upload(‘_build/markdown’)</p>
+</dl>
+</dd>
+<dt>if __name__ == “__main__”:</dt><dd><p>args = sys.argv
+dir_to_upload(<a href="#id1"><span class="problematic" id="id2">*</span></a>args[1:])</p>
 </dd>
 </dl>
 
