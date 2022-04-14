@@ -44,8 +44,8 @@ def file_upload(repo,owner,token,file_path,git_path,commit,branch):
 def dir_to_upload(dir_to_upload, destination, repo, owner, branch):
     for path, subdirs, files in walk(dir_to_upload):
         for name in files:
-            file_path = destination + '/' + path+ '/' + name
-            git_path = file_path.replace('_build/','')
+            file_path =  path+ '/' + name
+            git_path = destination + '/' + file_path.replace('_build/','')
             now = datetime.now() 
             commit = "updated file on " + now.strftime("%m/%d/%Y, %H:%M:%S")
             print(file_path)
