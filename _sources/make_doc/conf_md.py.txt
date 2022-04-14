@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = "Polly's Documentation"
-copyright = '2022, hrishabh kamal'
-author = 'hrishabh kamal'
+copyright = '2022, Polly-python-team'
+author = 'Polly-python-team'
 
 # The full version, including alpha/beta/rc tags
 release = '1'
@@ -30,7 +30,7 @@ source_suffix = ['.rst','.py']
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc','sphinx_markdown_builder']
+extensions = ['sphinx_markdown_builder']
 
 
 # Add any paths that contain templates here, relative to this directory.
