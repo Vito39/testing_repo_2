@@ -32,7 +32,7 @@ jobs:
           TOKEN : ${{ secrets.TOKEN }}
         run: |
           sphinx-quickstart --no-sep -p "polly" -a "polly-python-team" -v 1 -r 0 -l "en"
-          sphinx-apidoc -t make_doc/_templates -f -o . . polly/application_error_info.py polly/constants.py polly/errors.py polly/helpers.py polly/index_schema_level_conversion_const.py polly/session.py make_doc/upload_files.py make_doc/conf_md.py make_doc/conf_html.py
+          sphinx-apidoc -t make_doc/_templates -f -o . . make_doc/conf_html.py make_doc/conf_md.py make_doc/upload_files.py polly/application_error_info.py polly/constants.py polly/errors.py polly/helpers.py polly/index_schema_level_conversion_const.py polly/session.py conf.py conf.rst index.rst modules.rst setup.rst
           head -n -9 index.rst > tmp.txt && mv tmp.txt index.rst
           echo -e "\n   make_doc/Polly\n   polly\n   make_doc/download\n   make_doc/query\n* :ref:\`genindex\`" >> index.rst
           cp make_doc/conf_html.py conf.py
