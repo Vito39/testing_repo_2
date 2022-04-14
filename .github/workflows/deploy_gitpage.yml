@@ -21,6 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install .
+          python -m pip install ./requirements-dev.txt
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
           python -m pip install wheel
@@ -31,7 +32,6 @@ jobs:
 
       - name: making doc
         run: |
-          sudo apt-get install -y expect
           sphinx-quickstart --no-sep -p "polly" -a "polly-python-team" -v 1 -r 0 -l "en"
           sphinx-apidoc -t make_doc/_templates -f -o . . polly/application_error_info.py polly/constants.py polly/errors.py polly/helpers.py polly/index_schema_level_conversion_const.py polly/session.py make_doc/upload_files.py
           head -n -9 index.rst > tmp.txt && mv tmp.txt index.rst
