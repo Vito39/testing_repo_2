@@ -19,14 +19,6 @@ polly.cohort
    :undoc-members:
    :show-inheritance:
 
-polly.get\_help
----------------
-
-.. automodule:: polly.get_help
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 polly.omixatlas
 ---------------
 
