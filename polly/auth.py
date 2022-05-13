@@ -1,5 +1,5 @@
 from polly.session import PollySession
-
+from polly.get_help import example,doc
 link_doc = "https://docs.elucidata.io/OmixAtlas/Polly%20Python.html"
 
 
@@ -16,7 +16,9 @@ class Polly:
     """
     This class for authorization to use polly on local, which include following member functions.
     """
-    _default_session = None 
+    _default_session = None
+    example = classmethod(example)
+    doc = classmethod(doc)
 
     @classmethod
     def auth(cls, token, env="polly"):

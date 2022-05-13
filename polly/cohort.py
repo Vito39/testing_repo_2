@@ -8,6 +8,7 @@ import urllib.request
 import logging
 import pandas as pd
 from polly.auth import Polly
+from polly.get_help import example,doc
 from polly.omixatlas import OmixAtlas
 from polly.errors import (
     InvalidCohortNameException,
@@ -48,6 +49,8 @@ class Cohort:
     
     If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
+    example = classmethod(example)
+    doc = classmethod(doc)
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
