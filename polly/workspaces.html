@@ -73,6 +73,7 @@ import logging
 import pandas as pd
 import json
 import os</p>
+<p>from polly.get_help import example,doc</p>
 <dl>
 <dt>class Workspaces:</dt><dd><p>“””
 This class contains functions to interact with workspaces on Polly. We can initialize a object that
@@ -91,6 +92,8 @@ can use all function and methods of Workspaces class.</p>
 </div>
 <p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
 “””
+example = classmethod(example)
+doc = classmethod(doc)
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)

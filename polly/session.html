@@ -67,7 +67,8 @@
            <div itemprop="articleBody">
              
   <p>from requests import Session
-import os</p>
+import os
+from polly.get_help import example,doc</p>
 <dl>
 <dt>class PollySession(Session):</dt><dd><p>“””
 This class contain function to create session for
@@ -88,6 +89,8 @@ polly.</p>
 </pre></div>
 </div>
 <p>“””
+example = classmethod(example)
+doc = classmethod(doc)
 def __init__(self, REFRESH_TOKEN, env=”polly”):</p>
 <blockquote>
 <div><p>Session.__init__(self)

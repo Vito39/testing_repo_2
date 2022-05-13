@@ -26,6 +26,7 @@ from polly.errors import (
     invalidApiResponseException,
 )
 from deprecated import deprecated
+from polly.get_help import example,doc
 from polly.index_schema_level_conversion_const import indexes_schema_level_map
 
 QUERY_API_V1 = "v1"
@@ -51,6 +52,8 @@ class OmixAtlas:
     
     If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
+    example = classmethod(example)
+    doc = classmethod(doc)
     def __init__(self, token=None, env="polly") -> None:
         self.session = Polly.get_session(token, env=env)
         self.base_url = f"https://v2.api.{self.session.env}.elucidata.io"
@@ -924,6 +927,7 @@ class OmixAtlas:
     # ? DEPRECATED
     def search_metadata(self, query: dict):
         """
+        to search metadata
                 
         :meta private:
         """

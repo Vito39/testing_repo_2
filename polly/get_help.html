@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Polly&#39;s Documentation 1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Polly's Documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../make_doc/Polly.html">About Polly Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../polly.html">polly package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_doc/download.html">Downloading Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_doc/query.html">Querying metadata</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polly's Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>from inspect import isclass
+import os
+import sys
+from numpy.core import ufunc
+import inspect
+from io import StringIO</p>
+<p>CACHE = {}</p>
+<dl>
+<dt>def get_member(name: str, n: str, v: object) -&gt; str:</dt><dd><dl class="simple">
+<dt>try:</dt><dd><p>item_name = getattr(v, “__name__”, “%s.%s” % (name, n))
+mod_name = getattr(v, “__module__”, None)</p>
+</dd>
+<dt>except NameError:</dt><dd><p>item_name = “%s.%s” % (name, n)
+mod_name = None</p>
+</dd>
+</dl>
+<p>return item_name, mod_name</p>
+</dd>
+<dt>def is_exe(</dt><dd><p>item_name: str, mod_name: str, name: str, n: str, v: object, _all: str</p>
+</dd>
+<dt>) -&gt; bool:</dt><dd><dl class="simple">
+<dt>if “.” not in item_name and mod_name:</dt><dd><p>item_name = “%s.%s” % (mod_name, item_name)</p>
+</dd>
+<dt>if not item_name.startswith(name + “.”):</dt><dd><dl class="simple">
+<dt>if isinstance(v, ufunc):</dt><dd><p>return False</p>
+</dd>
+<dt>else:</dt><dd><p>return True</p>
+</dd>
+</dl>
+</dd>
+<dt>elif not (inspect.ismodule(v) or _all is None or n in _all):</dt><dd><p>return True</p>
+</dd>
+</dl>
+</dd>
+<dt>def get_docs(name: str, kind: str, index: int, item: object) -&gt; None:</dt><dd><dl class="simple">
+<dt>try:</dt><dd><p>doc = inspect.getdoc(item)</p>
+</dd>
+<dt>except NameError as e:</dt><dd><p>raise NameError(title=”Name Error”, detail=e)</p>
+</dd>
+<dt>if doc is not None:</dt><dd><p>CACHE[name] = (doc, kind, index)</p>
+</dd>
+</dl>
+</dd>
+<dt>def path_to_import(this_py: str, mod_path: str, init_py: str) -&gt; str:</dt><dd><dl class="simple">
+<dt>if os.path.isfile(this_py) and mod_path.endswith(“.py”):</dt><dd><p>return mod_path[:-3]</p>
+</dd>
+<dt>elif os.path.isfile(init_py):</dt><dd><p>return mod_path</p>
+</dd>
+<dt>else:</dt><dd><p>return None</p>
+</dd>
+</dl>
+</dd>
+<dt>def get_module(module: str) -&gt; object:</dt><dd><dl class="simple">
+<dt>try:</dt><dd><p>__import__(module)</p>
+</dd>
+<dt>except ImportError:</dt><dd><p>return {}</p>
+</dd>
+</dl>
+<p>return sys.modules[module]</p>
+</dd>
+<dt>def get_all(item: object) -&gt; object:</dt><dd><dl class="simple">
+<dt>try:</dt><dd><p>_all = item.__all__</p>
+</dd>
+<dt>except AttributeError:</dt><dd><p>_all = None</p>
+</dd>
+</dl>
+<p>return _all</p>
+</dd>
+<dt>def _import(name: str, to_import: str) -&gt; bool:</dt><dd><dl>
+<dt>try:</dt><dd><p>old_stdout = sys.stdout
+old_stderr = sys.stderr
+try:</p>
+<blockquote>
+<div><p>sys.stdout = StringIO()
+sys.stderr = StringIO()
+__import__(“%s.%s” % (name, to_import))</p>
+</div></blockquote>
+<dl class="simple">
+<dt>finally:</dt><dd><p>sys.stdout = old_stdout
+sys.stderr = old_stderr
+return True</p>
+</dd>
+</dl>
+</dd>
+<dt>except (Exception, SystemExit):</dt><dd><p>return False</p>
+</dd>
+</dl>
+</dd>
+<dt>def push_next_members(</dt><dd><p>import_modules: bool, item: object, name: str, _all: object, stack</p>
+</dd>
+<dt>) -&gt; None:</dt><dd><dl>
+<dt>if import_modules and hasattr(item, “__path__”):</dt><dd><dl>
+<dt>for pth in item.__path__:</dt><dd><dl>
+<dt>for mod_path in os.listdir(pth):</dt><dd><p>this_py = os.path.join(pth, mod_path)
+init_py = os.path.join(pth, mod_path, “__init__.py”)
+to_import = path_to_import(this_py, mod_path, init_py)
+if not to_import or to_import == “__init__”:</p>
+<blockquote>
+<div><p>continue</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if not _import(name, to_import):</dt><dd><p>continue</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>for n, v in _getmembers(item):</dt><dd><p>item_name, mod_name = get_member(name, n, v)
+if is_exe(item_name, mod_name, name, n, v, _all):</p>
+<blockquote>
+<div><p>continue</p>
+</div></blockquote>
+<p>stack.append((“%s.%s” % (name, n), v))</p>
+</dd>
+</dl>
+</dd>
+<dt>def _lookfor_generate_cache(module: str, import_modules: bool) -&gt; dict:</dt><dd><p>module = get_module(module)
+seen = {}
+index = 0
+stack = [(module.__name__, module)]</p>
+<dl>
+<dt>while stack:</dt><dd><p>name, item = stack.pop(0)
+if id(item) in seen:</p>
+<blockquote>
+<div><p>continue</p>
+</div></blockquote>
+<p>seen[id(item)] = True</p>
+<p>index += 1
+kind = “object”</p>
+<dl>
+<dt>if inspect.ismodule(item):</dt><dd><p>kind = “module”
+_all = get_all(item)
+push_next_members(import_modules, item, name, _all, stack)</p>
+</dd>
+<dt>elif inspect.isclass(item):</dt><dd><p>kind = “class”
+for n, v in _getmembers(item):</p>
+<blockquote>
+<div><p>stack.append((“%s.%s” % (name, n), v))</p>
+</div></blockquote>
+</dd>
+<dt>elif hasattr(item, “__call__”):</dt><dd><p>kind = “func”</p>
+</dd>
+</dl>
+<p>get_docs(name, kind, index, item)</p>
+</dd>
+</dl>
+<p>return CACHE</p>
+</dd>
+<dt>def _getmembers(item: object) -&gt; object:</dt><dd><p>import inspect</p>
+<dl class="simple">
+<dt>try:</dt><dd><p>members = inspect.getmembers(item)</p>
+</dd>
+<dt>except Exception:</dt><dd><p>members = [(x, getattr(item, x)) for x in dir(item) if hasattr(item, x)]</p>
+</dd>
+</dl>
+<p>return members</p>
+</dd>
+</dl>
+<p>def lookfor(module: str = None, import_modules: bool = True) -&gt; list:</p>
+<blockquote>
+<div><p>CACHE = _lookfor_generate_cache(module, import_modules)</p>
+<p>found = []</p>
+<dl>
+<dt>for name, (docstring, kind, index) in CACHE.items():</dt><dd><dl class="simple">
+<dt>if kind in (“module”, “object”):</dt><dd><p>continue</p>
+</dd>
+</dl>
+<p>doc = docstring.lower()
+found.append((name, kind, doc))</p>
+</dd>
+</dl>
+<p>return found</p>
+</div></blockquote>
+<dl>
+<dt>def checkclass(cls) -&gt; None:</dt><dd><dl class="simple">
+<dt>if not isclass(cls):</dt><dd><p>print(“Note : use class to get help”)
+raise TypeError(title=”Use class”)</p>
+</dd>
+<dt>if cls.__name__ not in [“Polly”, “OmixAtlas”, “Cohort”, “Workspaces”]:</dt><dd><p>print(“Other class methods not allowed”)
+raise Exception(title=”Other class are not allowed”)</p>
+</dd>
+</dl>
+</dd>
+<dt>def get_fun_name(function_name: str) -&gt; str:</dt><dd><dl class="simple">
+<dt>if function_name and function_name.find(“(”) != -1:</dt><dd><p>return function_name.split(“(“)[0]</p>
+</dd>
+<dt>elif function_name:</dt><dd><p>return function_name</p>
+</dd>
+</dl>
+<p>return None</p>
+</dd>
+<dt>def checkpath(fun: str) -&gt; bool:</dt><dd><p>should_show_fun = True
+for name in fun.split(“.”):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if name.startswith(“_”):</dt><dd><p>should_show_fun = False
+break</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>return should_show_fun</p>
+</dd>
+<dt>def get_line(fun: str, kind: str, txt: str, function_name: str, cls, doc: str) -&gt; str:</dt><dd><dl class="simple">
+<dt>Link = {</dt><dd><p>“cohort”: “<a class="reference external" href="https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/cohort.ipynb">https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/cohort.ipynb</a>”,
+“omixatlas”: “<a class="reference external" href="https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/omixatlas.ipynb">https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/omixatlas.ipynb</a>”,
+“polly”: “<a class="reference external" href="https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/polly.ipynb">https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/polly.ipynb</a>”,
+“workspaces”: “<a class="reference external" href="https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/workspaces.ipynb">https://github.com/ElucidataInc/PublicAssets/blob/master/polly-python/example/workspaces.ipynb</a>”,</p>
+</dd>
+</dl>
+<p>}
+line = None
+class_name = cls.__name__.lower()</p>
+<p>description = txt.split(”n”)[0]
+if doc:</p>
+<blockquote>
+<div><dl>
+<dt>if kind == “class” or function_name:</dt><dd><dl class="simple">
+<dt>line = (</dt><dd><p>“Name - %s() nDescription - %snDocstring - %sn%s class contain following methodsnn”
+% (fun.split(“.”)[-1], description, txt, cls.__name__)</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+<dt>else:</dt><dd><dl class="simple">
+<dt>line = “Name - %s() n   Description - %sn” % (</dt><dd><p>fun.split(“.”)[-1],
+description,</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>else:</dt><dd><dl>
+<dt>if kind == “class” and not function_name:</dt><dd><dl class="simple">
+<dt>line = “Name - %s() n   Description - %sn   Link - %sn” % (</dt><dd><p>fun.split(“.”)[-1],
+description,
+Link[class_name],</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+<dt>elif kind == “func” and function_name:</dt><dd><dl class="simple">
+<dt>line = “Name - %s() n   Description - %sn   Link - %sn” % (</dt><dd><p>fun.split(“.”)[-1],
+description,
+Link[class_name],</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>return line</p>
+</dd>
+<dt>def get_txt(</dt><dd><p>cls,
+fun: str,
+kind: str,
+doc: str,
+function_name: str,
+should_show_fun: bool,
+is_doc: bool,</p>
+</dd>
+<dt>) -&gt; str:</dt><dd><dl>
+<dt>if (</dt><dd><p>cls.__name__ in fun.split(“.”)
+and (not function_name or function_name == fun.split(“.”)[-1])
+and should_show_fun</p>
+</dd>
+<dt>):</dt><dd><p>import rst2txt
+from docutils.core import publish_string</p>
+<dl class="simple">
+<dt>txt = publish_string(</dt><dd><p>source=doc,
+writer=rst2txt.Writer(),
+settings_overrides={“report_level”: 6},</p>
+</dd>
+</dl>
+<p>).decode(“utf-8”)</p>
+<dl class="simple">
+<dt>while txt.find(“&gt;&gt;:ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>”) != -1:</dt><dd><p>x = txt.find(“&gt;&gt;:ref:<cite>”)
+y = txt.find(“`&lt;&lt;”) + 3
+str_to_del = txt[x:y]
+str_to_ins = str_to_del.split(“&gt;&gt;:ref:</cite>”)[1]
+str_to_ins = “visit ” + str_to_ins.split(” “)[0]
+txt = txt.replace(str_to_del, str_to_ins)</p>
+</dd>
+<dt>if “meta private” not in txt:</dt><dd><p>line = get_line(fun, kind, txt, function_name, cls, is_doc)
+return line</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>return None</p>
+</dd>
+<dt>def doc(cls, function_name: str = “”) -&gt; None:</dt><dd><blockquote>
+<div><p>“””
+function to see documentation for class - Polly, OmixAtlas, Workspaces, Cohort and it’s member funtions</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">function_name</span> <span class="pre">(optional)</span> <span class="pre">str:</span></code> provide function name to see documentation default empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>if you provide function_name to search then it will give documentation for function other wise it will</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>give documentation for the class.</dt><dd><p>“””
+checkclass(cls)
+function_name = get_fun_name(function_name)
+help_text = []</p>
+<dl>
+<dt>for (fun, kind, doc) in lookfor(“polly”, True):</dt><dd><p>should_show_fun = checkpath(fun)
+txt = get_txt(cls, fun, kind, doc, function_name, should_show_fun, True)
+if txt:</p>
+<blockquote>
+<div><p>help_text.append(txt)</p>
+</div></blockquote>
+</dd>
+<dt>if len(help_text) == 0:</dt><dd><p>help_text.append(“Nothing found”)</p>
+</dd>
+<dt>help_text.append(</dt><dd><p>“Go to our polly documentation <a class="reference external" href="https://vito39.github.io/testing_repo_2/">https://vito39.github.io/testing_repo_2/</a>”</p>
+</dd>
+</dl>
+<p>)</p>
+<p>print(”n”.join(help_text))</p>
+</dd>
+</dl>
+</dd>
+<dt>def example(cls, function_name: str = “”) -&gt; None:</dt><dd><p>“””
+function to see examples for class - Polly, OmixAtlas, Workspaces, Cohort and it’s member funtions</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Args:</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">function_name</span> <span class="pre">(optional)</span> <span class="pre">str:</span></code> provide function name to see examples default empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Returns:</span></code></dt><dd><p>if you provide function_name to search then it will give example link for that function other wise it </p>
+</dd>
+</dl>
+</dd>
+<dt>will give link for all examples for that class.</dt><dd><p>“””
+checkclass(cls)
+function_name = get_fun_name(function_name)
+help_text = []</p>
+<dl>
+<dt>for (fun, kind, doc) in lookfor(“polly”, True):</dt><dd><p>should_show_fun = checkpath(fun)
+txt = get_txt(cls, fun, kind, doc, function_name, should_show_fun, False)
+if txt:</p>
+<blockquote>
+<div><p>help_text.append(txt)</p>
+</div></blockquote>
+</dd>
+<dt>if help_text == []:</dt><dd><p>help_text.append(“nothing found”)</p>
+</dd>
+</dl>
+<p>print(”n”.join(help_text))</p>
+</dd>
+</dl>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Polly-python-team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

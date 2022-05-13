@@ -95,6 +95,7 @@ invalidApiResponseException,</p>
 </div></blockquote>
 <p>)
 from deprecated import deprecated
+from polly.get_help import example,doc
 from polly.index_schema_level_conversion_const import indexes_schema_level_map</p>
 <p>QUERY_API_V1 = “v1”
 QUERY_API_V2 = “v2”</p>
@@ -114,6 +115,8 @@ OmixAtlas class interact with omixatlases repository. You can query datasets and
 </div>
 <p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
 “””
+example = classmethod(example)
+doc = classmethod(doc)
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)
@@ -1300,7 +1303,8 @@ detail=”Params are either empty or its datatype is not correct”,</p>
 <p># ? DEPRECATED
 def search_metadata(self, query: dict):</p>
 <blockquote>
-<div><p>“””</p>
+<div><p>“””
+to search metadata</p>
 <dl class="field-list simple">
 <dt class="field-odd">meta private</dt>
 <dd class="field-odd"><p></p></dd>

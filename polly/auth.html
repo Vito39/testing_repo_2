@@ -66,8 +66,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p>from polly.session import PollySession</p>
-<p>link_doc = “<a class="reference external" href="https://docs.elucidata.io/OmixAtlas/Polly%20Python.html">https://docs.elucidata.io/OmixAtlas/Polly%20Python.html</a>”</p>
+  <p>from polly.session import PollySession
+from polly.get_help import example,doc
+link_doc = “<a class="reference external" href="https://docs.elucidata.io/OmixAtlas/Polly%20Python.html">https://docs.elucidata.io/OmixAtlas/Polly%20Python.html</a>”</p>
 <dl>
 <dt>class UnauthorizedException(Exception):</dt><dd><p>“””</p>
 <dl class="field-list simple">
@@ -83,7 +84,9 @@ def __str__(self):</p>
 <dt>class Polly:</dt><dd><p>“””
 This class for authorization to use polly on local, which include following member functions.
 “””
-_default_session = None</p>
+_default_session = None
+example = classmethod(example)
+doc = classmethod(doc)</p>
 <p>&#64;classmethod
 def auth(cls, token, env=”polly”):</p>
 <blockquote>

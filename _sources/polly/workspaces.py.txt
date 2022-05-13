@@ -6,6 +6,8 @@ import pandas as pd
 import json
 import os
 
+from polly.get_help import example,doc
+
 
 class Workspaces:
     """
@@ -26,6 +28,8 @@ class Workspaces:
     
     If you are authorised then you can initialize object without token to know about :ref:`authentication <auth>`.
     """
+    example = classmethod(example)
+    doc = classmethod(doc)
     def __init__(self, token=None, env="polly") -> None:
 
         self.session = Polly.get_session(token, env=env)

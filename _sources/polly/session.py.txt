@@ -1,5 +1,6 @@
 from requests import Session
 import os
+from polly.get_help import example,doc
 
 
 class PollySession(Session):
@@ -23,6 +24,8 @@ class PollySession(Session):
             session = PollySession(token)
 
     """
+    example = classmethod(example)
+    doc = classmethod(doc)
     def __init__(self, REFRESH_TOKEN, env="polly"):
     
         Session.__init__(self)

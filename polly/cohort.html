@@ -76,6 +76,7 @@ import urllib.request
 import logging
 import pandas as pd
 from polly.auth import Polly
+from polly.get_help import example,doc
 from polly.omixatlas import OmixAtlas
 from polly.errors import (</p>
 <blockquote>
@@ -116,6 +117,8 @@ This class contain function which can be used to create, add or remove samples, 
 </div>
 <p>If you are authorised then you can initialize object without token to know about <a class="reference internal" href="../make_doc/Polly.html#auth"><span class="std std-ref">authentication</span></a>.
 “””
+example = classmethod(example)
+doc = classmethod(doc)
 def __init__(self, token=None, env=”polly”) -&gt; None:</p>
 <blockquote>
 <div><p>self.session = Polly.get_session(token, env=env)
